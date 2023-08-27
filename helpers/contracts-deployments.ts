@@ -502,7 +502,7 @@ export const deployAllMockTokens = async (verify?: boolean) => {
   const protoConfigData = getReservesConfigByPool(OasyslendPools.proto);
 
   for (const tokenSymbol of Object.values(TokenContractId)) {
-    if (tokenSymbol === 'WASTR') {
+    if (tokenSymbol === 'WOAS') {
       tokens[tokenSymbol] = await deployWETHMocked();
       await registerContractInJsonDb(tokenSymbol.toUpperCase(), tokens[tokenSymbol]);
       continue;

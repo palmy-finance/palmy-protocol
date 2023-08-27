@@ -33,40 +33,14 @@ export const OASYSLEND_REFERRAL = '0';
 
 // to set initial prices in fallback oracle
 export const INITIAL_PRICES = {
-  USD: oneUsd.toFixed(),
-  USDC: oneUsd.multipliedBy('0.98889786').toFixed(),
-  USDT: oneUsd.toFixed(),
   WETH: oneUsd.multipliedBy('2555.73492766').toFixed(),
-  WBTC: oneUsd.multipliedBy('37561.51135465').toFixed(),
-  WASTR: oneUsd.multipliedBy('0.13272916').toFixed(),
-  WSDN: oneUsd.multipliedBy('0.70356687').toFixed(),
-  LAY: oneUsd.multipliedBy('0.10000000').toFixed(),
-  DAI: oneEther.toFixed(),
-  BUSD: oneUsd.toFixed(),
-  MATIC: oneUsd.multipliedBy('1.25786452').toFixed(),
-  BNB: oneUsd.multipliedBy('405.11743275').toFixed(),
-  DOT: oneUsd.multipliedBy('9.45363275').toFixed(),
-  AUSD: oneUsd.toFixed(),
-  NativeUSDT: oneUsd.toFixed(),
+  WOAS: oneUsd.toFixed(),
 };
 
 export const MOCK_PRICE_AGGREGATORS_PRICES = {
   // Update to USD-based price feeds
-  USDC: oneEther.multipliedBy('0.00367714136416').toFixed(),
-  USDT: oneEther.multipliedBy('0.00369068412860').toFixed(),
-  DAI: oneEther.multipliedBy('0.00369068412860').toFixed(),
-  BUSD: oneEther.multipliedBy('0.00369068412860').toFixed(),
   WETH: oneEther.toFixed(),
-  WBTC: oneEther.multipliedBy('47.332685').toFixed(),
-  USD: '5848466240000000',
-  WASTR: oneEther.multipliedBy('0.003620948469').toFixed(),
-  WSDN: oneEther.multipliedBy('0.003620948469').toFixed(),
-  LAY: oneEther.multipliedBy('0.003620948469').toFixed(),
-  MATIC: oneEther.multipliedBy('0.003620948469').toFixed(),
-  BNB: oneEther.multipliedBy('0.003620948469').toFixed(),
-  DOT: oneUsd.multipliedBy('9.45363275').toFixed(),
-  AUSD: oneUsd.toFixed(),
-  NativeUSDT: oneEther.multipliedBy('0.00369068412860').toFixed(),
+  WOAS: oneEther.multipliedBy('0.00369068412860').toFixed(),
 };
 
 export const ALL_ASSETS_PRICES_FOR_TESTING = {

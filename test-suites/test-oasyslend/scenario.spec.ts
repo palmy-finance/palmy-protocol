@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import fs from 'fs';
 import OasyslendConfig from '../../markets/oasyslend';
-import { strategyDAI, strategyDAIForTest } from './../../markets/oasyslend/reservesConfigs';
+import { strategyDAIForTest } from './../../markets/oasyslend/reservesConfigs';
 import { configuration as actionsConfiguration } from './helpers/actions';
 import { makeSuite } from './helpers/make-suite';
 import { executeStory } from './helpers/scenario-engine';
