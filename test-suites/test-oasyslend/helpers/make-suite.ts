@@ -52,9 +52,7 @@ export interface TestEnv {
   lWETH: LToken;
   dai: MintableERC20;
   lDai: LToken;
-  usdc: MintableERC20;
-  lay: MintableERC20;
-  wsdn: MintableERC20;
+  oal: MintableERC20;
   addressesProvider: LendingPoolAddressesProvider;
   registry: LendingPoolAddressesProviderRegistry;
   wethGateway: WETHGateway;
@@ -77,7 +75,7 @@ const testEnv: TestEnv = {
   dai: {} as MintableERC20,
   lDai: {} as LToken,
   usdc: {} as MintableERC20,
-  lay: {} as MintableERC20,
+  oal: {} as MintableERC20,
   wsdn: {} as MintableERC20,
   addressesProvider: {} as LendingPoolAddressesProvider,
   registry: {} as LendingPoolAddressesProviderRegistry,
@@ -122,15 +120,13 @@ export async function initializeMakeSuite() {
   const reservesTokens = await testEnv.helpersContract.getAllReservesTokens();
 
   const daiAddress = reservesTokens.find((token) => token.symbol === 'DAI')?.tokenAddress;
-  const usdcAddress = reservesTokens.find((token) => token.symbol === 'USDC')?.tokenAddress;
-  const layAddress = reservesTokens.find((token) => token.symbol === 'LAY')?.tokenAddress;
+  const oalAddress = reservesTokens.find((token) => token.symbol === 'OAL')?.tokenAddress;
   const wethAddress = reservesTokens.find((token) => token.symbol === 'WETH')?.tokenAddress;
-  const wsdnAddress = reservesTokens.find((token) => token.symbol === 'WSDN')?.tokenAddress;
 
   if (!lDaiAddress || !lWETHAddress) {
     process.exit(1);
   }
-  if (!daiAddress || !usdcAddress || !layAddress || !wethAddress || !wsdnAddress) {
+  if (!daiAddress || !oalAddress || !wethAddress) {
     process.exit(1);
   }
 
@@ -138,9 +134,7 @@ export async function initializeMakeSuite() {
   testEnv.lWETH = await getLToken(lWETHAddress);
 
   testEnv.dai = await getMintableERC20(daiAddress);
-  testEnv.usdc = await getMintableERC20(usdcAddress);
-  testEnv.lay = await getMintableERC20(layAddress);
-  testEnv.wsdn = await getMintableERC20(wsdnAddress);
+  testEnv.oal = await getMintableERC20(oalAddress);
   testEnv.weth = await getWETHMocked(wethAddress);
   testEnv.wethGateway = await getWETHGateway();
 }

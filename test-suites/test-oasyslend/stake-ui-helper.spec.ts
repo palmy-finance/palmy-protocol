@@ -22,29 +22,29 @@ makeSuite('StakeUIHelper', (testEnv) => {
   let target: StakeUIHelper;
   let mockStakeToken: StakedTokenMock;
   beforeEach(async () => {
-    const { dai, weth, users, lay, pool, oracle, deployer } = testEnv;
+    const { dai, weth, users, oal, pool, oracle, deployer } = testEnv;
 
     mockStakeToken = await new StakedTokenMockFactory(deployer.signer).deploy();
     target = await deployStakeUIHelper([
       oracle.address,
-      lay.address,
+      oal.address,
       mockStakeToken.address,
       dai.address,
     ]);
   });
   describe('constructor', async () => {
     it('should revert if price oracle is zero address', async () => {
-      const { dai, lay } = testEnv;
+      const { dai, oal } = testEnv;
       await expect(
         new StakeUIHelperFactory(await getFirstSigner()).deploy(
           ZERO_ADDRESS,
-          lay.address,
+          oal.address,
           mockStakeToken.address,
           dai.address
         )
       ).to.be.revertedWith('priceOracle address cannot be empty');
     });
-    it('should revert if lay is zero address', async () => {
+    it('should revert if oal is zero address', async () => {
       const { dai, oracle } = testEnv;
       await expect(
         new StakeUIHelperFactory(await getFirstSigner()).deploy(
@@ -53,34 +53,34 @@ makeSuite('StakeUIHelper', (testEnv) => {
           mockStakeToken.address,
           dai.address
         )
-      ).to.be.revertedWith('lay address cannot be empty');
+      ).to.be.revertedWith('oal address cannot be empty');
     });
-    it('should revert if stkLay is zero address', async () => {
-      const { dai, lay, oracle } = testEnv;
+    it('should revert if stkOal is zero address', async () => {
+      const { dai, oal, oracle } = testEnv;
       await expect(
         new StakeUIHelperFactory(await getFirstSigner()).deploy(
           oracle.address,
-          lay.address,
+          oal.address,
           ZERO_ADDRESS,
           dai.address
         )
-      ).to.be.revertedWith('stkLay address cannot be empty');
+      ).to.be.revertedWith('stkOal address cannot be empty');
     });
     it('should revert if mockUsd is zero address', async () => {
-      const { lay, oracle } = testEnv;
+      const { oal, oracle } = testEnv;
       await expect(
         new StakeUIHelperFactory(await getFirstSigner()).deploy(
           oracle.address,
-          lay.address,
+          oal.address,
           mockStakeToken.address,
           ZERO_ADDRESS
         )
       ).to.be.revertedWith('mockUsd address cannot be empty');
     });
   });
-  describe('getStkGeneralLayData', async () => {
+  describe('getStkGeneralOalData', async () => {
     it('stakeAPY is 0 if totalSupply of StakeToken is 0', async () => {
-      const data = await target.getStkGeneralLayData();
+      const data = await target.getStkGeneralOalData();
       expect(data.stakeApy).to.be.equal('0');
     });
     it('stakeAPY is 100 if totalSupply of StakeToken is not 0 ', async () => {
@@ -91,7 +91,7 @@ makeSuite('StakeUIHelper', (testEnv) => {
         lastUpdateTimestamp: 1744936291,
       });
       await mockStakeToken.setDistributionEnd(1744936291);
-      const data = await target.getStkGeneralLayData();
+      const data = await target.getStkGeneralOalData();
       expect(data.stakeApy).to.be.gt('0');
     });
   });

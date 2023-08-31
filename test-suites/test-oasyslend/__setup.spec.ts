@@ -156,7 +156,9 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   await waitForTx(await fallbackOracle.setEthUsdPrice(MOCK_USD_PRICE_IN_WEI));
   const addresses = {
     WETH: mockTokens.WETH.address,
-    WOAS: mockTokens.WASTR.address,
+    WOAS: mockTokens.WOAS.address,
+    DAI: mockTokens.DAI.address,
+    USD: USD_ADDRESS,
   };
   await setInitialAssetPricesInOracle(ALL_ASSETS_INITIAL_PRICES, addresses, fallbackOracle);
 

@@ -241,7 +241,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.testnet]: '0xD9F3bbC743b7AF7E1108653Cd90E483C03D6D699',
     [eOasysNetwork.oasys]: '0x97Ab79B80E8904214413D8219E8B04373D1030AD',
   },
-  StakedLay: {
+  StakedOal: {
     [eEthereumNetwork.buidlerevm]: ZERO_ADDRESS,
     [eEthereumNetwork.coverage]: ZERO_ADDRESS,
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,

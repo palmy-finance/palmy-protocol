@@ -717,7 +717,7 @@ export const deployMockAggregatorDIA = async (args: [string[], string[]], verify
   );
 
 export const deployStakeUIHelper = async (
-  [priceOracle, lay, stakedLay, mockUsd]: [
+  [priceOracle, oal, stakedOal, mockUsd]: [
     tEthereumAddress,
     tEthereumAddress,
     tEthereumAddress,
@@ -725,12 +725,12 @@ export const deployStakeUIHelper = async (
   ],
   verify?: boolean
 ) => {
-  const args = [priceOracle, lay, stakedLay, mockUsd];
+  const args = [priceOracle, oal, stakedOal, mockUsd];
   return withSaveAndVerify(
     await new StakeUIHelperFactory(await getFirstSigner()).deploy(
       priceOracle,
-      lay,
-      stakedLay,
+      oal,
+      stakedOal,
       mockUsd
     ),
     eContractid.StakeUIHelper,

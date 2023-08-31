@@ -38,11 +38,11 @@ interface StakeUIHelperI {
     uint256 userPermitNonce;
   }
 
-  function getStkLayData(address user) external view returns (AssetUIData memory);
+  function getstkOalData(address user) external view returns (AssetUIData memory);
 
-  function getStkGeneralLayData() external view returns (GeneralStakeUIData memory);
+  function getStkGeneralOalData() external view returns (GeneralStakeUIData memory);
 
-  function getStkUserLayData(address user) external view returns (UserStakeUIData memory);
+  function getStkUserOalData(address user) external view returns (UserStakeUIData memory);
 
   /// @dev This will return user + general for fallback
   function getUserUIData(address user) external view returns (AssetUIData memory, uint256);

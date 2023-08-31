@@ -30,9 +30,8 @@ fs.readdirSync(scenarioFolder).forEach((file) => {
         ...OasyslendConfig.ReservesConfig,
         DAI: strategyDAIForTest,
       };
-      const { usdc, weth, configurator } = testEnv;
+      const { weth, configurator } = testEnv;
       await configurator.enableReserveStableRate(weth.address);
-      await configurator.enableReserveStableRate(usdc.address);
     });
     after('Reset', () => {
       // Reset BigNumber

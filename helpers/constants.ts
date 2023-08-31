@@ -41,6 +41,7 @@ export const MOCK_PRICE_AGGREGATORS_PRICES = {
   // Update to USD-based price feeds
   WETH: oneEther.toFixed(),
   WOAS: oneEther.multipliedBy('0.00369068412860').toFixed(),
+  USD: oneEther.multipliedBy('0.00369068412860').toFixed(),
 };
 
 export const ALL_ASSETS_PRICES_FOR_TESTING = {

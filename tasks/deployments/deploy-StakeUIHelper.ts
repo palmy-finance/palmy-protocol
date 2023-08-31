@@ -18,33 +18,33 @@ task(`deploy-${eContractid.StakeUIHelper}`, `Deploys the StakeUIHelper contract`
     const poolConfig = loadPoolConfig(pool);
     const {
       ReserveAssets,
-      StakedLay,
+      StakedOal,
       ProtocolGlobalParams: { UsdAddress },
     } = poolConfig as ICommonConfiguration;
     const oracle = await getOasyslendOracle();
     const assets = getParamPerNetwork(ReserveAssets, network);
-    const lay = assets['LAY'];
-    const stkLay = getParamPerNetwork(StakedLay, network);
+    const oal = assets['OAL'];
+    const stkOal = getParamPerNetwork(StakedOal, network);
     console.log(`\n- StakeUIHelper oracle: ${oracle.address}`);
-    console.log(`\n- StakeUIHelper lay: ${lay}`);
-    console.log(`\n- StakeUIHelper stkLay: ${stkLay}`);
+    console.log(`\n- StakeUIHelper oal: ${oal}`);
+    console.log(`\n- StakeUIHelper stkOal: ${stkOal}`);
     console.log(`\n- StakeUIHelper usd: ${UsdAddress}`);
     console.log(`\n- StakeUIHelper deployment`);
 
     if (!notFalsyOrZeroAddress(oracle.address)) {
       throw new Error('oracle address is not defined');
     }
-    if (!notFalsyOrZeroAddress(lay)) {
-      throw new Error('lay address is not defined');
+    if (!notFalsyOrZeroAddress(oal)) {
+      throw new Error('oal address is not defined');
     }
-    if (!notFalsyOrZeroAddress(stkLay)) {
-      throw new Error('stkLay address is not defined');
+    if (!notFalsyOrZeroAddress(stkOal)) {
+      throw new Error('stkOal address is not defined');
     }
     if (!notFalsyOrZeroAddress(UsdAddress)) {
       throw new Error('UsdAddress address is not defined');
     }
 
-    const StakeUIHelper = await deployStakeUIHelper([oracle.address, lay, stkLay, UsdAddress]);
+    const StakeUIHelper = await deployStakeUIHelper([oracle.address, oal, stkOal, UsdAddress]);
 
     console.log('StakeUIHelper deployed :', StakeUIHelper.address);
     console.log(`\tFinished StakeUIHelper deployment`);
