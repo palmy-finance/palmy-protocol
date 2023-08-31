@@ -43,7 +43,7 @@ import { MintableDelegationERC20 } from '../types/MintableDelegationERC20';
 import { MintableERC20 } from '../types/MintableERC20';
 import { StableAndVariableTokensHelperFactory } from '../types/StableAndVariableTokensHelperFactory';
 import { WETH9Mocked } from '../types/WETH9Mocked';
-import { PriceAggregatorAdapterDiaImplFactory } from './../types/PriceAggregatorAdapterDiaImplFactory';
+import { PriceAggregatorAdapterChainsightImplFactory } from './../types/PriceAggregatorAdapterChainsightImplFactory';
 import { ConfigNames, getReservesConfigByPool, loadPoolConfig } from './configuration';
 import { getFirstSigner } from './contracts-getters';
 import {
@@ -700,10 +700,16 @@ export const deployRateStrategy = async (
   }
 };
 
-export const deployPriceAggregatorDiaImpl = async (args: [string, string], verify?: boolean) =>
+export const deployPriceAggregatorChainsightImpl = async (
+  args: [string, string],
+  verify?: boolean
+) =>
   withSaveAndVerify(
-    await new PriceAggregatorAdapterDiaImplFactory(await getFirstSigner()).deploy(args[0], args[1]),
-    eContractid.PriceAggregatorAdapterDiaImpl,
+    await new PriceAggregatorAdapterChainsightImplFactory(await getFirstSigner()).deploy(
+      args[0],
+      args[1]
+    ),
+    eContractid.PriceAggregatorAdapterChainsightImpl,
     args,
     verify
   );

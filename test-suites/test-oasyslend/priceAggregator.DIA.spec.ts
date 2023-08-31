@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js';
 import { evmRevert, evmSnapshot } from '../../helpers/misc-utils';
-import { PriceAggregatorAdapterDiaImpl } from '../../types';
+import { PriceAggregatorAdapterChainsightImpl } from '../../types';
 import {
   deployMockAggregatorDIA,
-  deployPriceAggregatorDiaImpl,
+  deployPriceAggregatorChainsightImpl,
 } from './../../helpers/contracts-deployments';
 import { MockAggregatorDIA } from './../../types/MockAggregatorDIA.d';
 import { makeSuite, TestEnv } from './helpers/make-suite';
@@ -49,15 +49,15 @@ makeSuite('Price Aggregator Implementation for DIA', (testEnv: TestEnv) => {
     ]);
   });
 
-  describe('PriceAggregatorDiaImpl', () => {
+  describe('PriceAggregatorChainsightImpl', () => {
     describe('constructor', () => {
       it('should deploy with correct parameters', async () => {
-        await deployPriceAggregatorDiaImpl([mockAggregatorDIA.address, 'USD']);
+        await deployPriceAggregatorChainsightImpl([mockAggregatorDIA.address, 'USD']);
       });
 
       it('should revert if not valid addresses provider', async () => {
         await expect(
-          deployPriceAggregatorDiaImpl([
+          deployPriceAggregatorChainsightImpl([
             '0', // any invalid contract address can be used here
             'USD',
           ])
@@ -65,7 +65,10 @@ makeSuite('Price Aggregator Implementation for DIA', (testEnv: TestEnv) => {
       });
       describe('setAssetSources', () => {
         it('should correctly set asset sources', async () => {
-          const target = await deployPriceAggregatorDiaImpl([mockAggregatorDIA.address, 'USD']);
+          const target = await deployPriceAggregatorChainsightImpl([
+            mockAggregatorDIA.address,
+            'USD',
+          ]);
           const assets = prices.map((m) => m.tokenAddress);
           const symbols = prices.map((m) => m.symbol);
           expect(await target.setAssetSources(assets, symbols))
@@ -74,14 +77,20 @@ makeSuite('Price Aggregator Implementation for DIA', (testEnv: TestEnv) => {
         });
 
         it('should revert if with invalid toekn address', async () => {
-          const target = await deployPriceAggregatorDiaImpl([mockAggregatorDIA.address, 'USD']);
+          const target = await deployPriceAggregatorChainsightImpl([
+            mockAggregatorDIA.address,
+            'USD',
+          ]);
           await expect(target.setAssetSources(['0'], ['BTC'])).to.be.reverted;
         });
       });
     });
     describe('setAggregator', () => {
       it('aggregator updated', async () => {
-        const target = await deployPriceAggregatorDiaImpl([mockAggregatorDIA.address, 'USD']);
+        const target = await deployPriceAggregatorChainsightImpl([
+          mockAggregatorDIA.address,
+          'USD',
+        ]);
         const newAggregator = '0xDac17f958D2eE523a2206206994597c13d831EC2';
         expect(await target.setAggregator(newAggregator))
           .to.emit(target, 'AggregatorUpdated')
@@ -89,9 +98,9 @@ makeSuite('Price Aggregator Implementation for DIA', (testEnv: TestEnv) => {
       });
     });
     describe('currentPrice', () => {
-      let target: PriceAggregatorAdapterDiaImpl;
+      let target: PriceAggregatorAdapterChainsightImpl;
       before(async () => {
-        target = await deployPriceAggregatorDiaImpl([mockAggregatorDIA.address, 'USD']);
+        target = await deployPriceAggregatorChainsightImpl([mockAggregatorDIA.address, 'USD']);
         await target.setAssetSources(
           prices.map((m) => m.tokenAddress),
           prices.map((m) => m.symbol)

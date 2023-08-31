@@ -7,10 +7,10 @@ import {IDiaAggregator} from '../interfaces/IDiaAggregator.sol';
 import {IERC20Detailed} from '../dependencies/openzeppelin/contracts/IERC20Detailed.sol';
 import {SafeMath} from '../dependencies/openzeppelin/contracts/SafeMath.sol';
 
-/// @title PriceAggregatorDiaImpl
+/// @title PriceAggregatorChainsightImpl
 /// @author Horizonx.tech
-/// @notice Price aggregator Dia implementation
-contract PriceAggregatorAdapterDiaImpl is IPriceAggregatorAdapter, Ownable {
+/// @notice Price aggregator Chainsight implementation
+contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, Ownable {
   IDiaAggregator private _aggregator;
   using SafeMath for uint256;
   string private DELIMITER = '/';
@@ -32,10 +32,10 @@ contract PriceAggregatorAdapterDiaImpl is IPriceAggregatorAdapter, Ownable {
   /// @notice External function called by the Oasyslend governance to set or replace sources of assets
   /// @param assets The addresses of the assets
   /// @param tokenSymbols The symbol of the source of each asset
-  function setAssetSources(address[] calldata assets, string[] calldata tokenSymbols)
-    external
-    onlyOwner
-  {
+  function setAssetSources(
+    address[] calldata assets,
+    string[] calldata tokenSymbols
+  ) external onlyOwner {
     _setAssetsSources(assets, tokenSymbols);
     emit AssetSourcesUpdated(assets, tokenSymbols);
   }

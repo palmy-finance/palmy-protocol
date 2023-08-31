@@ -8,7 +8,7 @@ import {
 } from '../../helpers/configuration';
 import {
   deployLendingRateOracle,
-  deployPriceAggregatorDiaImpl,
+  deployPriceAggregatorChainsightImpl,
   deployOasyslendFallbackOracle,
   deployOasyslendOracle,
 } from '../../helpers/contracts-deployments';
@@ -25,7 +25,7 @@ import { notFalsyOrZeroAddress, waitForTx } from '../../helpers/misc-utils';
 import { setInitialMarketRatesInRatesOracleByHelper } from '../../helpers/oracles-helpers';
 import { eNetwork, ICommonConfiguration, SymbolMap } from '../../helpers/types';
 import { LendingRateOracle, OasyslendFallbackOracle, OasyslendOracle } from '../../types';
-import { PriceAggregatorAdapterDiaImpl } from './../../types/PriceAggregatorAdapterDiaImpl.d';
+import { PriceAggregatorAdapterChainsightImpl } from './../../types/PriceAggregatorAdapterChainsightImpl.d';
 
 task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
   .addFlag('verify', 'Verify contracts at Etherscan')
@@ -58,14 +58,14 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
         USD: UsdAddress,
       };
 
-      let priceAggregatorAdapter: PriceAggregatorAdapterDiaImpl;
+      let priceAggregatorAdapter: PriceAggregatorAdapterChainsightImpl;
       let OasyslendOracle: OasyslendOracle;
       let lendingRateOracle: LendingRateOracle;
       let fallbackOracle: OasyslendFallbackOracle;
 
       priceAggregatorAdapter = notFalsyOrZeroAddress(priceAggregatorAddress)
         ? await getPriceAggregator(priceAggregatorAddress)
-        : await deployPriceAggregatorDiaImpl([diaAggregatorAddress, OracleQuoteCurrency]);
+        : await deployPriceAggregatorChainsightImpl([diaAggregatorAddress, OracleQuoteCurrency]);
       await waitForTx(
         await priceAggregatorAdapter.setAssetSources(
           Object.values(feedTokens), // address

@@ -67,7 +67,7 @@ export enum eContractid {
   LendingPoolImpl = 'LendingPoolImpl',
   LendingPoolConfiguratorImpl = 'LendingPoolConfiguratorImpl',
   LendingPoolCollateralManagerImpl = 'LendingPoolCollateralManagerImpl',
-  PriceAggregatorAdapterDiaImpl = 'PriceAggregatorAdapterDiaImpl',
+  PriceAggregatorAdapterChainsightImpl = 'PriceAggregatorAdapterChainsightImpl',
   UiIncentiveDataProviderV2 = 'UiIncentiveDataProviderV2',
   StakeUIHelper = 'StakeUIHelper',
 }

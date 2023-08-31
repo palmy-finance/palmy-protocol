@@ -1,13 +1,13 @@
 import { task } from 'hardhat/config';
 import { eOasysNetwork } from '../../helpers/types';
 import OasyslendConfig from '../../markets/oasyslend';
-import { PriceAggregatorAdapterDiaImplFactory } from '../../types';
+import { PriceAggregatorAdapterChainsightImplFactory } from '../../types';
 import { OasyslendFallbackOracleFactory } from '../../types/OasyslendFallbackOracleFactory';
 
 type EthereumAddress = `0x${string}`;
 type Addresses = {
   OasyslendFallbackOracle: EthereumAddress;
-  PriceAggregatorAdapterDiaImpl: EthereumAddress;
+  PriceAggregatorAdapterChainsightImpl: EthereumAddress;
   DiaOracle: EthereumAddress;
 };
 const SUPPORTED_NETWORK = ['oasys', 'shiden'] as const;
@@ -18,12 +18,12 @@ type Constants = {
 
 const oasys: Addresses = {
   OasyslendFallbackOracle: '0x35E6D71FeA378B60b3A5Afc91eA7F520F937833c',
-  PriceAggregatorAdapterDiaImpl: '0x043C93fF4d52B2F76811852644549553A00309a8',
+  PriceAggregatorAdapterChainsightImpl: '0x043C93fF4d52B2F76811852644549553A00309a8',
   DiaOracle: '0x35490A8AC7cD0Df5C4d7Ab4243A6B517133BcDB1',
 };
 const shiden: Addresses = {
   OasyslendFallbackOracle: '0xA42D5A35b6bbC93fe63FE54536f320faC9996f4C',
-  PriceAggregatorAdapterDiaImpl: '0x8F2fFfF56375CDeD7f53E0D90259711Cd122Da31',
+  PriceAggregatorAdapterChainsightImpl: '0x8F2fFfF56375CDeD7f53E0D90259711Cd122Da31',
   DiaOracle: '0xCe784F99f87dBa11E0906e2fE954b08a8cc9815d',
 };
 const CONSTANTS: Constants = {
@@ -74,8 +74,8 @@ task(
   const keys = Object.keys(prices) as string[];
   const values = Object.values(prices) as string[];
 
-  const _oracle = PriceAggregatorAdapterDiaImplFactory.connect(
-    addrs.PriceAggregatorAdapterDiaImpl,
+  const _oracle = PriceAggregatorAdapterChainsightImplFactory.connect(
+    addrs.PriceAggregatorAdapterChainsightImpl,
     ethers.provider
   );
   for (let i = 0; i < keys.length; i++)

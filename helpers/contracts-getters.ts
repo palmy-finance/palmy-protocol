@@ -15,7 +15,7 @@ import {
   MockLTokenFactory,
   MockStableDebtTokenFactory,
   MockVariableDebtTokenFactory,
-  PriceAggregatorAdapterDiaImplFactory,
+  PriceAggregatorAdapterChainsightImplFactory,
   PriceOracleFactory,
   ReserveLogicFactory,
   SelfdestructTransferFactory,
@@ -398,11 +398,11 @@ export const getOasyslendOracle = async (address?: tEthereumAddress) =>
   );
 
 export const getPriceAggregator = async (address?: tEthereumAddress) =>
-  await PriceAggregatorAdapterDiaImplFactory.connect(
+  await PriceAggregatorAdapterChainsightImplFactory.connect(
     address ||
       (
         await getDb()
-          .get(`${eContractid.PriceAggregatorAdapterDiaImpl}.${DRE.network.name}`)
+          .get(`${eContractid.PriceAggregatorAdapterChainsightImpl}.${DRE.network.name}`)
           .value()
       ).address,
     await getFirstSigner()
