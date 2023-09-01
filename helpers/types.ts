@@ -37,7 +37,6 @@ export enum eContractid {
   PriceOracle = 'PriceOracle',
   Proxy = 'Proxy',
   MockAggregator = 'MockAggregator',
-  MockAggregatorDIA = 'MockAggregatorDIA',
   LendingRateOracle = 'LendingRateOracle',
   OasyslendOracle = 'OasyslendOracle',
   OasyslendFallbackOracle = 'OasyslendFallbackOracle',
@@ -70,6 +69,7 @@ export enum eContractid {
   PriceAggregatorAdapterChainsightImpl = 'PriceAggregatorAdapterChainsightImpl',
   UiIncentiveDataProviderV2 = 'UiIncentiveDataProviderV2',
   StakeUIHelper = 'StakeUIHelper',
+  ChainsightOracle = 'ChainsightOracle',
 }
 
 /*

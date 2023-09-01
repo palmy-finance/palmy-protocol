@@ -28,6 +28,8 @@ import {
   WalletBalanceProviderFactory,
   WETH9MockedFactory,
   WETHGatewayFactory,
+  ChainsightOracle,
+  ChainsightOracleFactory,
 } from '../types';
 import { IERC20DetailedFactory } from '../types/IERC20DetailedFactory';
 import { getEthersSigners, MockTokenMap } from './contracts-helpers';
@@ -160,6 +162,15 @@ export const getLendingRateOracle = async (address?: tEthereumAddress) =>
     address ||
       (
         await getDb().get(`${eContractid.LendingRateOracle}.${DRE.network.name}`).value()
+      ).address,
+    await getFirstSigner()
+  );
+
+export const getChainsightOracle = async (symbol: string, address?: tEthereumAddress) =>
+  await ChainsightOracleFactory.connect(
+    address ||
+      (
+        await getDb().get(`${eContractid.ChainsightOracle}${symbol}.${DRE.network.name}`).value()
       ).address,
     await getFirstSigner()
   );

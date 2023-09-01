@@ -17,7 +17,6 @@ import {
   LTokensAndRatesHelperFactory,
   MintableDelegationERC20Factory,
   MintableERC20Factory,
-  MockAggregatorDIAFactory,
   MockAggregatorFactory,
   MockFlashLoanReceiverFactory,
   MockLTokenFactory,
@@ -37,6 +36,7 @@ import {
   WalletBalanceProviderFactory,
   WETH9MockedFactory,
   WETHGatewayFactory,
+  ChainsightOracleFactory,
 } from '../types';
 import { LendingPoolLibraryAddresses } from '../types/LendingPoolFactory';
 import { MintableDelegationERC20 } from '../types/MintableDelegationERC20';
@@ -377,6 +377,14 @@ export const deployVariableDebtToken = async (
 
   return instance;
 };
+export const deployChainsightOracle = async (symbol: string, verify: boolean) => {
+  withSaveAndVerify(
+    await new ChainsightOracleFactory(await getFirstSigner()).deploy(),
+    `${eContractid.ChainsightOracle}${symbol}`,
+    [],
+    verify
+  );
+};
 
 export const deployGenericStableDebtToken = async (verify?: boolean) =>
   withSaveAndVerify(
@@ -700,25 +708,11 @@ export const deployRateStrategy = async (
   }
 };
 
-export const deployPriceAggregatorChainsightImpl = async (
-  args: [string, string],
-  verify?: boolean
-) =>
+export const deployPriceAggregatorChainsightImpl = async (verify?: boolean) =>
   withSaveAndVerify(
-    await new PriceAggregatorAdapterChainsightImplFactory(await getFirstSigner()).deploy(
-      args[0],
-      args[1]
-    ),
+    await new PriceAggregatorAdapterChainsightImplFactory(await getFirstSigner()).deploy(),
     eContractid.PriceAggregatorAdapterChainsightImpl,
-    args,
-    verify
-  );
-
-export const deployMockAggregatorDIA = async (args: [string[], string[]], verify?: boolean) =>
-  withSaveAndVerify(
-    await new MockAggregatorDIAFactory(await getFirstSigner()).deploy(args[0], args[1]),
-    eContractid.MockAggregatorDIA,
-    args,
+    [],
     verify
   );
 

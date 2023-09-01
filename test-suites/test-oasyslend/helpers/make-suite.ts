@@ -52,7 +52,6 @@ export interface TestEnv {
   lWETH: LToken;
   dai: MintableERC20;
   lDai: LToken;
-  oal: MintableERC20;
   addressesProvider: LendingPoolAddressesProvider;
   registry: LendingPoolAddressesProviderRegistry;
   wethGateway: WETHGateway;
@@ -75,7 +74,6 @@ const testEnv: TestEnv = {
   dai: {} as MintableERC20,
   lDai: {} as LToken,
   usdc: {} as MintableERC20,
-  oal: {} as MintableERC20,
   wsdn: {} as MintableERC20,
   addressesProvider: {} as LendingPoolAddressesProvider,
   registry: {} as LendingPoolAddressesProviderRegistry,
@@ -83,6 +81,7 @@ const testEnv: TestEnv = {
 } as TestEnv;
 
 export async function initializeMakeSuite() {
+  console.log('initialize make suite start');
   const [_deployer, ...restSigners] = await getEthersSigners();
   const deployer: SignerWithAddress = {
     address: await _deployer.getAddress(),
@@ -120,13 +119,14 @@ export async function initializeMakeSuite() {
   const reservesTokens = await testEnv.helpersContract.getAllReservesTokens();
 
   const daiAddress = reservesTokens.find((token) => token.symbol === 'DAI')?.tokenAddress;
-  const oalAddress = reservesTokens.find((token) => token.symbol === 'OAL')?.tokenAddress;
   const wethAddress = reservesTokens.find((token) => token.symbol === 'WETH')?.tokenAddress;
 
   if (!lDaiAddress || !lWETHAddress) {
+    console.error('lDai address or lWETH address is not defined', lDaiAddress, lWETHAddress);
     process.exit(1);
   }
-  if (!daiAddress || !oalAddress || !wethAddress) {
+  if (!daiAddress || !wethAddress) {
+    console.error('dai address or or weth address is not defined', daiAddress, wethAddress);
     process.exit(1);
   }
 
@@ -134,9 +134,9 @@ export async function initializeMakeSuite() {
   testEnv.lWETH = await getLToken(lWETHAddress);
 
   testEnv.dai = await getMintableERC20(daiAddress);
-  testEnv.oal = await getMintableERC20(oalAddress);
   testEnv.weth = await getWETHMocked(wethAddress);
   testEnv.wethGateway = await getWETHGateway();
+  console.log('initialize make suite end');
 }
 
 const setSnapshot = async () => {
