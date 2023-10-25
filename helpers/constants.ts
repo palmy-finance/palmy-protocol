@@ -33,8 +33,12 @@ export const OASYSLEND_REFERRAL = '0';
 
 // to set initial prices in fallback oracle
 export const INITIAL_PRICES = {
+  USD: oneUsd.toFixed(),
   WETH: oneUsd.multipliedBy('2555.73492766').toFixed(),
   WOAS: oneUsd.toFixed(),
+  USDC: oneUsd.multipliedBy('0.98889786').toFixed(),
+  USDT: oneUsd.toFixed(),
+  WBTC: oneUsd.multipliedBy('37561.51135465').toFixed(),
 };
 
 export const MOCK_PRICE_AGGREGATORS_PRICES = {
@@ -42,6 +46,9 @@ export const MOCK_PRICE_AGGREGATORS_PRICES = {
   WETH: oneEther.toFixed(),
   WOAS: oneEther.multipliedBy('0.00369068412860').toFixed(),
   USD: oneEther.multipliedBy('0.00369068412860').toFixed(),
+  USDC: oneEther.multipliedBy('0.00367714136416').toFixed(),
+  USDT: oneEther.multipliedBy('0.00369068412860').toFixed(),
+  WBTC: oneEther.multipliedBy('47.332685').toFixed(),
 };
 
 export const ALL_ASSETS_PRICES_FOR_TESTING = {

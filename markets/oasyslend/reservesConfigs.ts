@@ -1,6 +1,41 @@
 import { eContractid, IReserveParams } from '../../helpers/types';
-import { rateStrategyStableTwo, rateStrategyWOAS, rateStrategyWETH } from './rateStrategies';
+import { rateStrategyStableTwo, rateStrategyWOAS, rateStrategyWETH, rateStrategyStable, rateStrategyWBTC } from './rateStrategies';
 
+export const strategyUSDC: IReserveParams = {
+  strategy: rateStrategyStable,
+  baseLTVAsCollateral: '8000',
+  liquidationThreshold: '8500',
+  liquidationBonus: '10500',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '6',
+  lTokenImpl: eContractid.LToken,
+  reserveFactor: '1000',
+};
+
+export const strategyUSDT: IReserveParams = {
+  strategy: rateStrategyStable,
+  baseLTVAsCollateral: '8000',
+  liquidationThreshold: '8500',
+  liquidationBonus: '10500',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '6',
+  lTokenImpl: eContractid.LToken,
+  reserveFactor: '1000',
+};
+
+export const strategyWBTC: IReserveParams = {
+  strategy: rateStrategyWBTC,
+  baseLTVAsCollateral: '7000',
+  liquidationThreshold: '7500',
+  liquidationBonus: '11000',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '8',
+  lTokenImpl: eContractid.LToken,
+  reserveFactor: '2000',
+};
 export const strategyDAIForTest: IReserveParams = {
   strategy: rateStrategyStableTwo,
   baseLTVAsCollateral: '7500',

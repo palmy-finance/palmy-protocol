@@ -174,8 +174,6 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.oasys]: {},
   },
   DIAAggregator: {
-    // key: without 'w' to call function of DIA e.g WSDN->SDN
-    // ref: https://docs.diadata.org/documentation/oracle-documentation/crypto-assets
     [eEthereumNetwork.buidlerevm]: {},
     [eEthereumNetwork.coverage]: {},
     [eEthereumNetwork.hardhat]: {},

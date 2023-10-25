@@ -183,6 +183,9 @@ export interface iAssetCommon<T> {
 }
 export interface iAssetBase<T> {
   WETH: T;
+  WBTC: T;
+  USDC: T;
+  USDT: T;
   USD: T;
   WOAS: T;
 }
@@ -191,13 +194,16 @@ export type iAssetsWithoutETH<T> = Omit<iAssetBase<T>, 'ETH'>;
 
 export type iAssetsWithoutUSD<T> = Omit<iAssetBase<T>, 'USD'>;
 
-export type iOasyslendPoolAssets<T> = Pick<iAssetsWithoutUSD<T>, 'WETH' | 'WOAS'>;
+export type iOasyslendPoolAssets<T> = Pick<
+  iAssetsWithoutUSD<T>,
+  'WETH' | 'WOAS' | 'USDC' | 'USDT' | 'WBTC'
+>;
 
 export type iMultiPoolsAssets<T> = iAssetCommon<T> | iOasyslendPoolAssets<T>;
 
 export type iOasyslendPoolTokens<T> = Omit<iOasyslendPoolAssets<T>, 'ETH'>;
 
-export const TokenContractId = ['WETH', 'USD', 'WOAS'] as const;
+export const TokenContractId = ['WETH', 'USD', 'WOAS', 'USDC', 'USDT', 'WBTC'] as const;
 
 export interface IReserveParams extends IReserveBorrowParams, IReserveCollateralParams {
   lTokenImpl: eContractid;

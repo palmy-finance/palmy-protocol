@@ -51,6 +51,9 @@ export interface TestEnv {
   weth: WETH9Mocked;
   lWETH: LToken;
   dai: MintableERC20;
+  usdc: MintableERC20;
+  usdt: MintableERC20;
+  wbtc: MintableERC20;
   lDai: LToken;
   addressesProvider: LendingPoolAddressesProvider;
   registry: LendingPoolAddressesProviderRegistry;
@@ -72,9 +75,10 @@ const testEnv: TestEnv = {
   weth: {} as WETH9Mocked,
   lWETH: {} as LToken,
   dai: {} as MintableERC20,
-  lDai: {} as LToken,
+  usdt: {} as MintableERC20,
+  wbtc: {} as MintableERC20,
   usdc: {} as MintableERC20,
-  wsdn: {} as MintableERC20,
+  lDai: {} as LToken,
   addressesProvider: {} as LendingPoolAddressesProvider,
   registry: {} as LendingPoolAddressesProviderRegistry,
   wethGateway: {} as WETHGateway,
@@ -115,18 +119,38 @@ export async function initializeMakeSuite() {
   const allTokens = await testEnv.helpersContract.getAllLTokens();
   const lDaiAddress = allTokens.find((lToken) => lToken.symbol === 'lDAI')?.tokenAddress;
   const lWETHAddress = allTokens.find((lToken) => lToken.symbol === 'lWETH')?.tokenAddress;
+  const lusdcAddress = allTokens.find((lToken) => lToken.symbol === 'lUSDC')?.tokenAddress;
+  const lusdtAddress = allTokens.find((lToken) => lToken.symbol === 'lUSDT')?.tokenAddress;
+  const lwbtcAddress = allTokens.find((lToken) => lToken.symbol === 'lWBTC')?.tokenAddress;
 
   const reservesTokens = await testEnv.helpersContract.getAllReservesTokens();
 
   const daiAddress = reservesTokens.find((token) => token.symbol === 'DAI')?.tokenAddress;
   const wethAddress = reservesTokens.find((token) => token.symbol === 'WETH')?.tokenAddress;
+  const usdcAddress = reservesTokens.find((token) => token.symbol === 'USDC')?.tokenAddress;
+  const usdtAddress = reservesTokens.find((token) => token.symbol === 'USDT')?.tokenAddress;
+  const wbtcAddress = reservesTokens.find((token) => token.symbol === 'WBTC')?.tokenAddress;
 
-  if (!lDaiAddress || !lWETHAddress) {
-    console.error('lDai address or lWETH address is not defined', lDaiAddress, lWETHAddress);
+  if (!lDaiAddress || !lWETHAddress || !lusdcAddress || !lusdtAddress || !lwbtcAddress) {
+    console.error(
+      'lToken address is not defined',
+      lDaiAddress,
+      lWETHAddress,
+      lusdcAddress,
+      lusdtAddress,
+      lwbtcAddress
+    );
     process.exit(1);
   }
-  if (!daiAddress || !wethAddress) {
-    console.error('dai address or or weth address is not defined', daiAddress, wethAddress);
+  if (!daiAddress || !wethAddress || !usdcAddress || !usdtAddress || !wbtcAddress) {
+    console.error(
+      'reserve token address is not defined',
+      daiAddress,
+      wethAddress,
+      usdcAddress,
+      usdtAddress,
+      wbtcAddress
+    );
     process.exit(1);
   }
 
@@ -135,6 +159,10 @@ export async function initializeMakeSuite() {
 
   testEnv.dai = await getMintableERC20(daiAddress);
   testEnv.weth = await getWETHMocked(wethAddress);
+  testEnv.usdc = await getMintableERC20(usdcAddress);
+  testEnv.usdt = await getMintableERC20(usdtAddress);
+  testEnv.wbtc = await getMintableERC20(wbtcAddress);
+
   testEnv.wethGateway = await getWETHGateway();
   console.log('initialize make suite end');
 }
