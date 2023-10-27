@@ -1,5 +1,11 @@
 import { eContractid, IReserveParams } from '../../helpers/types';
-import { rateStrategyStableTwo, rateStrategyWOAS, rateStrategyWETH, rateStrategyStable, rateStrategyWBTC } from './rateStrategies';
+import {
+  rateStrategyStableTwo,
+  rateStrategyWOAS,
+  rateStrategyWETH,
+  rateStrategyStable,
+  rateStrategyWBTC,
+} from './rateStrategies';
 
 export const strategyUSDC: IReserveParams = {
   strategy: rateStrategyStable,

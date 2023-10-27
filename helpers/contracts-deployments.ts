@@ -13,7 +13,6 @@ import {
   LendingRateOracleFactory,
   LTokenFactory,
   LTokenRev2Factory,
-  LTokenRev3Factory,
   LTokensAndRatesHelperFactory,
   MintableDelegationERC20Factory,
   MintableERC20Factory,
@@ -453,17 +452,6 @@ export const deployGenericLTokenRev2Impl = async (verify: boolean) =>
 export const deployGenericLTokenRev2ImplWithSigner = async (verify: boolean, signer: Signer) =>
   withSaveAndVerify(await new LTokenRev2Factory(signer).deploy(), eContractid.LToken, [], verify);
 
-export const deployGenericLTokenRev3Impl = async (verify: boolean) =>
-  withSaveAndVerify(
-    await new LTokenRev3Factory(await getFirstSigner()).deploy(),
-    eContractid.LToken,
-    [],
-    verify
-  );
-
-export const deployGenericLTokenRev3ImplWithSigner = async (verify: boolean, signer: Signer) =>
-  withSaveAndVerify(await new LTokenRev3Factory(signer).deploy(), eContractid.LToken, [], verify);
-
 export const deployDelegationAwareLToken = async (
   [pool, underlyingAssetAddress, treasuryAddress, incentivesController, name, symbol]: [
     tEthereumAddress,
@@ -641,7 +629,7 @@ export const deploySelfdestructTransferMock = async (verify?: boolean) =>
 export const chooseLTokenDeployment = (id: eContractid) => {
   switch (id) {
     case eContractid.LToken:
-      return deployGenericLTokenRev2Impl; // use Rev2
+      return deployGenericLTokenImpl; // use Rev1
     case eContractid.DelegationAwareLToken:
       return deployDelegationAwareLTokenImpl;
     default:

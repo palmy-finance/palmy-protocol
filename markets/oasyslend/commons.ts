@@ -45,6 +45,15 @@ export const CommonsConfig: ICommonConfiguration = {
     WOAS: {
       borrowRate: oneRay.multipliedBy(0.039).toFixed(),
     },
+    USDT: {
+      borrowRate: oneRay.multipliedBy(0.039).toFixed(),
+    },
+    USDC: {
+      borrowRate: oneRay.multipliedBy(0.039).toFixed(),
+    },
+    WBTC: {
+      borrowRate: oneRay.multipliedBy(0.03).toFixed(),
+    },
   },
   // ----------------
   // COMMON PROTOCOL ADDRESSES ACROSS POOLS

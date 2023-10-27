@@ -35,7 +35,7 @@ export const OASYSLEND_REFERRAL = '0';
 export const INITIAL_PRICES = {
   USD: oneUsd.toFixed(),
   WETH: oneUsd.multipliedBy('2555.73492766').toFixed(),
-  WOAS: oneUsd.toFixed(),
+  WOAS: oneUsd.multipliedBy('0.70356687').toFixed(),
   USDC: oneUsd.multipliedBy('0.98889786').toFixed(),
   USDT: oneUsd.toFixed(),
   WBTC: oneUsd.multipliedBy('37561.51135465').toFixed(),
@@ -44,7 +44,7 @@ export const INITIAL_PRICES = {
 export const MOCK_PRICE_AGGREGATORS_PRICES = {
   // Update to USD-based price feeds
   WETH: oneEther.toFixed(),
-  WOAS: oneEther.multipliedBy('0.00369068412860').toFixed(),
+  WOAS: oneEther.multipliedBy('0.003620948469').toFixed(),
   USD: oneEther.multipliedBy('0.00369068412860').toFixed(),
   USDC: oneEther.multipliedBy('0.00367714136416').toFixed(),
   USDT: oneEther.multipliedBy('0.00369068412860').toFixed(),
