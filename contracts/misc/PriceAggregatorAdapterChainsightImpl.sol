@@ -57,7 +57,7 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, Ownabl
     if (oracle.oracle == IChainsightOracle(address(0))) {
       return 0;
     }
-    (int256 price, int256 ts) = oracle.oracle.getValue(oracle.sender);
-    return price;
+    uint256 price = oracle.oracle.readAsUint256(oracle.sender);
+    return int256(price);
   }
 }

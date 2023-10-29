@@ -7,6 +7,8 @@ import {
 } from '../../helpers/contracts-deployments';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 import { getChainsightOracle, getFirstSigner } from '../../helpers/contracts-getters';
+import { ethers } from 'ethers';
+import { AbiCoder } from 'ethers/lib/utils';
 
 const { expect } = require('chai');
 const oneEther = new BigNumber(Math.pow(10, 18));
@@ -48,7 +50,7 @@ makeSuite('Price Aggregator Implementation for Chainsight', (testEnv: TestEnv) =
       it('asset source update', async () => {
         for (const p of prices) {
           const oracle = await getChainsightOracle(p.symbol);
-          await oracle.updateState(p.price);
+          await oracle.updateState(new AbiCoder().encode(['uint256'], [p.price]));
 
           await aggregator.setAssetSources(
             [p.tokenAddress],
