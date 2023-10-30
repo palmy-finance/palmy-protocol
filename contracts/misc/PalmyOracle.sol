@@ -8,12 +8,12 @@ import {IPriceAggregatorAdapter} from '../interfaces/IPriceAggregatorAdapter.sol
 import {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';
 import {SafeERC20} from '../dependencies/openzeppelin/contracts/SafeERC20.sol';
 
-/// @title OasyslendOracle
-/// @author Horizonx.tech
+/// @title PalmyOracle
+/// @author Palmy finance
 /// @notice Proxy smart contract to get the price of an asset from a price source, with DIA Aggregator
 ///         smart contracts as primary option
 /// - If the returned price by a DIA aggregator is <= 0, the call is forwarded to a fallbackOracle
-contract OasyslendOracle is IPriceOracleGetter, Ownable {
+contract PalmyOracle is IPriceOracleGetter, Ownable {
   using SafeERC20 for IERC20;
 
   event BaseCurrencySet(address indexed baseCurrency, uint256 baseCurrencyUnit);
@@ -49,7 +49,7 @@ contract OasyslendOracle is IPriceOracleGetter, Ownable {
   }
 
   /// @notice Sets the fallbackOracle
-  /// - Callable only by the Oasyslend governance
+  /// - Callable only by the Palmy governance
   /// @param fallbackOracle The address of the fallbackOracle
   function setFallbackOracle(address fallbackOracle) external onlyOwner {
     _setFallbackOracle(fallbackOracle);

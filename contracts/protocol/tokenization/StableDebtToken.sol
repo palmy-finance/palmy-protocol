@@ -6,14 +6,14 @@ import {MathUtils} from '../libraries/math/MathUtils.sol';
 import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {IStableDebtToken} from '../../interfaces/IStableDebtToken.sol';
 import {ILendingPool} from '../../interfaces/ILendingPool.sol';
-import {IOasyslendIncentivesController} from '../../interfaces/IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from '../../interfaces/IPalmyIncentivesController.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
 
 /**
  * @title StableDebtToken
  * @notice Implements a stable debt token to track the borrowing positions of users
  * at stable rate mode
- * @author Horizonx.tech
+ * @author Palmy finance
  **/
 contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   using WadRayMath for uint256;
@@ -27,7 +27,7 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
 
   ILendingPool internal _pool;
   address internal _underlyingAsset;
-  IOasyslendIncentivesController internal _incentivesController;
+  IPalmyIncentivesController internal _incentivesController;
 
   /**
    * @dev Initializes the debt token.
@@ -41,7 +41,7 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   function initialize(
     ILendingPool pool,
     address underlyingAsset,
-    IOasyslendIncentivesController incentivesController,
+    IPalmyIncentivesController incentivesController,
     uint8 debtTokenDecimals,
     string memory debtTokenName,
     string memory debtTokenSymbol,
@@ -352,7 +352,7 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view override returns (IOasyslendIncentivesController) {
+  function getIncentivesController() external view override returns (IPalmyIncentivesController) {
     return _getIncentivesController();
   }
 
@@ -363,7 +363,7 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
     internal
     view
     override
-    returns (IOasyslendIncentivesController)
+    returns (IPalmyIncentivesController)
   {
     return _incentivesController;
   }

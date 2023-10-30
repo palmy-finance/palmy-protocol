@@ -1,13 +1,13 @@
 import BigNumber from 'bignumber.js';
 import fs from 'fs';
-import OasyslendConfig from '../../markets/oasyslend';
-import { strategyDAIForTest } from './../../markets/oasyslend/reservesConfigs';
+import PalmyConfig from '../../markets/palmy';
+import { strategyDAIForTest } from './../../markets/palmy/reservesConfigs';
 import { configuration as actionsConfiguration } from './helpers/actions';
 import { makeSuite } from './helpers/make-suite';
 import { executeStory } from './helpers/scenario-engine';
 import { configuration as calculationsConfiguration } from './helpers/utils/calculations';
 
-const scenarioFolder = './test-suites/test-oasyslend/helpers/scenarios/';
+const scenarioFolder = './test-suites/test-palmy/helpers/scenarios/';
 
 const selectedScenarios: string[] = [];
 
@@ -27,7 +27,7 @@ fs.readdirSync(scenarioFolder).forEach((file) => {
       actionsConfiguration.skipIntegrityCheck = false; //set this to true to execute solidity-coverage
 
       calculationsConfiguration.reservesParams = {
-        ...OasyslendConfig.ReservesConfig,
+        ...PalmyConfig.ReservesConfig,
         DAI: strategyDAIForTest,
       };
       const { usdc, weth, configurator } = testEnv;

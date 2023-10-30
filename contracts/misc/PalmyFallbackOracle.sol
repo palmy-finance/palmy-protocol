@@ -6,7 +6,7 @@ import {SafeMath} from '../dependencies/openzeppelin/contracts/SafeMath.sol';
 import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
 import {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';
 
-contract OasyslendFallbackOracle is Ownable, IPriceOracleGetter {
+contract PalmyFallbackOracle is Ownable, IPriceOracleGetter {
   using SafeMath for uint256;
 
   struct Price {

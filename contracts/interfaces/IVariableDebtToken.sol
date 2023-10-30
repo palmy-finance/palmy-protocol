@@ -3,11 +3,11 @@ pragma solidity 0.6.12;
 
 import {IScaledBalanceToken} from './IScaledBalanceToken.sol';
 import {IInitializableDebtToken} from './IInitializableDebtToken.sol';
-import {IOasyslendIncentivesController} from './IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from './IPalmyIncentivesController.sol';
 
 /**
  * @title IVariableDebtToken
- * @author Horizonx.tech
+ * @author Palmy finance
  * @notice Defines the basic interface for a variable debt token.
  **/
 interface IVariableDebtToken is IScaledBalanceToken, IInitializableDebtToken {
@@ -58,5 +58,5 @@ interface IVariableDebtToken is IScaledBalanceToken, IInitializableDebtToken {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view returns (IOasyslendIncentivesController);
+  function getIncentivesController() external view returns (IPalmyIncentivesController);
 }

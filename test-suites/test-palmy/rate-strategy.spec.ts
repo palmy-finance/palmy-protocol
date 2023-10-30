@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 import { PERCENTAGE_FACTOR, RAY } from '../../helpers/constants';
 import { deployDefaultReserveInterestRateStrategy } from '../../helpers/contracts-deployments';
-import { rateStrategyStableTwo } from '../../markets/oasyslend/rateStrategies';
-import { strategyDAIForTest } from '../../markets/oasyslend/reservesConfigs';
+import { rateStrategyStableTwo } from '../../markets/palmy/rateStrategies';
+import { strategyDAIForTest } from '../../markets/palmy/reservesConfigs';
 import { DefaultReserveInterestRateStrategy, LToken, MintableERC20 } from '../../types';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 import './helpers/utils/math';

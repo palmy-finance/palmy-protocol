@@ -1,7 +1,7 @@
 import { APPROVAL_AMOUNT_LENDING_POOL, RAY } from '../../helpers/constants';
 import { convertToCurrencyDecimals } from '../../helpers/contracts-helpers';
 import { ProtocolErrors } from '../../helpers/types';
-import { strategyWETH } from '../../markets/oasyslend/reservesConfigs';
+import { strategyWETH } from '../../markets/palmy/reservesConfigs';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 
 const { expect } = require('chai');
@@ -42,7 +42,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     expect(isActive).to.be.equal(true);
   });
 
-  it('Check the onlyOasyslendAdmin on deactivateReserve ', async () => {
+  it('Check the onlyPalmyAdmin on deactivateReserve ', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).deactivateReserve(weth.address),
@@ -50,7 +50,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     ).to.be.revertedWith(CALLER_NOT_POOL_ADMIN);
   });
 
-  it('Check the onlyOasyslendAdmin on activateReserve ', async () => {
+  it('Check the onlyPalmyAdmin on activateReserve ', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).activateReserve(weth.address),
@@ -112,7 +112,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     expect(reserveFactor).to.be.equal(strategyWETH.reserveFactor);
   });
 
-  it('Check the onlyOasyslendAdmin on freezeReserve ', async () => {
+  it('Check the onlyPalmyAdmin on freezeReserve ', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).freezeReserve(weth.address),
@@ -120,7 +120,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     ).to.be.revertedWith(CALLER_NOT_POOL_ADMIN);
   });
 
-  it('Check the onlyOasyslendAdmin on unfreezeReserve ', async () => {
+  it('Check the onlyPalmyAdmin on unfreezeReserve ', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).unfreezeReserve(weth.address),
@@ -184,7 +184,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     expect(variableBorrowIndex.toString()).to.be.equal(RAY);
   });
 
-  it('Check the onlyOasyslendAdmin on disableBorrowingOnReserve ', async () => {
+  it('Check the onlyPalmyAdmin on disableBorrowingOnReserve ', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).disableBorrowingOnReserve(weth.address),
@@ -192,7 +192,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     ).to.be.revertedWith(CALLER_NOT_POOL_ADMIN);
   });
 
-  it('Check the onlyOasyslendAdmin on enableBorrowingOnReserve ', async () => {
+  it('Check the onlyPalmyAdmin on enableBorrowingOnReserve ', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).enableBorrowingOnReserve(weth.address, true),
@@ -254,7 +254,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     expect(reserveFactor).to.be.equal(strategyWETH.reserveFactor);
   });
 
-  it('Check the onlyOasyslendAdmin on configureReserveAsCollateral ', async () => {
+  it('Check the onlyPalmyAdmin on configureReserveAsCollateral ', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator
@@ -316,7 +316,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     expect(reserveFactor).to.be.equal(strategyWETH.reserveFactor);
   });
 
-  it('Check the onlyOasyslendAdmin on disableReserveStableRate', async () => {
+  it('Check the onlyPalmyAdmin on disableReserveStableRate', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).disableReserveStableRate(weth.address),
@@ -324,7 +324,7 @@ makeSuite('LendingPoolConfigurator', (testEnv: TestEnv) => {
     ).to.be.revertedWith(CALLER_NOT_POOL_ADMIN);
   });
 
-  it('Check the onlyOasyslendAdmin on enableReserveStableRate', async () => {
+  it('Check the onlyPalmyAdmin on enableReserveStableRate', async () => {
     const { configurator, users, weth } = testEnv;
     await expect(
       configurator.connect(users[2].signer).enableReserveStableRate(weth.address),

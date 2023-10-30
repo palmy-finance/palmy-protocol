@@ -1,12 +1,12 @@
 import { task } from 'hardhat/config';
 import { eOasysNetwork } from '../../helpers/types';
-import OasyslendConfig from '../../markets/oasyslend';
+import PalmyConfig from '../../markets/palmy';
 import { PriceAggregatorAdapterChainsightImplFactory } from '../../types';
-import { OasyslendFallbackOracleFactory } from '../../types/OasyslendFallbackOracleFactory';
+import { PalmyFallbackOracleFactory } from '../../types/PalmyFallbackOracleFactory';
 
 type EthereumAddress = `0x${string}`;
 type Addresses = {
-  OasyslendFallbackOracle: EthereumAddress;
+  PalmyFallbackOracle: EthereumAddress;
   PriceAggregatorAdapterChainsightImpl: EthereumAddress;
   DiaOracle: EthereumAddress;
 };
@@ -17,12 +17,12 @@ type Constants = {
 };
 
 const oasys: Addresses = {
-  OasyslendFallbackOracle: '0x35E6D71FeA378B60b3A5Afc91eA7F520F937833c',
+  PalmyFallbackOracle: '0x35E6D71FeA378B60b3A5Afc91eA7F520F937833c',
   PriceAggregatorAdapterChainsightImpl: '0x043C93fF4d52B2F76811852644549553A00309a8',
   DiaOracle: '0x35490A8AC7cD0Df5C4d7Ab4243A6B517133BcDB1',
 };
 const shiden: Addresses = {
-  OasyslendFallbackOracle: '0xA42D5A35b6bbC93fe63FE54536f320faC9996f4C',
+  PalmyFallbackOracle: '0xA42D5A35b6bbC93fe63FE54536f320faC9996f4C',
   PriceAggregatorAdapterChainsightImpl: '0x8F2fFfF56375CDeD7f53E0D90259711Cd122Da31',
   DiaOracle: '0xCe784F99f87dBa11E0906e2fE954b08a8cc9815d',
 };
@@ -42,14 +42,11 @@ task('check:oracle:fallback-oracle', 'check:oracle:fallback-oracle').setAction(
     const addrs = CONSTANTS[networkName];
     if (!addrs) throw new Error('Not setting addresses');
 
-    const prices = OasyslendConfig.ReserveAssets[networkName as eOasysNetwork];
+    const prices = PalmyConfig.ReserveAssets[networkName as eOasysNetwork];
     const keys = Object.keys(prices) as string[];
     const values = Object.values(prices) as string[];
 
-    const _oracle = OasyslendFallbackOracleFactory.connect(
-      addrs.OasyslendFallbackOracle,
-      ethers.provider
-    );
+    const _oracle = PalmyFallbackOracleFactory.connect(addrs.PalmyFallbackOracle, ethers.provider);
     for (let i = 0; i < keys.length; i++)
       console.log(
         `${keys[i]} ... ${ethers.utils.formatUnits(await _oracle.getAssetPrice(values[i]), 8)}`
@@ -70,7 +67,7 @@ task(
   const addrs = CONSTANTS[networkName];
   if (!addrs) throw new Error('Not setting addresses');
 
-  const prices = OasyslendConfig.ReserveAssets[networkName as eOasysNetwork];
+  const prices = PalmyConfig.ReserveAssets[networkName as eOasysNetwork];
   const keys = Object.keys(prices) as string[];
   const values = Object.values(prices) as string[];
 

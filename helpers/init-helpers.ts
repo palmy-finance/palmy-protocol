@@ -1,5 +1,5 @@
 import { BigNumberish } from 'ethers';
-import { OasyslendProtocolDataProvider } from '../types/OasyslendProtocolDataProvider';
+import { PalmyProtocolDataProvider } from '../types/PalmyProtocolDataProvider';
 import { ConfigNames } from './configuration';
 import { deployRateStrategy } from './contracts-deployments';
 import {
@@ -218,7 +218,7 @@ export const getPairsTokenAggregator = (
 export const configureReservesByHelper = async (
   reservesParams: iMultiPoolsAssets<IReserveParams>,
   tokenAddresses: { [symbol: string]: tEthereumAddress },
-  helpers: OasyslendProtocolDataProvider,
+  helpers: PalmyProtocolDataProvider,
   admin: tEthereumAddress,
   lendingPoolAddressesProviderAddress?: tEthereumAddress,
   lTokensAndRatesHelperAddress?: tEthereumAddress

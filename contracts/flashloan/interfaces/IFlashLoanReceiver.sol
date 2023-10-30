@@ -6,8 +6,8 @@ import {ILendingPool} from '../../interfaces/ILendingPool.sol';
 
 /**
  * @title IFlashLoanReceiver interface
- * @notice Interface for the Oasyslend fee IFlashLoanReceiver.
- * @author Horizonx.tech
+ * @notice Interface for the Palmy fee IFlashLoanReceiver.
+ * @author Palmy finance
  * @dev implement this interface to develop a flashloan-compatible flashLoanReceiver contract
  **/
 interface IFlashLoanReceiver {

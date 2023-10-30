@@ -3,10 +3,10 @@ import { ethers } from 'ethers';
 import { APPROVAL_AMOUNT_LENDING_POOL } from '../../helpers/constants';
 import { convertToCurrencyDecimals } from '../../helpers/contracts-helpers';
 import { ProtocolErrors, RateMode } from '../../helpers/types';
-import { CommonsConfig } from '../../markets/oasyslend/commons';
+import { CommonsConfig } from '../../markets/palmy/commons';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 
-const OASYSLEND_REFERRAL = CommonsConfig.ProtocolGlobalParams.OasyslendReferral;
+const OASYSLEND_REFERRAL = CommonsConfig.ProtocolGlobalParams.PalmyReferral;
 
 makeSuite('LToken: Transfer', (testEnv: TestEnv) => {
   const {
@@ -34,7 +34,7 @@ makeSuite('LToken: Transfer', (testEnv: TestEnv) => {
 
     const name = await lDai.name();
 
-    expect(name).to.be.equal('Oasyslend interest bearing DAI');
+    expect(name).to.be.equal('Palmy interest bearing DAI');
 
     const fromBalance = await lDai.balanceOf(users[0].address);
     const toBalance = await lDai.balanceOf(users[1].address);

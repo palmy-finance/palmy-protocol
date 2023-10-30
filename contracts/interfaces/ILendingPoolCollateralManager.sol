@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 
 /**
  * @title ILendingPoolCollateralManager
- * @author Horizonx.tech
+ * @author Palmy finance
  * @notice Defines the actions involving management of collateral in the protocol.
  **/
 interface ILendingPoolCollateralManager {

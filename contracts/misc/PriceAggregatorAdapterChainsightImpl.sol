@@ -8,7 +8,7 @@ import {IERC20Detailed} from '../dependencies/openzeppelin/contracts/IERC20Detai
 import {SafeMath} from '../dependencies/openzeppelin/contracts/SafeMath.sol';
 
 /// @title PriceAggregatorChainsightImpl
-/// @author Horizonx.tech
+/// @author Palmy finance
 /// @notice Price aggregator Chainsight implementation
 contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, Ownable {
   using SafeMath for uint256;
@@ -20,7 +20,7 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, Ownabl
     address sender;
   }
 
-  /// @notice External function called by the Oasyslend governance to set or replace sources of assets
+  /// @notice External function called by the Palmy governance to set or replace sources of assets
   /// @param assets The addresses of the assets
   /// @param oracleAddresses The oracle address of the source of each asset
   /// @param senders The sender address of the source of each asset

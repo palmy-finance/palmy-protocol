@@ -21,9 +21,9 @@ import {
   SelfdestructTransferFactory,
   StableAndVariableTokensHelperFactory,
   StableDebtTokenFactory,
-  OasyslendFallbackOracleFactory,
-  OasyslendOracleFactory,
-  OasyslendProtocolDataProviderFactory,
+  PalmyFallbackOracleFactory,
+  PalmyOracleFactory,
+  PalmyProtocolDataProviderFactory,
   VariableDebtTokenFactory,
   WalletBalanceProviderFactory,
   WETH9MockedFactory,
@@ -75,11 +75,11 @@ export const getPriceOracle = async (address?: tEthereumAddress) =>
     await getFirstSigner()
   );
 
-export const getOasyslendFallbackOracle = async (address?: tEthereumAddress) =>
-  await OasyslendFallbackOracleFactory.connect(
+export const getPalmyFallbackOracle = async (address?: tEthereumAddress) =>
+  await PalmyFallbackOracleFactory.connect(
     address ||
       (
-        await getDb().get(`${eContractid.OasyslendFallbackOracle}.${DRE.network.name}`).value()
+        await getDb().get(`${eContractid.PalmyFallbackOracle}.${DRE.network.name}`).value()
       ).address,
     await getFirstSigner()
   );
@@ -126,13 +126,11 @@ export const getIErc20Detailed = async (address: tEthereumAddress) =>
     await getFirstSigner()
   );
 
-export const getOasyslendProtocolDataProvider = async (address?: tEthereumAddress) =>
-  await OasyslendProtocolDataProviderFactory.connect(
+export const getPalmyProtocolDataProvider = async (address?: tEthereumAddress) =>
+  await PalmyProtocolDataProviderFactory.connect(
     address ||
       (
-        await getDb()
-          .get(`${eContractid.OasyslendProtocolDataProvider}.${DRE.network.name}`)
-          .value()
+        await getDb().get(`${eContractid.PalmyProtocolDataProvider}.${DRE.network.name}`).value()
       ).address,
     await getFirstSigner()
   );
@@ -399,11 +397,11 @@ export const getLendingPoolCollateralManager = async (address?: tEthereumAddress
 export const getAddressById = async (id: string): Promise<tEthereumAddress | undefined> =>
   (await getDb().get(`${id}.${DRE.network.name}`).value())?.address || undefined;
 
-export const getOasyslendOracle = async (address?: tEthereumAddress) =>
-  await OasyslendOracleFactory.connect(
+export const getPalmyOracle = async (address?: tEthereumAddress) =>
+  await PalmyOracleFactory.connect(
     address ||
       (
-        await getDb().get(`${eContractid.OasyslendOracle}.${DRE.network.name}`).value()
+        await getDb().get(`${eContractid.PalmyOracle}.${DRE.network.name}`).value()
       ).address,
     await getFirstSigner()
   );

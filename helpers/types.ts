@@ -18,7 +18,7 @@ export enum eOasysNetwork {
   testnet = 'testnet',
 }
 
-export enum OasyslendPools {
+export enum PalmyPools {
   proto = 'proto',
 }
 
@@ -38,8 +38,8 @@ export enum eContractid {
   Proxy = 'Proxy',
   MockAggregator = 'MockAggregator',
   LendingRateOracle = 'LendingRateOracle',
-  OasyslendOracle = 'OasyslendOracle',
-  OasyslendFallbackOracle = 'OasyslendFallbackOracle',
+  PalmyOracle = 'PalmyOracle',
+  PalmyFallbackOracle = 'PalmyFallbackOracle',
   DefaultReserveInterestRateStrategy = 'DefaultReserveInterestRateStrategy',
   LendingPoolCollateralManager = 'LendingPoolCollateralManager',
   InitializableAdminUpgradeabilityProxy = 'InitializableAdminUpgradeabilityProxy',
@@ -50,7 +50,7 @@ export enum eContractid {
   DelegationAwareLToken = 'DelegationAwareLToken',
   MockStableDebtToken = 'MockStableDebtToken',
   MockVariableDebtToken = 'MockVariableDebtToken',
-  OasyslendProtocolDataProvider = 'OasyslendProtocolDataProvider',
+  PalmyProtocolDataProvider = 'PalmyProtocolDataProvider',
   IERC20Detailed = 'IERC20Detailed',
   StableDebtToken = 'StableDebtToken',
   VariableDebtToken = 'VariableDebtToken',
@@ -194,14 +194,14 @@ export type iAssetsWithoutETH<T> = Omit<iAssetBase<T>, 'ETH'>;
 
 export type iAssetsWithoutUSD<T> = Omit<iAssetBase<T>, 'USD'>;
 
-export type iOasyslendPoolAssets<T> = Pick<
+export type iPalmyPoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
   'WETH' | 'WOAS' | 'USDC' | 'USDT' | 'WBTC'
 >;
 
-export type iMultiPoolsAssets<T> = iAssetCommon<T> | iOasyslendPoolAssets<T>;
+export type iMultiPoolsAssets<T> = iAssetCommon<T> | iPalmyPoolAssets<T>;
 
-export type iOasyslendPoolTokens<T> = Omit<iOasyslendPoolAssets<T>, 'ETH'>;
+export type iPalmyPoolTokens<T> = Omit<iPalmyPoolAssets<T>, 'ETH'>;
 
 export const TokenContractId = ['WETH', 'USD', 'WOAS', 'USDC', 'USDT', 'WBTC'] as const;
 
@@ -258,7 +258,7 @@ export interface iOasysParamsPerNetwork<T> {
   [eOasysNetwork.testnet]: T;
 }
 export interface iParamsPerPool<T> {
-  [OasyslendPools.proto]: T;
+  [PalmyPools.proto]: T;
 }
 
 export interface iBasicDistributionParams {
@@ -282,7 +282,7 @@ export interface IProtocolGlobalConfig {
   UsdAddress: tEthereumAddress;
   NilAddress: tEthereumAddress;
   OneAddress: tEthereumAddress;
-  OasyslendReferral: string;
+  PalmyReferral: string;
 }
 
 export interface IMocksConfig {
@@ -313,7 +313,7 @@ export interface IBaseConfiguration {
   LendingRateOracleRatesCommon: iMultiPoolsAssets<IMarketRates>;
   LendingRateOracle: iParamsPerNetwork<tEthereumAddress>;
   TokenDistributor: iParamsPerNetwork<tEthereumAddress>;
-  OasyslendOracle: iParamsPerNetwork<tEthereumAddress>;
+  PalmyOracle: iParamsPerNetwork<tEthereumAddress>;
   PriceAggregator: iParamsPerNetwork<tEthereumAddress>;
   FallbackOracle: iParamsPerNetwork<tEthereumAddress>;
   ChainlinkAggregator: iParamsPerNetwork<ITokenAddress>;
@@ -342,12 +342,12 @@ export interface ICommonConfiguration extends IBaseConfiguration {
   Mocks: IMocksConfig;
 }
 
-export interface IOasyslendConfiguration extends ICommonConfiguration {
-  ReservesConfig: iOasyslendPoolAssets<IReserveParams>;
+export interface IPalmyConfiguration extends ICommonConfiguration {
+  ReservesConfig: iPalmyPoolAssets<IReserveParams>;
 }
 
 export interface ITokenAddress {
   [token: string]: tEthereumAddress;
 }
 
-export type PoolConfiguration = ICommonConfiguration | IOasyslendConfiguration;
+export type PoolConfiguration = ICommonConfiguration | IPalmyConfiguration;

@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 
 /************
 @title IPriceOracle interface
-@notice Interface for the Oasyslend price oracle.*/
+@notice Interface for the Palmy price oracle.*/
 interface IPriceOracle {
   /***********
     @dev returns the asset price in ETH

@@ -11,7 +11,7 @@ import {
 } from '../../helpers/contracts-deployments';
 import {
   getLendingPoolAddressesProvider,
-  getOasyslendProtocolDataProvider,
+  getPalmyProtocolDataProvider,
   getWETHGateway,
 } from '../../helpers/contracts-getters';
 import { getParamPerNetwork } from '../../helpers/contracts-helpers';
@@ -43,7 +43,7 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
       const incentivesController = await getParamPerNetwork(IncentivesController, network);
       const addressesProvider = await getLendingPoolAddressesProvider();
 
-      const testHelpers = await getOasyslendProtocolDataProvider();
+      const testHelpers = await getPalmyProtocolDataProvider();
 
       const admin = await addressesProvider.getPoolAdmin();
       const oracle = await addressesProvider.getPriceOracle();
@@ -88,14 +88,14 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
       );
 
       console.log(
-        '\tSetting OasyslendProtocolDataProvider at AddressesProvider at id: 0x01',
+        '\tSetting PalmyProtocolDataProvider at AddressesProvider at id: 0x01',
         collateralManagerAddress
       );
-      const OasyslendProtocolDataProvider = await getOasyslendProtocolDataProvider();
+      const PalmyProtocolDataProvider = await getPalmyProtocolDataProvider();
       await waitForTx(
         await addressesProvider.setAddress(
           '0x0100000000000000000000000000000000000000000000000000000000000000',
-          OasyslendProtocolDataProvider.address
+          PalmyProtocolDataProvider.address
         )
       );
 

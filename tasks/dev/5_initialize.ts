@@ -5,7 +5,7 @@ import {
   authorizeWETHGateway,
   deployLendingPoolCollateralManager,
   deployMockFlashLoanReceiver,
-  deployOasyslendProtocolDataProvider,
+  deployPalmyProtocolDataProvider,
   deployWalletBalancerProvider,
 } from '../../helpers/contracts-deployments';
 import {
@@ -43,10 +43,7 @@ task('dev:initialize-lending-pool', 'Initialize lending pool configuration.')
       filterMapBy(allTokenAddresses, (key: string) => !key.includes('UNI_'))
     );
 
-    const testHelpers = await deployOasyslendProtocolDataProvider(
-      addressesProvider.address,
-      verify
-    );
+    const testHelpers = await deployPalmyProtocolDataProvider(addressesProvider.address, verify);
 
     const admin = await addressesProvider.getPoolAdmin();
 
@@ -83,7 +80,7 @@ task('dev:initialize-lending-pool', 'Initialize lending pool configuration.')
 
     await deployWalletBalancerProvider(verify);
 
-    await insertContractAddressInDb(eContractid.OasyslendProtocolDataProvider, testHelpers.address);
+    await insertContractAddressInDb(eContractid.PalmyProtocolDataProvider, testHelpers.address);
 
     const lendingPoolAddress = await addressesProvider.getLendingPool();
 

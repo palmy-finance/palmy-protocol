@@ -27,8 +27,8 @@ import {
   deployMockFlashLoanReceiver,
   deployPriceOracle,
   deployStableAndVariableTokensHelper,
-  deployOasyslendOracle,
-  deployOasyslendProtocolDataProvider,
+  deployPalmyOracle,
+  deployPalmyProtocolDataProvider,
   deployWalletBalancerProvider,
   deployWETHGateway,
   deployWETHMocked,
@@ -47,32 +47,27 @@ import {
   setInitialAssetPricesInOracle,
   setInitialMarketRatesInRatesOracleByHelper,
 } from '../../helpers/oracles-helpers';
-import {
-  eContractid,
-  OasyslendPools,
-  tEthereumAddress,
-  TokenContractId,
-} from '../../helpers/types';
-import OasyslendConfig from '../../markets/oasyslend';
-import { strategyDAIForTest } from '../../markets/oasyslend/reservesConfigs';
+import { eContractid, PalmyPools, tEthereumAddress, TokenContractId } from '../../helpers/types';
+import PalmyConfig from '../../markets/palmy';
+import { strategyDAIForTest } from '../../markets/palmy/reservesConfigs';
 import { MintableERC20 } from '../../types/MintableERC20';
 import { WETH9Mocked } from '../../types/WETH9Mocked';
 import { initializeMakeSuite } from './helpers/make-suite';
 
 const ALL_ASSETS_INITIAL_PRICES = ALL_ASSETS_PRICES_FOR_TESTING;
 const LENDING_RATE_ORACLE_RATES_COMMON = {
-  ...OasyslendConfig.LendingRateOracleRatesCommon,
+  ...PalmyConfig.LendingRateOracleRatesCommon,
   DAI: {
     borrowRate: oneRay.multipliedBy(0.039).toFixed(),
   },
 };
-const USD_ADDRESS = OasyslendConfig.ProtocolGlobalParams.UsdAddress;
-const MOCK_USD_PRICE_IN_WEI = OasyslendConfig.ProtocolGlobalParams.MockUsdPriceInWei;
+const USD_ADDRESS = PalmyConfig.ProtocolGlobalParams.UsdAddress;
+const MOCK_USD_PRICE_IN_WEI = PalmyConfig.ProtocolGlobalParams.MockUsdPriceInWei;
 
 const deployAllMockTokens = async (deployer: Signer) => {
   const tokens: { [symbol: string]: MintableERC20 | WETH9Mocked } = {};
 
-  const protoConfigData = getReservesConfigByPool(OasyslendPools.proto);
+  const protoConfigData = getReservesConfigByPool(PalmyPools.proto);
   const testTokenContracId = [...TokenContractId, 'DAI'];
   for (const tokenSymbol of Object.values(testTokenContracId)) {
     if (tokenSymbol === 'WETH') {
@@ -101,16 +96,16 @@ const deployAllMockTokens = async (deployer: Signer) => {
 
 const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   console.time('setup');
-  const oasyslendAdmin = await deployer.getAddress();
-  const config = loadPoolConfig(ConfigNames.Oasyslend);
+  const palmyAdmin = await deployer.getAddress();
+  const config = loadPoolConfig(ConfigNames.Palmy);
 
   const mockTokens: {
     [symbol: string]: MockContract | MintableERC20 | WETH9Mocked;
   } = {
     ...(await deployAllMockTokens(deployer)),
   };
-  const addressesProvider = await deployLendingPoolAddressesProvider(OasyslendConfig.MarketId);
-  await waitForTx(await addressesProvider.setPoolAdmin(oasyslendAdmin));
+  const addressesProvider = await deployLendingPoolAddressesProvider(PalmyConfig.MarketId);
+  await waitForTx(await addressesProvider.setPoolAdmin(palmyAdmin));
 
   //setting users[1] as emergency admin, which is in position 2 in the DRE addresses list
   const addressList = await getEthersSignersAddresses();
@@ -175,7 +170,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   const priceAggregator = await deployMockAggregators(ALL_ASSETS_INITIAL_PRICES, addresses);
 
-  await deployOasyslendOracle([
+  await deployPalmyOracle([
     priceAggregator.address,
     fallbackOracle.address,
     mockTokens.WETH.address,
@@ -194,18 +189,18 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     LENDING_RATE_ORACLE_RATES_COMMON,
     allReservesAddresses,
     lendingRateOracle,
-    oasyslendAdmin
+    palmyAdmin
   );
 
-  // Reserve params from Oasyslend pool + mocked tokens
+  // Reserve params from Palmy pool + mocked tokens
   const reservesParams = {
     ...config.ReservesConfig,
     DAI: strategyDAIForTest,
   };
 
-  const testHelpers = await deployOasyslendProtocolDataProvider(addressesProvider.address);
+  const testHelpers = await deployPalmyProtocolDataProvider(addressesProvider.address);
 
-  await deployLTokenImplementations(ConfigNames.Oasyslend, reservesParams, false);
+  await deployLTokenImplementations(ConfigNames.Palmy, reservesParams, false);
 
   const admin = await deployer.getAddress();
 
@@ -223,7 +218,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     admin,
     treasuryAddress,
     ZERO_ADDRESS,
-    ConfigNames.Oasyslend,
+    ConfigNames.Palmy,
     false
   );
 
@@ -249,7 +244,7 @@ before(async () => {
   const FORK = process.env.FORK;
 
   if (FORK) {
-    await rawBRE.run('oasyslend:oasys', { skipRegistry: true });
+    await rawBRE.run('palmy:oasys', { skipRegistry: true });
   } else {
     console.log('-> Deploying test environment...');
     await buildTestEnv(deployer, secondaryWallet);

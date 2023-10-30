@@ -26,9 +26,9 @@ import {
   SelfdestructTransferFactory,
   StableDebtTokenFactory,
   StakeUIHelperFactory,
-  OasyslendFallbackOracleFactory,
-  OasyslendOracleFactory,
-  OasyslendProtocolDataProviderFactory,
+  PalmyFallbackOracleFactory,
+  PalmyOracleFactory,
+  PalmyProtocolDataProviderFactory,
   UiIncentiveDataProviderV2Factory,
   UiPoolDataProviderV2Factory,
   VariableDebtTokenFactory,
@@ -58,7 +58,7 @@ import {
   eEthereumNetwork,
   eNetwork,
   IReserveParams,
-  OasyslendPools,
+  PalmyPools,
   tEthereumAddress,
   TokenContractId,
 } from './types';
@@ -175,7 +175,7 @@ export const deployValidationLogic = async (
   return withSaveAndVerify(validationLogic, eContractid.ValidationLogic, [], verify);
 };
 
-export const deployOasyslendLibraries = async (
+export const deployPalmyLibraries = async (
   verify?: boolean
 ): Promise<LendingPoolLibraryAddresses> => {
   const reserveLogic = await deployReserveLogicLibrary(verify);
@@ -200,7 +200,7 @@ export const deployOasyslendLibraries = async (
 };
 
 export const deployLendingPool = async (verify?: boolean) => {
-  const libraries = await deployOasyslendLibraries(verify);
+  const libraries = await deployPalmyLibraries(verify);
   const lendingPoolImpl = await new LendingPoolFactory(libraries, await getFirstSigner()).deploy();
   await insertContractAddressInDb(eContractid.LendingPoolImpl, lendingPoolImpl.address);
   return withSaveAndVerify(lendingPoolImpl, eContractid.LendingPool, [], verify);
@@ -214,10 +214,10 @@ export const deployPriceOracle = async (verify?: boolean) =>
     verify
   );
 
-export const deployOasyslendFallbackOracle = async (verify?: boolean) =>
+export const deployPalmyFallbackOracle = async (verify?: boolean) =>
   withSaveAndVerify(
-    await new OasyslendFallbackOracleFactory(await getFirstSigner()).deploy(),
-    eContractid.OasyslendFallbackOracle,
+    await new PalmyFallbackOracleFactory(await getFirstSigner()).deploy(),
+    eContractid.PalmyFallbackOracle,
     [],
     verify
   );
@@ -241,18 +241,13 @@ export const deployMockAggregator = async (
     verify
   );
 
-export const deployOasyslendOracle = async (
+export const deployPalmyOracle = async (
   args: [tEthereumAddress, tEthereumAddress, string, string],
   verify?: boolean
 ) =>
   withSaveAndVerify(
-    await new OasyslendOracleFactory(await getFirstSigner()).deploy(
-      args[0],
-      args[1],
-      args[2],
-      args[3]
-    ),
-    eContractid.OasyslendOracle,
+    await new PalmyOracleFactory(await getFirstSigner()).deploy(args[0], args[1], args[2], args[3]),
+    eContractid.PalmyOracle,
     args,
     verify
   );
@@ -300,15 +295,13 @@ export const deployWalletBalancerProvider = async (verify?: boolean) =>
     verify
   );
 
-export const deployOasyslendProtocolDataProvider = async (
+export const deployPalmyProtocolDataProvider = async (
   addressesProvider: tEthereumAddress,
   verify?: boolean
 ) =>
   withSaveAndVerify(
-    await new OasyslendProtocolDataProviderFactory(await getFirstSigner()).deploy(
-      addressesProvider
-    ),
-    eContractid.OasyslendProtocolDataProvider,
+    await new PalmyProtocolDataProviderFactory(await getFirstSigner()).deploy(addressesProvider),
+    eContractid.PalmyProtocolDataProvider,
     [addressesProvider],
     verify
   );
@@ -495,7 +488,7 @@ export const deployDelegationAwareLTokenImpl = async (verify: boolean) =>
 export const deployAllMockTokens = async (verify?: boolean) => {
   const tokens: { [symbol: string]: MintableERC20 | WETH9Mocked } = {};
 
-  const protoConfigData = getReservesConfigByPool(OasyslendPools.proto);
+  const protoConfigData = getReservesConfigByPool(PalmyPools.proto);
 
   for (const tokenSymbol of Object.values(TokenContractId)) {
     if (tokenSymbol === 'WOAS') {

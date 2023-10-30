@@ -7,9 +7,9 @@ import {Errors} from '../libraries/helpers/Errors.sol';
 import {LToken} from './LToken.sol';
 
 /**
- * @title Oasyslend LToken enabled to delegate voting power of the underlying asset to a different address
+ * @title Palmy LToken enabled to delegate voting power of the underlying asset to a different address
  * @dev The underlying asset needs to be compatible with the COMP delegation interface
- * @author Horizonx.tech
+ * @author Palmy finance
  */
 contract DelegationAwareLToken is LToken {
   modifier onlyPoolAdmin {

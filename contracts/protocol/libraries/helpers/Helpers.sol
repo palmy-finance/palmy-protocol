@@ -6,7 +6,7 @@ import {DataTypes} from '../types/DataTypes.sol';
 
 /**
  * @title Helpers library
- * @author Horizonx.tech
+ * @author Palmy finance
  */
 library Helpers {
   /**

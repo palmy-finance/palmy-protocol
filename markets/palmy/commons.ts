@@ -13,9 +13,9 @@ import { eOasysNetwork } from './../../helpers/types';
 
 export const CommonsConfig: ICommonConfiguration = {
   MarketId: 'Commons',
-  LTokenNamePrefix: 'Oasyslend interest bearing',
-  StableDebtTokenNamePrefix: 'Oasyslend stable debt bearing',
-  VariableDebtTokenNamePrefix: 'Oasyslend variable debt bearing',
+  LTokenNamePrefix: 'Palmy interest bearing',
+  StableDebtTokenNamePrefix: 'Palmy stable debt bearing',
+  VariableDebtTokenNamePrefix: 'Palmy variable debt bearing',
   SymbolPrefix: '',
   ProviderId: 0, // Overriden in index.ts
   OracleQuoteCurrency: 'USD',
@@ -26,7 +26,7 @@ export const CommonsConfig: ICommonConfiguration = {
     UsdAddress: '0x10F7Fc1F91Ba351f9C629c5947AD69bD03C05b96',
     NilAddress: '0x0000000000000000000000000000000000000000',
     OneAddress: '0x0000000000000000000000000000000000000001',
-    OasyslendReferral: '0',
+    PalmyReferral: '0',
   },
 
   // ----------------
@@ -158,7 +158,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.testnet]: '',
     [eOasysNetwork.oasys]: '',
   },
-  OasyslendOracle: {
+  PalmyOracle: {
     [eEthereumNetwork.buidlerevm]: '',
     [eEthereumNetwork.coverage]: '',
     [eEthereumNetwork.hardhat]: '',

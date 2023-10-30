@@ -9,22 +9,22 @@ import {
 import {
   deployLendingRateOracle,
   deployPriceAggregatorChainsightImpl,
-  deployOasyslendFallbackOracle,
-  deployOasyslendOracle,
+  deployPalmyFallbackOracle,
+  deployPalmyOracle,
 } from '../../helpers/contracts-deployments';
 import {
   getFirstSigner,
   getLendingPoolAddressesProvider,
   getLendingRateOracle,
   getPriceAggregator,
-  getOasyslendFallbackOracle,
-  getOasyslendOracle,
+  getPalmyFallbackOracle,
+  getPalmyOracle,
 } from '../../helpers/contracts-getters';
 import { getParamPerNetwork } from '../../helpers/contracts-helpers';
 import { notFalsyOrZeroAddress, waitForTx } from '../../helpers/misc-utils';
 import { setInitialMarketRatesInRatesOracleByHelper } from '../../helpers/oracles-helpers';
 import { eNetwork, ICommonConfiguration, SymbolMap } from '../../helpers/types';
-import { LendingRateOracle, OasyslendFallbackOracle, OasyslendOracle } from '../../types';
+import { LendingRateOracle, PalmyFallbackOracle, PalmyOracle } from '../../types';
 import { PriceAggregatorAdapterChainsightImpl } from './../../types/PriceAggregatorAdapterChainsightImpl.d';
 
 task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
@@ -46,7 +46,7 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
       const lendingRateOracles = getLendingRateOracles(poolConfig);
       const addressesProvider = await getLendingPoolAddressesProvider();
       const admin = await getGenesisPoolAdmin(poolConfig);
-      const OasyslendOracleAddress = getParamPerNetwork(poolConfig.OasyslendOracle, network);
+      const PalmyOracleAddress = getParamPerNetwork(poolConfig.PalmyOracle, network);
       const priceAggregatorAddress = getParamPerNetwork(poolConfig.PriceAggregator, network);
       const lendingRateOracleAddress = getParamPerNetwork(poolConfig.LendingRateOracle, network);
       const fallbackOracleAddress = getParamPerNetwork(FallbackOracle, network);
@@ -59,9 +59,9 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
       };
 
       let priceAggregatorAdapter: PriceAggregatorAdapterChainsightImpl;
-      let OasyslendOracle: OasyslendOracle;
+      let PalmyOracle: PalmyOracle;
       let lendingRateOracle: LendingRateOracle;
-      let fallbackOracle: OasyslendFallbackOracle;
+      let fallbackOracle: PalmyFallbackOracle;
 
       priceAggregatorAdapter = notFalsyOrZeroAddress(priceAggregatorAddress)
         ? await getPriceAggregator(priceAggregatorAddress)
@@ -75,20 +75,20 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
 
       // deploy fallbackOracle
       if (notFalsyOrZeroAddress(fallbackOracleAddress)) {
-        fallbackOracle = await getOasyslendFallbackOracle(fallbackOracleAddress);
+        fallbackOracle = await getPalmyFallbackOracle(fallbackOracleAddress);
       } else {
-        fallbackOracle = await deployOasyslendFallbackOracle(verify);
+        fallbackOracle = await deployPalmyFallbackOracle(verify);
         const currentSignerAddress = (
           await (await getFirstSigner()).getAddress()
         ).toLocaleLowerCase();
         await fallbackOracle.authorizeSybil(currentSignerAddress);
       }
 
-      if (notFalsyOrZeroAddress(OasyslendOracleAddress)) {
-        OasyslendOracle = await getOasyslendOracle(OasyslendOracleAddress);
-        await waitForTx(await OasyslendOracle.setPriceAggregator(priceAggregatorAdapter.address));
+      if (notFalsyOrZeroAddress(PalmyOracleAddress)) {
+        PalmyOracle = await getPalmyOracle(PalmyOracleAddress);
+        await waitForTx(await PalmyOracle.setPriceAggregator(priceAggregatorAdapter.address));
       } else {
-        OasyslendOracle = await deployOasyslendOracle(
+        PalmyOracle = await deployPalmyOracle(
           [
             priceAggregatorAdapter.address,
             fallbackOracle.address,
@@ -112,11 +112,11 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
         );
       }
 
-      console.log('Oasyslend Oracle: %s', OasyslendOracle.address);
+      console.log('Palmy Oracle: %s', PalmyOracle.address);
       console.log('Lending Rate Oracle: %s', lendingRateOracle.address);
 
       // Register the proxy price provider on the addressesProvider
-      await waitForTx(await addressesProvider.setPriceOracle(OasyslendOracle.address));
+      await waitForTx(await addressesProvider.setPriceOracle(PalmyOracle.address));
       await waitForTx(await addressesProvider.setLendingRateOracle(lendingRateOracle.address));
     } catch (error) {
       if (DRE.network.name.includes('tenderly')) {

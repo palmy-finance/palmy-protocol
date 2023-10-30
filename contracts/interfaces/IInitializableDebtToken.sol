@@ -2,12 +2,12 @@
 pragma solidity 0.6.12;
 
 import {ILendingPool} from './ILendingPool.sol';
-import {IOasyslendIncentivesController} from './IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from './IPalmyIncentivesController.sol';
 
 /**
  * @title IInitializableDebtToken
  * @notice Interface for the initialize function common between debt tokens
- * @author Horizonx.tech
+ * @author Palmy finance
  **/
 interface IInitializableDebtToken {
   /**
@@ -42,7 +42,7 @@ interface IInitializableDebtToken {
   function initialize(
     ILendingPool pool,
     address underlyingAsset,
-    IOasyslendIncentivesController incentivesController,
+    IPalmyIncentivesController incentivesController,
     uint8 debtTokenDecimals,
     string memory debtTokenName,
     string memory debtTokenSymbol,

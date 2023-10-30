@@ -17,4 +17,3 @@ coverage
 .coverage_contracts
 
 .DS_Store
-yarn.lock

@@ -4,8 +4,8 @@ pragma experimental ABIEncoderV2;
 
 import {IStakedToken} from '../../interfaces/IStakedToken.sol';
 
-/// @title OasyslendOracle
-/// @author Horizonx.tech
+/// @title PalmyOracle
+/// @author Palmy finance
 /// @notice Proxy smart contract to get the price of an asset from a price source, with DIA Aggregator
 ///         smart contracts as primary option
 /// - If the returned price by a DIA aggregator is <= 0, the call is forwarded to a fallbackOracle

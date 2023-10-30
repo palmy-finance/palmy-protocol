@@ -12,7 +12,7 @@ import {
   getLendingPoolConfiguratorImpl,
   getLendingPoolImpl,
   getProxy,
-  getOasyslendProtocolDataProvider,
+  getPalmyProtocolDataProvider,
   getWalletProvider,
   getWETHGateway,
 } from '../../helpers/contracts-getters';
@@ -77,7 +77,7 @@ task('verify:general', 'Verify contracts at Etherscan')
         ? await getLendingPoolCollateralManagerImpl(lendingPoolCollateralManagerImplAddress)
         : await getLendingPoolCollateralManagerImpl();
 
-      const dataProvider = await getOasyslendProtocolDataProvider();
+      const dataProvider = await getPalmyProtocolDataProvider();
       const walletProvider = await getWalletProvider();
 
       const wethGatewayAddress = getParamPerNetwork(WethGateway, network);
@@ -114,8 +114,8 @@ task('verify:general', 'Verify contracts at Etherscan')
       );
 
       // Test helpers
-      console.log('\n- Verifying  Oasyslend  Provider Helpers...\n');
-      await verifyContract(eContractid.OasyslendProtocolDataProvider, dataProvider, [
+      console.log('\n- Verifying  Palmy  Provider Helpers...\n');
+      await verifyContract(eContractid.PalmyProtocolDataProvider, dataProvider, [
         addressesProvider.address,
       ]);
 

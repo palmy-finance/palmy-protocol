@@ -3,13 +3,13 @@ import { ConfigNames, loadPoolConfig } from '../../helpers/configuration';
 import {
   getLendingPoolAddressesProvider,
   getLendingPoolAddressesProviderRegistry,
-  getOasyslendProtocolDataProvider,
+  getPalmyProtocolDataProvider,
 } from '../../helpers/contracts-getters';
 import { getParamPerNetwork } from '../../helpers/contracts-helpers';
 import { eNetwork } from '../../helpers/types';
 
 task('print-config', 'Inits the DRE, to have access to all the plugins')
-  .addParam('dataProvider', 'Address of OasyslendProtocolDataProvider')
+  .addParam('dataProvider', 'Address of PalmyProtocolDataProvider')
   .addParam('pool', `Pool name to retrieve configuration, supported: ${Object.values(ConfigNames)}`)
   .setAction(async ({ pool, dataProvider }, localBRE) => {
     await localBRE.run('set-DRE');
@@ -43,7 +43,7 @@ task('print-config', 'Inits the DRE, to have access to all the plugins')
     console.log('Price Oracle', await addressesProvider.getPriceOracle());
     console.log('Lending Rate Oracle', await addressesProvider.getLendingRateOracle());
     console.log('Lending Pool Data Provider', dataProvider);
-    const protocolDataProvider = await getOasyslendProtocolDataProvider(dataProvider);
+    const protocolDataProvider = await getPalmyProtocolDataProvider(dataProvider);
 
     const fields = [
       'decimals',

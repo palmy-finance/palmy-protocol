@@ -10,11 +10,11 @@ import {
 import { DRE, getDb } from '../../../../helpers/misc-utils';
 import { tEthereumAddress } from '../../../../helpers/types';
 import { LendingPool } from '../../../../types/LendingPool';
-import { OasyslendProtocolDataProvider } from '../../../../types/OasyslendProtocolDataProvider';
+import { PalmyProtocolDataProvider } from '../../../../types/PalmyProtocolDataProvider';
 import { ReserveData, UserReserveData } from './interfaces';
 
 export const getReserveData = async (
-  helper: OasyslendProtocolDataProvider,
+  helper: PalmyProtocolDataProvider,
   reserve: tEthereumAddress
 ): Promise<ReserveData> => {
   const [reserveData, tokenAddresses, rateOracle, token] = await Promise.all([
@@ -74,7 +74,7 @@ export const getReserveData = async (
 
 export const getUserData = async (
   pool: LendingPool,
-  helper: OasyslendProtocolDataProvider,
+  helper: PalmyProtocolDataProvider,
   reserve: string,
   user: tEthereumAddress,
   sender?: tEthereumAddress
@@ -118,7 +118,7 @@ export const getReserveAddressFromSymbol = async (symbol: string) => {
 const getLTokenUserData = async (
   reserve: string,
   user: string,
-  helpersContract: OasyslendProtocolDataProvider
+  helpersContract: PalmyProtocolDataProvider
 ) => {
   const lTokenAddress: string = (await helpersContract.getReserveTokensAddresses(reserve))
     .lTokenAddress;

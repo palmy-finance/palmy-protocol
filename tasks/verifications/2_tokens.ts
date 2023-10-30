@@ -111,7 +111,7 @@ task('verify:tokens', 'Deploy oracles for dev enviroment')
           lendingPoolProxy.address,
           tokenAddress,
           treasuryAddress,
-          `Oasyslend interest bearing ${token}`,
+          `Palmy interest bearing ${token}`,
           `l${token}`,
           ZERO_ADDRESS,
         ]);
@@ -123,7 +123,7 @@ task('verify:tokens', 'Deploy oracles for dev enviroment')
         await verifyContract(eContractid.StableDebtToken, await getStableDebtToken(stableDebt), [
           lendingPoolProxy.address,
           tokenAddress,
-          `Oasyslend stable debt bearing ${token}`,
+          `Palmy stable debt bearing ${token}`,
           `sd${token}`,
           ZERO_ADDRESS,
         ]);
@@ -138,7 +138,7 @@ task('verify:tokens', 'Deploy oracles for dev enviroment')
           [
             lendingPoolProxy.address,
             tokenAddress,
-            `Oasyslend variable debt bearing ${token}`,
+            `Palmy variable debt bearing ${token}`,
             `vd${token}`,
             ZERO_ADDRESS,
           ]

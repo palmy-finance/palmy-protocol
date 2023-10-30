@@ -2,12 +2,12 @@
 pragma solidity 0.6.12;
 
 import {ILendingPool} from './ILendingPool.sol';
-import {IOasyslendIncentivesController} from './IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from './IPalmyIncentivesController.sol';
 
 /**
  * @title IInitializableLToken
  * @notice Interface for the initialize function on LToken
- * @author Horizonx.tech
+ * @author Palmy finance
  **/
 interface IInitializableLToken {
   /**
@@ -35,7 +35,7 @@ interface IInitializableLToken {
   /**
    * @dev Initializes the lToken
    * @param pool The address of the lending pool where this lToken will be used
-   * @param treasury The address of the Oasyslend treasury, receiving the fees on this lToken
+   * @param treasury The address of the Palmy treasury, receiving the fees on this lToken
    * @param underlyingAsset The address of the underlying asset of this lToken (E.g. WETH for lWETH)
    * @param incentivesController The smart contract managing potential incentives distribution
    * @param lTokenDecimals The decimals of the lToken, same as the underlying asset's
@@ -46,7 +46,7 @@ interface IInitializableLToken {
     ILendingPool pool,
     address treasury,
     address underlyingAsset,
-    IOasyslendIncentivesController incentivesController,
+    IPalmyIncentivesController incentivesController,
     uint8 lTokenDecimals,
     string calldata lTokenName,
     string calldata lTokenSymbol,

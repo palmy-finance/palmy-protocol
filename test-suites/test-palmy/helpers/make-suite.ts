@@ -12,7 +12,7 @@ import {
   getLToken,
   getMintableERC20,
   getPriceOracle,
-  getOasyslendProtocolDataProvider,
+  getPalmyProtocolDataProvider,
   getWETHGateway,
   getWETHMocked,
 } from '../../../helpers/contracts-getters';
@@ -20,7 +20,7 @@ import { getEthersSigners, getParamPerNetwork } from '../../../helpers/contracts
 import { DRE, evmRevert, evmSnapshot } from '../../../helpers/misc-utils';
 import { usingTenderly } from '../../../helpers/tenderly-utils';
 import { eNetwork, tEthereumAddress } from '../../../helpers/types';
-import { OasyslendConfig } from '../../../markets/oasyslend';
+import { PalmyConfig } from '../../../markets/palmy';
 import { LendingPool } from '../../../types/LendingPool';
 import { LendingPoolAddressesProvider } from '../../../types/LendingPoolAddressesProvider';
 import { LendingPoolAddressesProviderRegistry } from '../../../types/LendingPoolAddressesProviderRegistry';
@@ -28,7 +28,7 @@ import { LendingPoolConfigurator } from '../../../types/LendingPoolConfigurator'
 import { LToken } from '../../../types/LToken';
 import { MintableERC20 } from '../../../types/MintableERC20';
 import { PriceOracle } from '../../../types/PriceOracle';
-import { OasyslendProtocolDataProvider } from '../../../types/OasyslendProtocolDataProvider';
+import { PalmyProtocolDataProvider } from '../../../types/PalmyProtocolDataProvider';
 import { WETH9Mocked } from '../../../types/WETH9Mocked';
 import { WETHGateway } from '../../../types/WETHGateway';
 import { almostEqual } from './almost-equal';
@@ -47,7 +47,7 @@ export interface TestEnv {
   pool: LendingPool;
   configurator: LendingPoolConfigurator;
   oracle: PriceOracle;
-  helpersContract: OasyslendProtocolDataProvider;
+  helpersContract: PalmyProtocolDataProvider;
   weth: WETH9Mocked;
   lWETH: LToken;
   dai: MintableERC20;
@@ -70,7 +70,7 @@ const testEnv: TestEnv = {
   users: [] as SignerWithAddress[],
   pool: {} as LendingPool,
   configurator: {} as LendingPoolConfigurator,
-  helpersContract: {} as OasyslendProtocolDataProvider,
+  helpersContract: {} as PalmyProtocolDataProvider,
   oracle: {} as PriceOracle,
   weth: {} as WETH9Mocked,
   lWETH: {} as LToken,
@@ -107,14 +107,14 @@ export async function initializeMakeSuite() {
 
   if (process.env.FORK) {
     testEnv.registry = await getLendingPoolAddressesProviderRegistry(
-      getParamPerNetwork(OasyslendConfig.ProviderRegistry, process.env.FORK as eNetwork)
+      getParamPerNetwork(PalmyConfig.ProviderRegistry, process.env.FORK as eNetwork)
     );
   } else {
     testEnv.registry = await getLendingPoolAddressesProviderRegistry();
     testEnv.oracle = await getPriceOracle();
   }
 
-  testEnv.helpersContract = await getOasyslendProtocolDataProvider();
+  testEnv.helpersContract = await getPalmyProtocolDataProvider();
 
   const allTokens = await testEnv.helpersContract.getAllLTokens();
   const lDaiAddress = allTokens.find((lToken) => lToken.symbol === 'lDAI')?.tokenAddress;

@@ -5,7 +5,7 @@ import { getFirstSigner } from '../../helpers/contracts-getters';
 import { convertToCurrencyDecimals } from '../../helpers/contracts-helpers';
 import { createRandomAddress } from '../../helpers/misc-utils';
 import { ProtocolErrors, RateMode } from '../../helpers/types';
-import { CommonsConfig } from '../../markets/oasyslend/commons';
+import { CommonsConfig } from '../../markets/palmy/commons';
 import { LTokenFactory } from '../../types';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 

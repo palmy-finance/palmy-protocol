@@ -4,11 +4,11 @@ import { checkVerification } from '../../helpers/etherscan-verification';
 import { printContracts } from '../../helpers/misc-utils';
 import { usingTenderly } from '../../helpers/tenderly-utils';
 
-task('oasyslend:oasys', 'Deploy Oasyslend oasys enviroment')
+task('palmy:oasys', 'Deploy Palmy oasys enviroment')
   .addFlag('verify', 'Verify contracts at Etherscan')
   .addFlag('skipRegistry', 'Skip addresses provider registration at Addresses Provider Registry')
   .setAction(async ({ verify, skipRegistry }, DRE) => {
-    const POOL_NAME = ConfigNames.Oasyslend;
+    const POOL_NAME = ConfigNames.Palmy;
     await DRE.run('set-DRE');
 
     // Prevent loss of gas verifying all the needed ENVs for Etherscan verification

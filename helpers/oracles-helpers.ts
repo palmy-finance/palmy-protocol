@@ -1,4 +1,4 @@
-import { OasyslendFallbackOracle } from '../types';
+import { PalmyFallbackOracle } from '../types';
 import { LendingRateOracle } from '../types/LendingRateOracle';
 import { PriceOracle } from '../types/PriceOracle';
 import { deployMockAggregator } from './contracts-deployments';
@@ -77,7 +77,7 @@ export const setInitialAssetPricesInOracle = async (
 export const setAssetPricesInFallbackOracle = async (
   prices: iAssetBase<tEthereumAddress>,
   assetsAddresses: iAssetBase<tEthereumAddress>,
-  priceOracleInstance: OasyslendFallbackOracle
+  priceOracleInstance: PalmyFallbackOracle
 ) => {
   let addresses: string[] = [];
   let assetPrices: string[] = [];

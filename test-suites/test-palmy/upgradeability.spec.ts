@@ -29,7 +29,7 @@ makeSuite('Upgradeability', (testEnv: TestEnv) => {
       dai.address,
       pool.address,
       pool.address,
-      'Oasyslend Interest bearing DAI updated',
+      'Palmy Interest bearing DAI updated',
       'lDai',
       '0x10',
     ]);
@@ -38,7 +38,7 @@ makeSuite('Upgradeability', (testEnv: TestEnv) => {
       pool.address,
       dai.address,
       pool.address,
-      'Oasyslend stable debt bearing DAI updated',
+      'Palmy stable debt bearing DAI updated',
       'stableDebtDAI',
       '0x10',
     ]);
@@ -47,7 +47,7 @@ makeSuite('Upgradeability', (testEnv: TestEnv) => {
       pool.address,
       dai.address,
       pool.address,
-      'Oasyslend variable debt bearing DAI updated',
+      'Palmy variable debt bearing DAI updated',
       'variableDebtDAI',
       '0x10',
     ]);
@@ -113,7 +113,7 @@ makeSuite('Upgradeability', (testEnv: TestEnv) => {
 
     const tokenName = await lDai.name();
 
-    expect(tokenName).to.be.eq('Oasyslend Interest bearing DAI updated', 'Invalid token name');
+    expect(tokenName).to.be.eq('Palmy Interest bearing DAI updated', 'Invalid token name');
   });
 
   it('Tries to update the DAI Stable debt token implementation with a different address than the lendingPoolManager', async () => {
@@ -173,7 +173,7 @@ makeSuite('Upgradeability', (testEnv: TestEnv) => {
 
     const tokenName = await debtToken.name();
 
-    expect(tokenName).to.be.eq('Oasyslend stable debt bearing DAI updated', 'Invalid token name');
+    expect(tokenName).to.be.eq('Palmy stable debt bearing DAI updated', 'Invalid token name');
   });
 
   it('Tries to update the DAI variable debt token implementation with a different address than the lendingPoolManager', async () => {
@@ -236,6 +236,6 @@ makeSuite('Upgradeability', (testEnv: TestEnv) => {
 
     const tokenName = await debtToken.name();
 
-    expect(tokenName).to.be.eq('Oasyslend variable debt bearing DAI updated', 'Invalid token name');
+    expect(tokenName).to.be.eq('Palmy variable debt bearing DAI updated', 'Invalid token name');
   });
 });

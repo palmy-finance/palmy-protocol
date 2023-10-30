@@ -7,8 +7,8 @@ import { ConfigNames, loadPoolConfig } from '../../helpers/configuration';
 import { configureReservesByHelper, initReservesByHelper } from '../../helpers/init-helpers';
 import { setDRE } from '../../helpers/misc-utils';
 import { eEthereumNetwork, eNetwork, ICommonConfiguration } from '../../helpers/types';
-import * as marketConfigs from '../../markets/oasyslend';
-import * as reserveConfigs from '../../markets/oasyslend/reservesConfigs';
+import * as marketConfigs from '../../markets/palmy';
+import * as reserveConfigs from '../../markets/palmy/reservesConfigs';
 import { MOCK_PRICE_AGGREGATORS_PRICES, ZERO_ADDRESS } from './../../helpers/constants';
 import {
   chooseLTokenDeployment,
@@ -20,8 +20,8 @@ import {
   getFirstSigner,
   getLendingPool,
   getLendingPoolAddressesProvider,
-  getOasyslendFallbackOracle,
-  getOasyslendProtocolDataProvider,
+  getPalmyFallbackOracle,
+  getPalmyProtocolDataProvider,
 } from './../../helpers/contracts-getters';
 import { setAssetPricesInFallbackOracle } from '../../helpers/oracles-helpers';
 import { MintableDelegationERC20Factory } from '../../types';
@@ -34,8 +34,8 @@ const LENDING_POOL_ADDRESS_PROVIDER = {
 
 const isSymbolValid = (symbol: string, network: eEthereumNetwork) =>
   Object.keys(reserveConfigs).includes('strategy' + symbol) &&
-  marketConfigs.OasyslendConfig.ReserveAssets[network][symbol] &&
-  marketConfigs.OasyslendConfig.ReservesConfig[symbol] === reserveConfigs['strategy' + symbol];
+  marketConfigs.PalmyConfig.ReserveAssets[network][symbol] &&
+  marketConfigs.PalmyConfig.ReservesConfig[symbol] === reserveConfigs['strategy' + symbol];
 
 task('external:deploy-new-asset', 'Deploy A token, Debt Tokens, Risk Parameters')
   .addParam('symbol', `Asset symbol, needs to have configuration ready`)
@@ -48,8 +48,8 @@ task('external:deploy-new-asset', 'Deploy A token, Debt Tokens, Risk Parameters'
         `
 WRONG RESERVE ASSET SETUP:
         The symbol ${symbol} has no reserve Config and/or reserve Asset setup.
-        update /markets/oasyslend/index.ts and add the asset address for ${network} network
-        update /markets/oasyslend/reservesConfigs.ts and add parameters for ${symbol}
+        update /markets/palmy/index.ts and add the asset address for ${network} network
+        update /markets/palmy/reservesConfigs.ts and add parameters for ${symbol}
         `
       );
     }
@@ -58,7 +58,7 @@ WRONG RESERVE ASSET SETUP:
     const { IncentivesController } = poolConfig as ICommonConfiguration;
     const strategyParams = reserveConfigs['strategy' + symbol];
     const reserveAssetAddress =
-      marketConfigs.OasyslendConfig.ReserveAssets[localBRE.network.name][symbol];
+      marketConfigs.PalmyConfig.ReserveAssets[localBRE.network.name][symbol];
     const deployCustomLToken = chooseLTokenDeployment(strategyParams.lTokenImpl);
     const addressProvider = await getLendingPoolAddressesProvider(
       LENDING_POOL_ADDRESS_PROVIDER[network]
@@ -73,7 +73,7 @@ WRONG RESERVE ASSET SETUP:
         poolAddress,
         reserveAssetAddress,
         incentivesController, // Incentives Controller
-        `Oasyslend stable debt bearing ${symbol}`,
+        `Palmy stable debt bearing ${symbol}`,
         `sd${symbol}`,
       ],
       verify
@@ -83,7 +83,7 @@ WRONG RESERVE ASSET SETUP:
         poolAddress,
         reserveAssetAddress,
         incentivesController, // Incentives Controller
-        `Oasyslend variable debt bearing ${symbol}`,
+        `Palmy variable debt bearing ${symbol}`,
         `vd${symbol}`,
       ],
       verify

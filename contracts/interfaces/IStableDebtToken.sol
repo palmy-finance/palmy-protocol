@@ -2,13 +2,13 @@
 pragma solidity 0.6.12;
 
 import {IInitializableDebtToken} from './IInitializableDebtToken.sol';
-import {IOasyslendIncentivesController} from './IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from './IPalmyIncentivesController.sol';
 
 /**
  * @title IStableDebtToken
  * @notice Defines the interface for the stable debt token
  * @dev It does not inherit from IERC20 to save in code size
- * @author Horizonx.tech
+ * @author Palmy finance
  **/
 
 interface IStableDebtToken is IInitializableDebtToken {
@@ -129,5 +129,5 @@ interface IStableDebtToken is IInitializableDebtToken {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view returns (IOasyslendIncentivesController);
+  function getIncentivesController() external view returns (IPalmyIncentivesController);
 }

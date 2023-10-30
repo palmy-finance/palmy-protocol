@@ -5,10 +5,10 @@ pragma experimental ABIEncoderV2;
 import {SafeMath} from '../../dependencies/openzeppelin/contracts/SafeMath.sol';
 import {
   VersionedInitializable
-} from '../libraries/oasyslend-upgradeability/VersionedInitializable.sol';
+} from '../libraries/palmy-upgradeability/VersionedInitializable.sol';
 import {
   InitializableImmutableAdminUpgradeabilityProxy
-} from '../libraries/oasyslend-upgradeability/InitializableImmutableAdminUpgradeabilityProxy.sol';
+} from '../libraries/palmy-upgradeability/InitializableImmutableAdminUpgradeabilityProxy.sol';
 import {ReserveConfiguration} from '../libraries/configuration/ReserveConfiguration.sol';
 import {ILendingPoolAddressesProvider} from '../../interfaces/ILendingPoolAddressesProvider.sol';
 import {ILendingPool} from '../../interfaces/ILendingPool.sol';
@@ -18,13 +18,13 @@ import {PercentageMath} from '../libraries/math/PercentageMath.sol';
 import {DataTypes} from '../libraries/types/DataTypes.sol';
 import {IInitializableDebtToken} from '../../interfaces/IInitializableDebtToken.sol';
 import {IInitializableLToken} from '../../interfaces/IInitializableLToken.sol';
-import {IOasyslendIncentivesController} from '../../interfaces/IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from '../../interfaces/IPalmyIncentivesController.sol';
 import {ILendingPoolConfigurator} from '../../interfaces/ILendingPoolConfigurator.sol';
 
 /**
  * @title LendingPoolConfigurator contract
- * @author Horizonx.tech
- * @dev Implements the configuration methods for the Oasyslend protocol
+ * @author Palmy finance
+ * @dev Implements the configuration methods for the Palmy protocol
  **/
 
 contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigurator {
@@ -78,7 +78,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
           pool,
           input.treasury,
           input.underlyingAsset,
-          IOasyslendIncentivesController(input.incentivesController),
+          IPalmyIncentivesController(input.incentivesController),
           input.underlyingAssetDecimals,
           input.lTokenName,
           input.lTokenSymbol,
@@ -93,7 +93,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
           IInitializableDebtToken.initialize.selector,
           pool,
           input.underlyingAsset,
-          IOasyslendIncentivesController(input.incentivesController),
+          IPalmyIncentivesController(input.incentivesController),
           input.underlyingAssetDecimals,
           input.stableDebtTokenName,
           input.stableDebtTokenSymbol,
@@ -108,7 +108,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
           IInitializableDebtToken.initialize.selector,
           pool,
           input.underlyingAsset,
-          IOasyslendIncentivesController(input.incentivesController),
+          IPalmyIncentivesController(input.incentivesController),
           input.underlyingAssetDecimals,
           input.variableDebtTokenName,
           input.variableDebtTokenSymbol,

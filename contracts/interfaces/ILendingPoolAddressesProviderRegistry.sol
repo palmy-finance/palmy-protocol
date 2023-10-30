@@ -3,11 +3,11 @@ pragma solidity 0.6.12;
 
 /**
  * @title LendingPoolAddressesProviderRegistry contract
- * @dev Main registry of LendingPoolAddressesProvider of multiple Oasyslend protocol's markets
- * - Used for indexing purposes of Oasyslend protocol's markets
+ * @dev Main registry of LendingPoolAddressesProvider of multiple Palmy protocol's markets
+ * - Used for indexing purposes of Palmy protocol's markets
  * - The id assigned to a LendingPoolAddressesProvider refers to the market it is connected with,
- *   for example with `0` for the Oasyslend main market and `1` for the next created
- * @author Horizonx.tech
+ *   for example with `0` for the Palmy main market and `1` for the next created
+ * @author Palmy finance
  **/
 interface ILendingPoolAddressesProviderRegistry {
   event AddressesProviderRegistered(address indexed newAddress);

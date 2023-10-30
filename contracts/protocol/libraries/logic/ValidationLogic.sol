@@ -18,7 +18,7 @@ import {DataTypes} from '../types/DataTypes.sol';
 
 /**
  * @title ReserveLogic library
- * @author Horizonx.tech
+ * @author Palmy finance
  * @notice Implements functions to validate the different actions of the protocol
  */
 library ValidationLogic {

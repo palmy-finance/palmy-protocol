@@ -13,10 +13,10 @@
     "./test",
     "./tasks",
     "./helpers",
-    "test-suites/test-oasyslend/upgradeability.spec.ts",
-    "test-suites/test-oasyslend/variable-debt-token.spec.ts",
-    "test-suites/test-oasyslend/weth-gateway.spec.ts",
-    "test-suites/test-oasyslend/upgrade-ltoken.spec.ts"
+    "test-suites/test-palmy/upgradeability.spec.ts",
+    "test-suites/test-palmy/variable-debt-token.spec.ts",
+    "test-suites/test-palmy/weth-gateway.spec.ts",
+    "test-suites/test-palmy/upgrade-ltoken.spec.ts"
   ],
   "files": [
     "./hardhat.config.ts",

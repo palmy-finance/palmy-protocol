@@ -6,7 +6,7 @@ import {DataTypes} from '../types/DataTypes.sol';
 
 /**
  * @title ReserveConfiguration library
- * @author Horizonx.tech
+ * @author Palmy finance
  * @notice Implements the bitmap logic to handle the reserve configuration
  */
 library ReserveConfiguration {

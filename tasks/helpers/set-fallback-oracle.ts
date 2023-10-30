@@ -1,7 +1,7 @@
 import { task } from 'hardhat/config';
 import { ConfigNames, loadPoolConfig } from '../../helpers/configuration';
 import { INITIAL_PRICES } from '../../helpers/constants';
-import { getOasyslendFallbackOracle } from '../../helpers/contracts-getters';
+import { getPalmyFallbackOracle } from '../../helpers/contracts-getters';
 import { getParamPerNetwork } from '../../helpers/contracts-helpers';
 import { notFalsyOrZeroAddress } from '../../helpers/misc-utils';
 import { setAssetPricesInFallbackOracle } from '../../helpers/oracles-helpers';
@@ -13,11 +13,11 @@ import {
   TokenContractId,
 } from '../../helpers/types';
 
-task('set-price-in-fallback-oracle', 'Set prices in OasyslendFallbackOracle').setAction(
+task('set-price-in-fallback-oracle', 'Set prices in PalmyFallbackOracle').setAction(
   async ({}, DRE) => {
     await DRE.run('set-DRE');
     const network = <eNetwork>DRE.network.name;
-    const poolConfig = loadPoolConfig(ConfigNames.Oasyslend);
+    const poolConfig = loadPoolConfig(ConfigNames.Palmy);
     const {
       ProtocolGlobalParams: { UsdAddress },
       ReserveAssets,
@@ -30,7 +30,7 @@ task('set-price-in-fallback-oracle', 'Set prices in OasyslendFallbackOracle').se
       throw 'Fallback Oracle Address is undefined. Check configuration at config directory';
     }
 
-    const fallbackOracle = await getOasyslendFallbackOracle(fallbackOracleAddress);
+    const fallbackOracle = await getPalmyFallbackOracle(fallbackOracleAddress);
 
     const allReserveAssets: SymbolMap<string> = {
       ...reserveAssets,

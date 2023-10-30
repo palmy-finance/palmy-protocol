@@ -4,9 +4,9 @@ pragma solidity 0.6.12;
 import "./LToken.sol";
 
 /**
- * @title Oasyslend ERC20 LToken Rev2
- * @dev Implementation of the interest bearing token for the Oasyslend protocol
- * @author Horizonx.tech
+ * @title Palmy ERC20 LToken Rev2
+ * @dev Implementation of the interest bearing token for the Palmy protocol
+ * @author Palmy finance
  */
 contract LTokenRev2 is LToken {
   uint256 public constant LTOKEN_REVISION_2 = 0x2;

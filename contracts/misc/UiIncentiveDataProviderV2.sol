@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import {ILendingPoolAddressesProvider} from '../interfaces/ILendingPoolAddressesProvider.sol';
-import {IOasyslendIncentivesController} from '../interfaces/IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from '../interfaces/IPalmyIncentivesController.sol';
 import {IUiIncentiveDataProviderV2} from './interfaces/IUiIncentiveDataProviderV2.sol';
 import {ILendingPool} from '../interfaces/ILendingPool.sol';
 import {ILToken} from '../interfaces/ILToken.sol';
@@ -53,7 +53,7 @@ contract UiIncentiveDataProviderV2 is IUiIncentiveDataProviderV2 {
       DataTypes.ReserveData memory baseData = lendingPool.getReserveData(reserves[i]);
 
       try IStableDebtToken(baseData.lTokenAddress).getIncentivesController() returns (
-        IOasyslendIncentivesController lTokenIncentiveController
+        IPalmyIncentivesController lTokenIncentiveController
       ) {
         if (address(lTokenIncentiveController) != address(0)) {
           address lRewardToken = lTokenIncentiveController.REWARD_TOKEN();
@@ -103,7 +103,7 @@ contract UiIncentiveDataProviderV2 is IUiIncentiveDataProviderV2 {
       }
 
       try IStableDebtToken(baseData.stableDebtTokenAddress).getIncentivesController() returns (
-        IOasyslendIncentivesController sdTokenIncentiveController
+        IPalmyIncentivesController sdTokenIncentiveController
       ) {
         if (address(sdTokenIncentiveController) != address(0)) {
           address sdRewardToken = sdTokenIncentiveController.REWARD_TOKEN();
@@ -152,7 +152,7 @@ contract UiIncentiveDataProviderV2 is IUiIncentiveDataProviderV2 {
       }
 
       try IStableDebtToken(baseData.variableDebtTokenAddress).getIncentivesController() returns (
-        IOasyslendIncentivesController vdTokenIncentiveController
+        IPalmyIncentivesController vdTokenIncentiveController
       ) {
         if (address(vdTokenIncentiveController) != address(0)) {
           address vdRewardToken = vdTokenIncentiveController.REWARD_TOKEN();
@@ -233,7 +233,7 @@ contract UiIncentiveDataProviderV2 is IUiIncentiveDataProviderV2 {
       IUiIncentiveDataProviderV2.UserIncentiveData memory lUserIncentiveData;
 
       try ILToken(baseData.lTokenAddress).getIncentivesController() returns (
-        IOasyslendIncentivesController lTokenIncentiveController
+        IPalmyIncentivesController lTokenIncentiveController
       ) {
         if (address(lTokenIncentiveController) != address(0)) {
           address lRewardToken = lTokenIncentiveController.REWARD_TOKEN();
@@ -257,7 +257,7 @@ contract UiIncentiveDataProviderV2 is IUiIncentiveDataProviderV2 {
       UserIncentiveData memory vdUserIncentiveData;
 
       try IVariableDebtToken(baseData.variableDebtTokenAddress).getIncentivesController() returns (
-        IOasyslendIncentivesController vdTokenIncentiveController
+        IPalmyIncentivesController vdTokenIncentiveController
       ) {
         if (address(vdTokenIncentiveController) != address(0)) {
           address vdRewardToken = vdTokenIncentiveController.REWARD_TOKEN();
@@ -279,7 +279,7 @@ contract UiIncentiveDataProviderV2 is IUiIncentiveDataProviderV2 {
       UserIncentiveData memory sdUserIncentiveData;
 
       try IStableDebtToken(baseData.stableDebtTokenAddress).getIncentivesController() returns (
-        IOasyslendIncentivesController sdTokenIncentiveController
+        IPalmyIncentivesController sdTokenIncentiveController
       ) {
         if (address(sdTokenIncentiveController) != address(0)) {
           address sdRewardToken = sdTokenIncentiveController.REWARD_TOKEN();

@@ -5,14 +5,14 @@ import {ILendingPool} from '../../../interfaces/ILendingPool.sol';
 import {ICreditDelegationToken} from '../../../interfaces/ICreditDelegationToken.sol';
 import {
   VersionedInitializable
-} from '../../libraries/oasyslend-upgradeability/VersionedInitializable.sol';
+} from '../../libraries/palmy-upgradeability/VersionedInitializable.sol';
 import {IncentivizedERC20} from '../IncentivizedERC20.sol';
 import {Errors} from '../../libraries/helpers/Errors.sol';
 
 /**
  * @title DebtTokenBase
  * @notice Base contract for different types of debt tokens, like StableDebtToken or VariableDebtToken
- * @author Horizonx.tech
+ * @author Palmy finance
  */
 
 abstract contract DebtTokenBase is

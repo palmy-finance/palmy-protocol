@@ -2,7 +2,7 @@ import { notFalsyOrZeroAddress } from './../../helpers/misc-utils';
 import { task } from 'hardhat/config';
 import { deployStakeUIHelper } from '../../helpers/contracts-deployments';
 import { eContractid, eNetwork, ICommonConfiguration } from '../../helpers/types';
-import { getOasyslendOracle } from '../../helpers/contracts-getters';
+import { getPalmyOracle } from '../../helpers/contracts-getters';
 import { getParamPerNetwork } from '../../helpers/contracts-helpers';
 import { ConfigNames, loadPoolConfig } from '../../helpers/configuration';
 
@@ -21,7 +21,7 @@ task(`deploy-${eContractid.StakeUIHelper}`, `Deploys the StakeUIHelper contract`
       StakedOal,
       ProtocolGlobalParams: { UsdAddress },
     } = poolConfig as ICommonConfiguration;
-    const oracle = await getOasyslendOracle();
+    const oracle = await getPalmyOracle();
     const assets = getParamPerNetwork(ReserveAssets, network);
     const oal = assets['OAL'];
     const stkOal = getParamPerNetwork(StakedOal, network);

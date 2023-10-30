@@ -1,6 +1,6 @@
 import { task } from 'hardhat/config';
 import { exit } from 'process';
-import { deployOasyslendProtocolDataProvider } from '../../helpers/contracts-deployments';
+import { deployPalmyProtocolDataProvider } from '../../helpers/contracts-deployments';
 import { getLendingPoolAddressesProvider } from '../../helpers/contracts-getters';
 
 task('full:data-provider', 'Initialize lending pool configuration.')
@@ -11,7 +11,7 @@ task('full:data-provider', 'Initialize lending pool configuration.')
 
       const addressesProvider = await getLendingPoolAddressesProvider();
 
-      await deployOasyslendProtocolDataProvider(addressesProvider.address, verify);
+      await deployPalmyProtocolDataProvider(addressesProvider.address, verify);
     } catch (err) {
       console.error(err);
       exit(1);

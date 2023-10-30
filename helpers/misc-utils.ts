@@ -6,7 +6,7 @@ import { isAddress } from 'ethers/lib/utils';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
-import { SignerWithAddress } from '../test-suites/test-oasyslend/helpers/make-suite';
+import { SignerWithAddress } from '../test-suites/test-palmy/helpers/make-suite';
 import { WAD } from './constants';
 import { usingTenderly } from './tenderly-utils';
 import { tEthereumAddress } from './types';

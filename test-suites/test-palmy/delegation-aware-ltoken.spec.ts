@@ -7,7 +7,7 @@ import {
   deployMintableDelegationERC20,
 } from '../../helpers/contracts-deployments';
 import { ProtocolErrors } from '../../helpers/types';
-import OasyslendConfig from '../../markets/oasyslend';
+import PalmyConfig from '../../markets/palmy';
 import { DelegationAwareLToken } from '../../types/DelegationAwareLToken';
 import { MintableDelegationERC20 } from '../../types/MintableDelegationERC20';
 import { makeSuite, TestEnv } from './helpers/make-suite';
@@ -28,7 +28,7 @@ makeSuite('LToken: underlying delegation', (testEnv: TestEnv) => {
       [
         pool.address,
         delegationERC20.address,
-        await getTreasuryAddress(OasyslendConfig),
+        await getTreasuryAddress(PalmyConfig),
         ZERO_ADDRESS,
         'aDEL',
         'aDEL',
@@ -41,7 +41,7 @@ makeSuite('LToken: underlying delegation', (testEnv: TestEnv) => {
     console.log((await delegationLToken.decimals()).toString());
   });
 
-  it('Tries to delegate with the caller not being the Oasyslend admin', async () => {
+  it('Tries to delegate with the caller not being the Palmy admin', async () => {
     const { users } = testEnv;
 
     await expect(

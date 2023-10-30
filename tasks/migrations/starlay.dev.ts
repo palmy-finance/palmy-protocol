@@ -3,10 +3,10 @@ import { ConfigNames } from '../../helpers/configuration';
 import { checkVerification } from '../../helpers/etherscan-verification';
 import { printContracts } from '../../helpers/misc-utils';
 
-task('oasyslend:dev', 'Deploy development enviroment')
+task('palmy:dev', 'Deploy development enviroment')
   .addFlag('verify', 'Verify contracts at Etherscan')
   .setAction(async ({ verify }, localBRE) => {
-    const POOL_NAME = ConfigNames.Oasyslend;
+    const POOL_NAME = ConfigNames.Palmy;
 
     await localBRE.run('set-DRE');
 

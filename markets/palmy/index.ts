@@ -1,7 +1,7 @@
 import {
   eOasysNetwork,
   eEthereumNetwork,
-  IOasyslendConfiguration as IOasyslendConfiguration,
+  IPalmyConfiguration as IPalmyConfiguration,
 } from '../../helpers/types';
 import { CommonsConfig } from './commons';
 import {
@@ -16,9 +16,9 @@ import {
 // POOL--SPECIFIC PARAMS
 // ----------------
 
-export const OasyslendConfig: IOasyslendConfiguration = {
+export const PalmyConfig: IPalmyConfiguration = {
   ...CommonsConfig,
-  MarketId: 'Oasyslend genesis market',
+  MarketId: 'Palmy genesis market',
   ProviderId: 1,
   ReservesConfig: {
     WETH: strategyWETH,
@@ -49,4 +49,4 @@ export const OasyslendConfig: IOasyslendConfiguration = {
   },
 };
 
-export default OasyslendConfig;
+export default PalmyConfig;

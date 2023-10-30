@@ -1,5 +1,5 @@
-import OasyslendConfig from '../markets/oasyslend';
-import { CommonsConfig } from '../markets/oasyslend/commons';
+import PalmyConfig from '../markets/palmy';
+import { CommonsConfig } from '../markets/palmy/commons';
 import { deployWETHMocked } from './contracts-deployments';
 import {
   getEthersSignersAddresses,
@@ -13,19 +13,19 @@ import {
   iMultiPoolsAssets,
   IReserveParams,
   PoolConfiguration,
-  OasyslendPools,
+  PalmyPools,
   tEthereumAddress,
 } from './types';
 
 export enum ConfigNames {
   Commons = 'Commons',
-  Oasyslend = 'Oasyslend',
+  Palmy = 'Palmy',
 }
 
 export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
   switch (configName) {
-    case ConfigNames.Oasyslend:
-      return OasyslendConfig;
+    case ConfigNames.Palmy:
+      return PalmyConfig;
     case ConfigNames.Commons:
       return CommonsConfig;
     default:
@@ -41,11 +41,11 @@ export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
 // PROTOCOL PARAMS PER POOL
 // ----------------
 
-export const getReservesConfigByPool = (pool: OasyslendPools): iMultiPoolsAssets<IReserveParams> =>
+export const getReservesConfigByPool = (pool: PalmyPools): iMultiPoolsAssets<IReserveParams> =>
   getParamPerPool<iMultiPoolsAssets<IReserveParams>>(
     {
-      [OasyslendPools.proto]: {
-        ...OasyslendConfig.ReservesConfig,
+      [PalmyPools.proto]: {
+        ...PalmyConfig.ReservesConfig,
       },
     },
     pool

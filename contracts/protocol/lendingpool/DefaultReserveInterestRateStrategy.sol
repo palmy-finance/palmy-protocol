@@ -14,9 +14,9 @@ import {IERC20} from '../../dependencies/openzeppelin/contracts/IERC20.sol';
  * @notice Implements the calculation of the interest rates depending on the reserve state
  * @dev The model of interest rate is based on 2 slopes, one before the `OPTIMAL_UTILIZATION_RATE`
  * point of utilization and another from that one to 100%
- * - An instance of this same contract, can't be used across different Oasyslend markets, due to the caching
+ * - An instance of this same contract, can't be used across different Palmy markets, due to the caching
  *   of the LendingPoolAddressesProvider
- * @author Horizonx.tech
+ * @author Palmy finance
  **/
 contract DefaultReserveInterestRateStrategy is IReserveInterestRateStrategy {
   using WadRayMath for uint256;

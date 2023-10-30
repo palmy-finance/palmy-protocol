@@ -2,11 +2,11 @@
 pragma solidity 0.6.12;
 
 /**
- * @title IOasyslendOracle interface
- * @notice Interface for the Oasyslend oracle.
+ * @title IPalmyOracle interface
+ * @notice Interface for the Palmy oracle.
  **/
 
-interface IOasyslendOracle {
+interface IPalmyOracle {
   function BASE_CURRENCY() external view returns (address);
 
   function BASE_CURRENCY_UNIT() external view returns (uint256);

@@ -3,7 +3,7 @@ import { ConfigNames, getQuoteCurrency, loadPoolConfig } from '../../helpers/con
 import {
   deployLendingRateOracle,
   deployPriceOracle,
-  deployOasyslendOracle,
+  deployPalmyOracle,
 } from '../../helpers/contracts-deployments';
 import {
   getAllMockedTokens,
@@ -51,7 +51,7 @@ task('dev:deploy-oracles', 'Deploy oracles for dev environment')
       verify
     );
 
-    await deployOasyslendOracle(
+    await deployPalmyOracle(
       [
         mockAggregator.address,
         fallbackOracle.address,

@@ -5,12 +5,12 @@ import {Context} from '../../dependencies/openzeppelin/contracts/Context.sol';
 import {IERC20} from '../../dependencies/openzeppelin/contracts/IERC20.sol';
 import {IERC20Detailed} from '../../dependencies/openzeppelin/contracts/IERC20Detailed.sol';
 import {SafeMath} from '../../dependencies/openzeppelin/contracts/SafeMath.sol';
-import {IOasyslendIncentivesController} from '../../interfaces/IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from '../../interfaces/IPalmyIncentivesController.sol';
 
 /**
  * @title ERC20
  * @notice Basic ERC20 implementation
- * @author Horizonx.tech, inspired by the Openzeppelin ERC20 implementation
+ * @author Palmy finance, inspired by the Openzeppelin ERC20 implementation
  **/
 abstract contract IncentivizedERC20 is Context, IERC20, IERC20Detailed {
   using SafeMath for uint256;
@@ -72,7 +72,7 @@ abstract contract IncentivizedERC20 is Context, IERC20, IERC20Detailed {
    * @return Abstract function implemented by the child lToken/debtToken.
    * Done this way in order to not break compatibility with previous versions of lTokens/debtTokens
    **/
-  function _getIncentivesController() internal view virtual returns (IOasyslendIncentivesController);
+  function _getIncentivesController() internal view virtual returns (IPalmyIncentivesController);
 
   /**
    * @dev Executes a transfer of tokens from _msgSender() to recipient

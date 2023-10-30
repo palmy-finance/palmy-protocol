@@ -6,13 +6,13 @@ import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
 import {DebtTokenBase} from './base/DebtTokenBase.sol';
 import {ILendingPool} from '../../interfaces/ILendingPool.sol';
-import {IOasyslendIncentivesController} from '../../interfaces/IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from '../../interfaces/IPalmyIncentivesController.sol';
 
 /**
  * @title VariableDebtToken
  * @notice Implements a variable debt token to track the borrowing positions of users
  * at variable rate mode
- * @author Horizonx.tech
+ * @author Palmy finance
  **/
 contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   using WadRayMath for uint256;
@@ -21,7 +21,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
 
   ILendingPool internal _pool;
   address internal _underlyingAsset;
-  IOasyslendIncentivesController internal _incentivesController;
+  IPalmyIncentivesController internal _incentivesController;
 
   /**
    * @dev Initializes the debt token.
@@ -35,7 +35,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   function initialize(
     ILendingPool pool,
     address underlyingAsset,
-    IOasyslendIncentivesController incentivesController,
+    IPalmyIncentivesController incentivesController,
     uint8 debtTokenDecimals,
     string memory debtTokenName,
     string memory debtTokenSymbol,
@@ -184,7 +184,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view override returns (IOasyslendIncentivesController) {
+  function getIncentivesController() external view override returns (IPalmyIncentivesController) {
     return _getIncentivesController();
   }
 
@@ -199,7 +199,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
     internal
     view
     override
-    returns (IOasyslendIncentivesController)
+    returns (IPalmyIncentivesController)
   {
     return _incentivesController;
   }

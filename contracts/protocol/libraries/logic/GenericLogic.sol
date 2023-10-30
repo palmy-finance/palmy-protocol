@@ -14,7 +14,7 @@ import {DataTypes} from '../types/DataTypes.sol';
 
 /**
  * @title GenericLogic library
- * @author Horizonx.tech
+ * @author Palmy finance
  * @title Implements protocol-level logic to calculate and validate the state of a user
  */
 library GenericLogic {

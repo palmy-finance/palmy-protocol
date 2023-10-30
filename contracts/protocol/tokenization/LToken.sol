@@ -9,14 +9,14 @@ import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
 import {
   VersionedInitializable
-} from '../libraries/oasyslend-upgradeability/VersionedInitializable.sol';
+} from '../libraries/palmy-upgradeability/VersionedInitializable.sol';
 import {IncentivizedERC20} from './IncentivizedERC20.sol';
-import {IOasyslendIncentivesController} from '../../interfaces/IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from '../../interfaces/IPalmyIncentivesController.sol';
 
 /**
- * @title Oasyslend ERC20 LToken
- * @dev Implementation of the interest bearing token for the Oasyslend protocol
- * @author Horizonx.tech
+ * @title Palmy ERC20 LToken
+ * @dev Implementation of the interest bearing token for the Palmy protocol
+ * @author Palmy finance
  */
 contract LToken is
   VersionedInitializable,
@@ -42,7 +42,7 @@ contract LToken is
   ILendingPool internal _pool;
   address internal _treasury;
   address internal _underlyingAsset;
-  IOasyslendIncentivesController internal _incentivesController;
+  IPalmyIncentivesController internal _incentivesController;
 
   modifier onlyLendingPool {
     require(_msgSender() == address(_pool), Errors.CT_CALLER_MUST_BE_LENDING_POOL);
@@ -56,7 +56,7 @@ contract LToken is
   /**
    * @dev Initializes the lToken
    * @param pool The address of the lending pool where this lToken will be used
-   * @param treasury The address of the Oasyslend treasury, receiving the fees on this lToken
+   * @param treasury The address of the Palmy treasury, receiving the fees on this lToken
    * @param underlyingAsset The address of the underlying asset of this lToken (E.g. WETH for lWETH)
    * @param incentivesController The smart contract managing potential incentives distribution
    * @param lTokenDecimals The decimals of the lToken, same as the underlying asset's
@@ -67,7 +67,7 @@ contract LToken is
     ILendingPool pool,
     address treasury,
     address underlyingAsset,
-    IOasyslendIncentivesController incentivesController,
+    IPalmyIncentivesController incentivesController,
     uint8 lTokenDecimals,
     string calldata lTokenName,
     string calldata lTokenSymbol,
@@ -253,7 +253,7 @@ contract LToken is
   }
 
   /**
-   * @dev Returns the address of the Oasyslend treasury, receiving the fees on this lToken
+   * @dev Returns the address of the Palmy treasury, receiving the fees on this lToken
    **/
   function RESERVE_TREASURY_ADDRESS() public view returns (address) {
     return _treasury;
@@ -280,7 +280,7 @@ contract LToken is
     internal
     view
     override
-    returns (IOasyslendIncentivesController)
+    returns (IPalmyIncentivesController)
   {
     return _incentivesController;
   }
@@ -288,7 +288,7 @@ contract LToken is
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view override returns (IOasyslendIncentivesController) {
+  function getIncentivesController() external view override returns (IPalmyIncentivesController) {
     return _getIncentivesController();
   }
 

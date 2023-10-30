@@ -20,7 +20,7 @@ import {
   iEthereumParamsPerNetwork,
   iParamsPerNetwork,
   iParamsPerPool,
-  OasyslendPools,
+  PalmyPools,
   tEthereumAddress,
   tStringTokenSmallUnits,
 } from './types';
@@ -170,9 +170,9 @@ export const getOptionalParamAddressPerNetwork = (
   return getParamPerNetwork(param, network);
 };
 
-export const getParamPerPool = <T>({ proto }: iParamsPerPool<T>, pool: OasyslendPools) => {
+export const getParamPerPool = <T>({ proto }: iParamsPerPool<T>, pool: PalmyPools) => {
   switch (pool) {
-    case OasyslendPools.proto:
+    case PalmyPools.proto:
       return proto;
     default:
       return proto;

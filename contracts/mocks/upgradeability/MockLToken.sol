@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 
 import {LToken} from '../../protocol/tokenization/LToken.sol';
 import {ILendingPool} from '../../interfaces/ILendingPool.sol';
-import {IOasyslendIncentivesController} from '../../interfaces/IOasyslendIncentivesController.sol';
+import {IPalmyIncentivesController} from '../../interfaces/IPalmyIncentivesController.sol';
 
 contract MockLToken is LToken {
   function getRevision() internal pure override returns (uint256) {
