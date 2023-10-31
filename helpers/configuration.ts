@@ -102,7 +102,7 @@ export const getWrappedNativeTokenAddress = async (config: IBaseConfiguration) =
     return wethAddress;
   }
   if (currentNetwork.includes('oasys')) {
-    throw new Error('WASTR not set at oasys configuration.');
+    throw new Error('WOAS not set at oasys configuration.');
   }
   const weth = await deployWETHMocked();
   return weth.address;

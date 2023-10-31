@@ -698,7 +698,7 @@ export const deployPriceAggregatorChainsightImpl = async (verify?: boolean) =>
   );
 
 export const deployStakeUIHelper = async (
-  [priceOracle, oal, stakedOal, mockUsd]: [
+  [priceOracle, woas, stakedOas, mockUsd]: [
     tEthereumAddress,
     tEthereumAddress,
     tEthereumAddress,
@@ -706,12 +706,12 @@ export const deployStakeUIHelper = async (
   ],
   verify?: boolean
 ) => {
-  const args = [priceOracle, oal, stakedOal, mockUsd];
+  const args = [priceOracle, woas, stakedOas, mockUsd];
   return withSaveAndVerify(
     await new StakeUIHelperFactory(await getFirstSigner()).deploy(
       priceOracle,
-      oal,
-      stakedOal,
+      woas,
+      stakedOas,
       mockUsd
     ),
     eContractid.StakeUIHelper,

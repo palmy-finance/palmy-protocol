@@ -11,22 +11,22 @@ contract StakeUIHelper is StakeUIHelperI {
   IPriceOracleGetter public immutable PRICE_ORACLE;
 
   address public immutable MOCK_USD_ADDRESS;
-  address public immutable OAL;
-  IStakedToken public immutable STAKED_LAY;
+  address public immutable WOAS;
+  IStakedToken public immutable STAKED_OAS;
 
   uint256 constant SECONDS_PER_YEAR = 365 * 24 * 60 * 60;
   uint256 constant APY_PRECISION = 10000;
   uint256 internal constant USD_BASE = 1e26;
 
-  constructor(address priceOracle, address oal, address stkOal, address mockUsd) public {
+  constructor(address priceOracle, address wOas, address stkOas, address mockUsd) public {
     require(priceOracle != address(0), 'priceOracle address cannot be empty');
-    require(oal != address(0), 'OAL address cannot be empty');
-    require(stkOal != address(0), 'stkOal address cannot be empty');
+    require(wOas != address(0), 'wOas address cannot be empty');
+    require(stkOas != address(0), 'stkOas address cannot be empty');
     require(mockUsd != address(0), 'mockUsd address cannot be empty');
     PRICE_ORACLE = IPriceOracleGetter(priceOracle);
 
-    OAL = oal;
-    STAKED_LAY = IStakedToken(stkOal);
+    WOAS = wOas;
+    STAKED_OAS = IStakedToken(stkOas);
     MOCK_USD_ADDRESS = mockUsd;
   }
 
@@ -88,7 +88,7 @@ contract StakeUIHelper is StakeUIHelperI {
     data.stakeTokenTotalSupply = stakeToken.totalSupply();
     data.stakeCooldownSeconds = stakeToken.COOLDOWN_SECONDS();
     data.stakeUnstakeWindow = stakeToken.UNSTAKE_WINDOW();
-    data.rewardTokenPriceEth = PRICE_ORACLE.getAssetPrice(OAL);
+    data.rewardTokenPriceEth = PRICE_ORACLE.getAssetPrice(WOAS);
     data.distributionEnd = stakeToken.DISTRIBUTION_END();
     if (block.timestamp < data.distributionEnd) {
       data.distributionPerSecond = stakeToken.assets(address(stakeToken)).emissionPerSecond;
@@ -108,7 +108,7 @@ contract StakeUIHelper is StakeUIHelperI {
   }
 
   function getstkOalData(address user) public view override returns (AssetUIData memory) {
-    AssetUIData memory data = _getUserAndGeneralStakedAssetData(STAKED_LAY, OAL, user, true);
+    AssetUIData memory data = _getUserAndGeneralStakedAssetData(STAKED_OAS, WOAS, user, true);
 
     data.stakeTokenPriceEth = data.rewardTokenPriceEth;
     data.stakeApy = _calculateApy(data.distributionPerSecond, data.stakeTokenTotalSupply);
@@ -116,7 +116,7 @@ contract StakeUIHelper is StakeUIHelperI {
   }
 
   function getStkGeneralOalData() public view override returns (GeneralStakeUIData memory) {
-    GeneralStakeUIData memory data = _getGeneralStakedAssetData(STAKED_LAY);
+    GeneralStakeUIData memory data = _getGeneralStakedAssetData(STAKED_OAS);
 
     data.stakeTokenPriceEth = data.rewardTokenPriceEth;
     data.stakeApy = _calculateApy(data.distributionPerSecond, data.stakeTokenTotalSupply);
@@ -124,7 +124,7 @@ contract StakeUIHelper is StakeUIHelperI {
   }
 
   function getStkUserOalData(address user) public view override returns (UserStakeUIData memory) {
-    UserStakeUIData memory data = _getUserStakedAssetData(STAKED_LAY, OAL, user, true);
+    UserStakeUIData memory data = _getUserStakedAssetData(STAKED_OAS, WOAS, user, true);
     return data;
   }
 

@@ -2,6 +2,7 @@ import { task } from 'hardhat/config';
 import { deployUiPoolDataProviderV2 } from '../../helpers/contracts-deployments';
 import { eContractid } from '../../helpers/types';
 import { aggregatorProxy, baseTokenAddress } from './../../helpers/constants';
+import { getFirstSigner } from '../../helpers/contracts-getters';
 
 task(`deploy-${eContractid.UiPoolDataProviderV2}`, `Deploys the UiPoolDataProviderV2 contract`)
   .addFlag('verify', 'Verify UiPoolDataProviderV2 contract via Etherscan API.')
@@ -10,6 +11,8 @@ task(`deploy-${eContractid.UiPoolDataProviderV2}`, `Deploys the UiPoolDataProvid
     if (!localBRE.network.config.chainId) {
       throw new Error('INVALID_CHAIN_ID');
     }
+    const signer = await (await getFirstSigner()).getAddress();
+    console.log(signer);
 
     console.log(
       `\n- UiPoolDataProviderV2 price aggregator: ${aggregatorProxy[localBRE.network.name]}`

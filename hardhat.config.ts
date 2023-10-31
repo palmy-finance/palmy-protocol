@@ -101,7 +101,7 @@ const buidlerConfig: HardhatUserConfig = {
       chainId: COVERAGE_CHAINID,
     },
     testnet: getCommonNetworkConfig(eOasysNetwork.testnet, 9372),
-    oasys: getCommonNetworkConfig(eOasysNetwork.oasys, 248),
+    oasys: getCommonNetworkConfig(eOasysNetwork.testnet, 9372),
     hardhat: {
       hardfork: 'berlin',
       blockGasLimit: DEFAULT_BLOCK_GAS_LIMIT,

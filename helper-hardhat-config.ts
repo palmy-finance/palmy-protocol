@@ -34,8 +34,8 @@ export const NETWORKS_RPC_URL: iParamsPerNetwork<string> = {
   [eEthereumNetwork.hardhat]: 'http://localhost:8545',
   [eEthereumNetwork.buidlerevm]: 'http://localhost:8545',
   [eEthereumNetwork.tenderly]: `https://rpc.tenderly.co/fork/`,
-  [eOasysNetwork.testnet]: 'https://rpc.testnet.oasys.games/',
-  [eOasysNetwork.oasys]: 'https://oasys-rpc.gateway.pokt.network',
+  [eOasysNetwork.testnet]: 'https://rpc.testnet.oasys.games',
+  [eOasysNetwork.oasys]: 'https://rpc.mainnet.oasys.games',
 };
 
 export const NETWORKS_DEFAULT_GAS: iParamsPerNetwork<number> = {
@@ -43,8 +43,8 @@ export const NETWORKS_DEFAULT_GAS: iParamsPerNetwork<number> = {
   [eEthereumNetwork.hardhat]: 65 * GWEI,
   [eEthereumNetwork.buidlerevm]: 65 * GWEI,
   [eEthereumNetwork.tenderly]: 1 * GWEI,
-  [eOasysNetwork.testnet]: 1 * GWEI,
-  [eOasysNetwork.oasys]: 1 * GWEI,
+  [eOasysNetwork.testnet]: 100 * GWEI,
+  [eOasysNetwork.oasys]: 100 * GWEI,
 };
 
 export const BLOCK_TO_FORK: iParamsPerNetwork<number | undefined> = {
