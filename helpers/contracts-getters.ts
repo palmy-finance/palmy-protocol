@@ -304,10 +304,7 @@ export const getWETHGateway = async (address?: tEthereumAddress) =>
 
 export const getWETHMocked = async (address?: tEthereumAddress) =>
   await WETH9MockedFactory.connect(
-    address ||
-      (
-        await getDb().get(`${eContractid.WASTRMocked}.${DRE.network.name}`).value()
-      ).address,
+    address || (await getDb().get(`${eContractid.WOASMocked}.${DRE.network.name}`).value()).address,
     await getFirstSigner()
   );
 

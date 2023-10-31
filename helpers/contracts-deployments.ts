@@ -566,7 +566,7 @@ export const deployMockStableDebtToken = async (
 export const deployWETHMocked = async (verify?: boolean) =>
   withSaveAndVerify(
     await new WETH9MockedFactory(await getFirstSigner()).deploy(),
-    eContractid.WASTRMocked,
+    eContractid.WOASMocked,
     [],
     verify
   );

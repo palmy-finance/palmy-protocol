@@ -229,8 +229,8 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: '',
     [eEthereumNetwork.hardhat]: '',
     [eEthereumNetwork.tenderly]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-    [eOasysNetwork.testnet]: '0x44a26AE046a01d99eBAbecc24B4d61B388656871', //WASTR
-    [eOasysNetwork.oasys]: '0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720', //WASTR
+    [eOasysNetwork.testnet]: 'TODO', //WOAS
+    [eOasysNetwork.oasys]: 'TODO', //WOAS
   },
   ReserveFactorTreasuryAddress: {
     [eEthereumNetwork.buidlerevm]: '0x464c71f6c2f760dda6093dcb91c24c39e5d6e18c',

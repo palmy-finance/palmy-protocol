@@ -61,7 +61,7 @@ export enum eContractid {
   UiPoolDataProviderV2 = 'UiPoolDataProviderV2',
   WETHGateway = 'WETHGateway',
   WETH = 'WETH',
-  WASTRMocked = 'WASTRMocked',
+  WOASMocked = 'WOASMocked',
   SelfdestructTransferMock = 'SelfdestructTransferMock',
   LendingPoolImpl = 'LendingPoolImpl',
   LendingPoolConfiguratorImpl = 'LendingPoolConfiguratorImpl',

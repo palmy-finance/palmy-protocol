@@ -17,7 +17,7 @@ import {
   BUIDLEREVM_CHAINID,
   COVERAGE_CHAINID,
 } from './helpers/buidler-constants';
-import { eOasysNetwork, eEthereumNetwork, eNetwork } from './helpers/types';
+import { eOasysNetwork, eNetwork } from './helpers/types';
 // @ts-ignore
 import { accounts } from './test-wallets.js';
 
@@ -101,7 +101,7 @@ const buidlerConfig: HardhatUserConfig = {
       chainId: COVERAGE_CHAINID,
     },
     testnet: getCommonNetworkConfig(eOasysNetwork.testnet, 9372),
-    oasys: getCommonNetworkConfig(eOasysNetwork.testnet, 9372),
+    oasys: getCommonNetworkConfig(eOasysNetwork.oasys, 248),
     hardhat: {
       hardfork: 'berlin',
       blockGasLimit: DEFAULT_BLOCK_GAS_LIMIT,

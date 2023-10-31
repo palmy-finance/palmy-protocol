@@ -169,7 +169,7 @@ task('check:oracle:dia-oracle', 'check:oracle:dia-oracle').setAction(async ({}, 
   if (!addrs) throw new Error('Not setting addresses');
 
   const keys = [
-    'ASTR/USD',
+    'OAS/USD',
     'SDN/USD',
     'ETH/USD',
     'WBTC/USD',
