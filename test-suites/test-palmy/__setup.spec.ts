@@ -104,7 +104,10 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   } = {
     ...(await deployAllMockTokens(deployer)),
   };
-  const addressesProvider = await deployLendingPoolAddressesProvider(PalmyConfig.MarketId);
+  const addressesProvider = await deployLendingPoolAddressesProvider(
+    PalmyConfig.MarketId,
+    await deployer.getAddress()
+  );
   await waitForTx(await addressesProvider.setPoolAdmin(palmyAdmin));
 
   //setting users[1] as emergency admin, which is in position 2 in the DRE addresses list
@@ -112,7 +115,9 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   await waitForTx(await addressesProvider.setEmergencyAdmin(addressList[2]));
 
-  const addressesProviderRegistry = await deployLendingPoolAddressesProviderRegistry();
+  const addressesProviderRegistry = await deployLendingPoolAddressesProviderRegistry(
+    await deployer.getAddress()
+  );
   await waitForTx(
     await addressesProviderRegistry.registerAddressesProvider(addressesProvider.address, 1)
   );
@@ -139,12 +144,14 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   );
 
   // Deploy deployment helpers
-  const stableAndVariableTokensHelper = await deployStableAndVariableTokensHelper();
+  const stableAndVariableTokensHelper = await deployStableAndVariableTokensHelper(
+    await deployer.getAddress()
+  );
   await stableAndVariableTokensHelper.iniialize(
     lendingPoolProxy.address,
     addressesProvider.address
   );
-  const lTokensAndRatesHelper = await deployLTokensAndRatesHelper();
+  const lTokensAndRatesHelper = await deployLTokensAndRatesHelper(await deployer.getAddress());
   await lTokensAndRatesHelper.initialize(
     lendingPoolProxy.address,
     addressesProvider.address,
@@ -175,11 +182,15 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   const priceAggregator = await deployMockAggregators(ALL_ASSETS_INITIAL_PRICES, addresses);
 
-  const palmyOracle = await deployPalmyOracle([mockTokens.WETH.address, oneEther.toString()]);
+  const palmyOracle = await deployPalmyOracle([
+    mockTokens.WETH.address,
+    oneEther.toString(),
+    await deployer.getAddress(),
+  ]);
   await palmyOracle.initialize(priceAggregator.address, fallbackOracle.address);
   await waitForTx(await addressesProvider.setPriceOracle(fallbackOracle.address));
 
-  const lendingRateOracle = await deployLendingRateOracle();
+  const lendingRateOracle = await deployLendingRateOracle(await deployer.getAddress());
   await waitForTx(await addressesProvider.setLendingRateOracle(lendingRateOracle.address));
 
   const { USD, ...tokensAddressesWithoutUsd } = allTokenAddresses;
@@ -234,7 +245,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   await deployWalletBalancerProvider();
 
-  const gateWay = await deployWETHGateway([mockTokens.WETH.address]);
+  const gateWay = await deployWETHGateway([mockTokens.WETH.address, await deployer.getAddress()]);
   await authorizeWETHGateway(gateWay.address, lendingPoolAddress);
 
   console.timeEnd('setup');

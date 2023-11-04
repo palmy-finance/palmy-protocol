@@ -5,17 +5,21 @@ pragma experimental ABIEncoderV2;
 import {StableDebtToken} from '../protocol/tokenization/StableDebtToken.sol';
 import {VariableDebtToken} from '../protocol/tokenization/VariableDebtToken.sol';
 import {LendingRateOracle} from '../mocks/oracle/LendingRateOracle.sol';
-import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
+import {PalmyOwnable} from '../dependencies/PalmyOwnable.sol';
 import {StringLib} from './StringLib.sol';
 import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
 
-contract StableAndVariableTokensHelper is Ownable, Initializable {
+contract StableAndVariableTokensHelper is PalmyOwnable, Initializable {
   address payable private pool;
   address private addressesProvider;
   event deployedContracts(address stableToken, address variableToken);
 
+  constructor(address initialOwer) public PalmyOwnable(initialOwer) {}
 
-  function iniialize(address payable _pool, address _addressesProvider) external onlyOwner initializer {
+  function iniialize(
+    address payable _pool,
+    address _addressesProvider
+  ) external onlyOwner initializer {
     pool = _pool;
     addressesProvider = _addressesProvider;
   }

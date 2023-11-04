@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: agpl-3.0
 pragma solidity 0.6.12;
 
-import {Ownable} from '../../dependencies/openzeppelin/contracts/Ownable.sol';
+import {PalmyOwnable} from '../../dependencies/PalmyOwnable.sol';
 
 // Prettier ignore to prevent buidler flatter bug
 // prettier-ignore
@@ -16,7 +16,7 @@ import {ILendingPoolAddressesProvider} from '../../interfaces/ILendingPoolAddres
  * - Owned by the Palmy Governance
  * @author Palmy finance
  **/
-contract LendingPoolAddressesProvider is Ownable, ILendingPoolAddressesProvider {
+contract LendingPoolAddressesProvider is PalmyOwnable, ILendingPoolAddressesProvider {
   string private _marketId;
   mapping(bytes32 => address) private _addresses;
 
@@ -28,7 +28,7 @@ contract LendingPoolAddressesProvider is Ownable, ILendingPoolAddressesProvider 
   bytes32 private constant PRICE_ORACLE = 'PRICE_ORACLE';
   bytes32 private constant LENDING_RATE_ORACLE = 'LENDING_RATE_ORACLE';
 
-  constructor(string memory marketId) public {
+  constructor(string memory marketId, address initialOwner) public PalmyOwnable(initialOwner) {
     _setMarketId(marketId);
   }
 

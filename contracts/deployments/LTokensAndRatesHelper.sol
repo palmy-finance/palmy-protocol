@@ -3,19 +3,15 @@ pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import {LendingPool} from '../protocol/lendingpool/LendingPool.sol';
-import {
-  LendingPoolAddressesProvider
-} from '../protocol/configuration/LendingPoolAddressesProvider.sol';
+import {LendingPoolAddressesProvider} from '../protocol/configuration/LendingPoolAddressesProvider.sol';
 import {LendingPoolConfigurator} from '../protocol/lendingpool/LendingPoolConfigurator.sol';
 import {LToken} from '../protocol/tokenization/LToken.sol';
-import {
-  DefaultReserveInterestRateStrategy
-} from '../protocol/lendingpool/DefaultReserveInterestRateStrategy.sol';
-import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
+import {DefaultReserveInterestRateStrategy} from '../protocol/lendingpool/DefaultReserveInterestRateStrategy.sol';
+import {PalmyOwnable} from '../dependencies/PalmyOwnable.sol';
 import {StringLib} from './StringLib.sol';
 import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
 
-contract LTokensAndRatesHelper is Ownable, Initializable {
+contract LTokensAndRatesHelper is PalmyOwnable, Initializable {
   address payable private pool;
   address private addressesProvider;
   address private poolConfigurator;
@@ -36,12 +32,13 @@ contract LTokensAndRatesHelper is Ownable, Initializable {
     bool borrowingEnabled;
   }
 
+  constructor(address initialOwer) public PalmyOwnable(initialOwer) {}
 
-  function initialize(address payable _pool, address _addressesProvider, address _poolConfigurator)
-    external
-    onlyOwner
-    initializer
-  {
+  function initialize(
+    address payable _pool,
+    address _addressesProvider,
+    address _poolConfigurator
+  ) external onlyOwner initializer {
     pool = _pool;
     addressesProvider = _addressesProvider;
     poolConfigurator = _poolConfigurator;

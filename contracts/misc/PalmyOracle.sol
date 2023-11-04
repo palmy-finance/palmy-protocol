@@ -1,19 +1,20 @@
 // SPDX-License-Identifier: agpl-3.0
 pragma solidity 0.6.12;
 
-import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
+import {PalmyOwnable} from '../dependencies/PalmyOwnable.sol';
 import {IERC20} from '../dependencies/openzeppelin/contracts/IERC20.sol';
 import {IPriceAggregatorAdapter} from '../interfaces/IPriceAggregatorAdapter.sol';
 
 import {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';
 import {SafeERC20} from '../dependencies/openzeppelin/contracts/SafeERC20.sol';
 import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
+
 /// @title PalmyOracle
 /// @author Palmy finance
 /// @notice Proxy smart contract to get the price of an asset from a price source, with DIA Aggregator
 ///         smart contracts as primary option
 /// - If the returned price by a DIA aggregator is <= 0, the call is forwarded to a fallbackOracle
-contract PalmyOracle is IPriceOracleGetter, Ownable, Initializable {
+contract PalmyOracle is IPriceOracleGetter, PalmyOwnable, Initializable {
   using SafeERC20 for IERC20;
 
   event BaseCurrencySet(address indexed baseCurrency, uint256 baseCurrencyUnit);
@@ -30,8 +31,9 @@ contract PalmyOracle is IPriceOracleGetter, Ownable, Initializable {
   /// @param baseCurrencyUnit the unit of the base currency
   constructor(
     address baseCurrency,
-    uint256 baseCurrencyUnit
-  ) public {
+    uint256 baseCurrencyUnit,
+    address initialOwner
+  ) public PalmyOwnable(initialOwner) {
     BASE_CURRENCY = baseCurrency;
     BASE_CURRENCY_UNIT = baseCurrencyUnit;
     emit BaseCurrencySet(baseCurrency, baseCurrencyUnit);

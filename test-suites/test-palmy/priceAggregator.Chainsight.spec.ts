@@ -39,7 +39,9 @@ makeSuite('Price Aggregator Implementation for Chainsight', (testEnv: TestEnv) =
   });
 
   before(async () => {
-    aggregator = await await deployPriceAggregatorChainsightImpl();
+    aggregator = await deployPriceAggregatorChainsightImpl(
+      await (await getFirstSigner()).getAddress()
+    );
     for (const p of prices) {
       await deployChainsightOracle(p.symbol, false);
     }
