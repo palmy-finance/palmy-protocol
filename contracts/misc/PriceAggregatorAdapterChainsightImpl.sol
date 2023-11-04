@@ -2,7 +2,7 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 import {IPriceAggregatorAdapter} from '../interfaces/IPriceAggregatorAdapter.sol';
-import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
+import {PalmyOwnable} from '../dependencies/PalmyOwnable.sol';
 import {IChainsightOracle} from '../interfaces/IChainsightOracle.sol';
 import {IERC20Detailed} from '../dependencies/openzeppelin/contracts/IERC20Detailed.sol';
 import {SafeMath} from '../dependencies/openzeppelin/contracts/SafeMath.sol';
@@ -10,7 +10,7 @@ import {SafeMath} from '../dependencies/openzeppelin/contracts/SafeMath.sol';
 /// @title PriceAggregatorChainsightImpl
 /// @author Palmy finance
 /// @notice Price aggregator Chainsight implementation
-contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, Ownable {
+contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, PalmyOwnable {
   using SafeMath for uint256;
   mapping(address => Oracle) public oracles;
   event AssetSourcesUpdated(address[] assets, address[] oracleAddresses, address[] senders);
@@ -19,6 +19,8 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, Ownabl
     IChainsightOracle oracle;
     address sender;
   }
+
+  constructor(address initialOwner) public PalmyOwnable(initialOwner) {}
 
   /// @notice External function called by the Palmy governance to set or replace sources of assets
   /// @param assets The addresses of the assets

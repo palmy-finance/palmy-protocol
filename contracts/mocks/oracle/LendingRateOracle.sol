@@ -2,11 +2,13 @@
 pragma solidity 0.6.12;
 
 import {ILendingRateOracle} from '../../interfaces/ILendingRateOracle.sol';
-import {Ownable} from '../../dependencies/openzeppelin/contracts/Ownable.sol';
+import {PalmyOwnable} from '../../dependencies/PalmyOwnable.sol';
 
-contract LendingRateOracle is ILendingRateOracle, Ownable {
+contract LendingRateOracle is ILendingRateOracle, PalmyOwnable {
   mapping(address => uint256) borrowRates;
   mapping(address => uint256) liquidityRates;
+
+  constructor(address initialOwner) public PalmyOwnable(initialOwner) {}
 
   function getMarketBorrowRate(address _asset) external view override returns (uint256) {
     return borrowRates[_asset];

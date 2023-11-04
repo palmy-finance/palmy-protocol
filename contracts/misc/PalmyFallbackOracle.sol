@@ -3,10 +3,10 @@ pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import {SafeMath} from '../dependencies/openzeppelin/contracts/SafeMath.sol';
-import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
+import {PalmyOwnable} from '../dependencies/PalmyOwnable.sol';
 import {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';
 
-contract PalmyFallbackOracle is Ownable, IPriceOracleGetter {
+contract PalmyFallbackOracle is PalmyOwnable, IPriceOracleGetter {
   using SafeMath for uint256;
 
   struct Price {
@@ -14,6 +14,8 @@ contract PalmyFallbackOracle is Ownable, IPriceOracleGetter {
     uint64 blockTimestamp;
     uint128 price;
   }
+
+  constructor(address owner) public PalmyOwnable(owner) {}
 
   event PricesSubmitted(address sybil, address[] assets, uint128[] prices);
   event SybilAuthorized(address indexed sybil);
@@ -25,7 +27,7 @@ contract PalmyFallbackOracle is Ownable, IPriceOracleGetter {
 
   mapping(address => bool) private _sybils;
 
-  modifier onlySybil {
+  modifier onlySybil() {
     _requireWhitelistedSybil(msg.sender);
     _;
   }
