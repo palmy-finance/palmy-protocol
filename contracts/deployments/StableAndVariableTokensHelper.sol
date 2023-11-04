@@ -7,13 +7,15 @@ import {VariableDebtToken} from '../protocol/tokenization/VariableDebtToken.sol'
 import {LendingRateOracle} from '../mocks/oracle/LendingRateOracle.sol';
 import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
 import {StringLib} from './StringLib.sol';
+import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
 
-contract StableAndVariableTokensHelper is Ownable {
+contract StableAndVariableTokensHelper is Ownable, Initializable {
   address payable private pool;
   address private addressesProvider;
   event deployedContracts(address stableToken, address variableToken);
 
-  constructor(address payable _pool, address _addressesProvider) public {
+
+  function iniialize(address payable _pool, address _addressesProvider) external onlyOwner initializer {
     pool = _pool;
     addressesProvider = _addressesProvider;
   }

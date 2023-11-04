@@ -18,21 +18,20 @@ import {IPriceAggregatorAdapter} from '../interfaces/IPriceAggregatorAdapter.sol
 import {
   DefaultReserveInterestRateStrategy
 } from '../protocol/lendingpool/DefaultReserveInterestRateStrategy.sol';
+import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
 
-contract UiPoolDataProviderV2 is IUiPoolDataProviderV2 {
+contract UiPoolDataProviderV2 is IUiPoolDataProviderV2, Initializable {
   using WadRayMath for uint256;
   using ReserveConfiguration for DataTypes.ReserveConfigurationMap;
   using UserConfiguration for DataTypes.UserConfigurationMap;
 
-  IPriceAggregatorAdapter public immutable networkBaseTokenPriceInUsdProxyAggregatorAdapter;
+  IPriceAggregatorAdapter public networkBaseTokenPriceInUsdProxyAggregatorAdapter;
   uint256 public constant ETH_CURRENCY_UNIT = 1 ether;
-  address public immutable baseTokenAddress;
+  address public baseTokenAddress;
 
-  constructor(
-    IPriceAggregatorAdapter _networkBaseTokenPriceInUsdProxyAggregatorAdapter,
-    address _baseTokenAddress
-  ) public {
-    networkBaseTokenPriceInUsdProxyAggregatorAdapter = _networkBaseTokenPriceInUsdProxyAggregatorAdapter;
+
+  function initialize(address _networkBaseTokenPriceInUsdProxyAggregatorAdapter, address _baseTokenAddress) external initializer {
+    networkBaseTokenPriceInUsdProxyAggregatorAdapter = IPriceAggregatorAdapter(_networkBaseTokenPriceInUsdProxyAggregatorAdapter);
     baseTokenAddress = _baseTokenAddress;
   }
 

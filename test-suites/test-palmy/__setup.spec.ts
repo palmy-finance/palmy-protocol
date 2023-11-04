@@ -139,12 +139,17 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   );
 
   // Deploy deployment helpers
-  await deployStableAndVariableTokensHelper([lendingPoolProxy.address, addressesProvider.address]);
-  await deployLTokensAndRatesHelper([
+  const stableAndVariableTokensHelper = await deployStableAndVariableTokensHelper();
+  await stableAndVariableTokensHelper.iniialize(
+    lendingPoolProxy.address,
+    addressesProvider.address
+  );
+  const lTokensAndRatesHelper = await deployLTokensAndRatesHelper();
+  await lTokensAndRatesHelper.initialize(
     lendingPoolProxy.address,
     addressesProvider.address,
-    lendingPoolConfiguratorProxy.address,
-  ]);
+    lendingPoolConfiguratorProxy.address
+  );
 
   const fallbackOracle = await deployPriceOracle();
 
@@ -170,12 +175,8 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   const priceAggregator = await deployMockAggregators(ALL_ASSETS_INITIAL_PRICES, addresses);
 
-  await deployPalmyOracle([
-    priceAggregator.address,
-    fallbackOracle.address,
-    mockTokens.WETH.address,
-    oneEther.toString(),
-  ]);
+  const palmyOracle = await deployPalmyOracle([mockTokens.WETH.address, oneEther.toString()]);
+  await palmyOracle.initialize(priceAggregator.address, fallbackOracle.address);
   await waitForTx(await addressesProvider.setPriceOracle(fallbackOracle.address));
 
   const lendingRateOracle = await deployLendingRateOracle();
@@ -198,7 +199,8 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     DAI: strategyDAIForTest,
   };
 
-  const testHelpers = await deployPalmyProtocolDataProvider(addressesProvider.address);
+  const testHelpers = await deployPalmyProtocolDataProvider();
+  await testHelpers.initialize(addressesProvider.address);
 
   await deployLTokenImplementations(ConfigNames.Palmy, reservesParams, false);
 

@@ -13,8 +13,9 @@ import {
 } from '../protocol/lendingpool/DefaultReserveInterestRateStrategy.sol';
 import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
 import {StringLib} from './StringLib.sol';
+import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
 
-contract LTokensAndRatesHelper is Ownable {
+contract LTokensAndRatesHelper is Ownable, Initializable {
   address payable private pool;
   address private addressesProvider;
   address private poolConfigurator;
@@ -35,11 +36,12 @@ contract LTokensAndRatesHelper is Ownable {
     bool borrowingEnabled;
   }
 
-  constructor(
-    address payable _pool,
-    address _addressesProvider,
-    address _poolConfigurator
-  ) public {
+
+  function initialize(address payable _pool, address _addressesProvider, address _poolConfigurator)
+    external
+    onlyOwner
+    initializer
+  {
     pool = _pool;
     addressesProvider = _addressesProvider;
     poolConfigurator = _poolConfigurator;

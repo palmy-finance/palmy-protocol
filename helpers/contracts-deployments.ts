@@ -241,12 +241,9 @@ export const deployMockAggregator = async (
     verify
   );
 
-export const deployPalmyOracle = async (
-  args: [tEthereumAddress, tEthereumAddress, string, string],
-  verify?: boolean
-) =>
+export const deployPalmyOracle = async (args: [string, string], verify?: boolean) =>
   withSaveAndVerify(
-    await new PalmyOracleFactory(await getFirstSigner()).deploy(args[0], args[1], args[2], args[3]),
+    await new PalmyOracleFactory(await getFirstSigner()).deploy(args[0], args[1]),
     eContractid.PalmyOracle,
     args,
     verify
@@ -295,14 +292,11 @@ export const deployWalletBalancerProvider = async (verify?: boolean) =>
     verify
   );
 
-export const deployPalmyProtocolDataProvider = async (
-  addressesProvider: tEthereumAddress,
-  verify?: boolean
-) =>
+export const deployPalmyProtocolDataProvider = async (verify?: boolean) =>
   withSaveAndVerify(
-    await new PalmyProtocolDataProviderFactory(await getFirstSigner()).deploy(addressesProvider),
+    await new PalmyProtocolDataProviderFactory(await getFirstSigner()).deploy(),
     eContractid.PalmyProtocolDataProvider,
-    [addressesProvider],
+    [],
     verify
   );
 
@@ -509,25 +503,19 @@ export const deployAllMockTokens = async (verify?: boolean) => {
   return tokens;
 };
 
-export const deployStableAndVariableTokensHelper = async (
-  args: [tEthereumAddress, tEthereumAddress],
-  verify?: boolean
-) =>
+export const deployStableAndVariableTokensHelper = async (verify?: boolean) =>
   withSaveAndVerify(
-    await new StableAndVariableTokensHelperFactory(await getFirstSigner()).deploy(...args),
+    await new StableAndVariableTokensHelperFactory(await getFirstSigner()).deploy(),
     eContractid.StableAndVariableTokensHelper,
-    args,
+    [],
     verify
   );
 
-export const deployLTokensAndRatesHelper = async (
-  args: [tEthereumAddress, tEthereumAddress, tEthereumAddress],
-  verify?: boolean
-) =>
+export const deployLTokensAndRatesHelper = async (verify?: boolean) =>
   withSaveAndVerify(
-    await new LTokensAndRatesHelperFactory(await getFirstSigner()).deploy(...args),
+    await new LTokensAndRatesHelperFactory(await getFirstSigner()).deploy(),
     eContractid.LTokensAndRatesHelper,
-    args,
+    [],
     verify
   );
 
