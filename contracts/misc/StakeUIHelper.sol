@@ -6,19 +6,20 @@ import {IStakedToken} from '../interfaces/IStakedToken.sol';
 import {StakeUIHelperI} from '../interfaces/StakeUIHelperI.sol';
 import {IERC20WithNonce} from '../interfaces/IERC20WithNonce.sol';
 import {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';
+import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
 
-contract StakeUIHelper is StakeUIHelperI {
-  IPriceOracleGetter public immutable PRICE_ORACLE;
+contract StakeUIHelper is StakeUIHelperI, Initializable {
+  IPriceOracleGetter public PRICE_ORACLE;
 
-  address public immutable MOCK_USD_ADDRESS;
-  address public immutable WOAS;
-  IStakedToken public immutable STAKED_OAS;
+  address public MOCK_USD_ADDRESS;
+  address public WOAS;
+  IStakedToken public STAKED_OAS;
 
   uint256 constant SECONDS_PER_YEAR = 365 * 24 * 60 * 60;
   uint256 constant APY_PRECISION = 10000;
   uint256 internal constant USD_BASE = 1e26;
 
-  constructor(address priceOracle, address wOas, address stkOas, address mockUsd) public {
+  function initialize(address priceOracle, address wOas, address stkOas, address mockUsd) external initializer {
     require(priceOracle != address(0), 'priceOracle address cannot be empty');
     require(wOas != address(0), 'wOas address cannot be empty');
     require(stkOas != address(0), 'stkOas address cannot be empty');

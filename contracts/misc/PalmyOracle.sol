@@ -7,13 +7,13 @@ import {IPriceAggregatorAdapter} from '../interfaces/IPriceAggregatorAdapter.sol
 
 import {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';
 import {SafeERC20} from '../dependencies/openzeppelin/contracts/SafeERC20.sol';
-
+import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
 /// @title PalmyOracle
 /// @author Palmy finance
 /// @notice Proxy smart contract to get the price of an asset from a price source, with DIA Aggregator
 ///         smart contracts as primary option
 /// - If the returned price by a DIA aggregator is <= 0, the call is forwarded to a fallbackOracle
-contract PalmyOracle is IPriceOracleGetter, Ownable {
+contract PalmyOracle is IPriceOracleGetter, Ownable, Initializable {
   using SafeERC20 for IERC20;
 
   event BaseCurrencySet(address indexed baseCurrency, uint256 baseCurrencyUnit);
@@ -26,22 +26,20 @@ contract PalmyOracle is IPriceOracleGetter, Ownable {
   uint256 public immutable BASE_CURRENCY_UNIT;
 
   /// @notice Constructor
-  /// @param priceAggregatorAdapter The address of the price aggregator adapter to use feed prices
-  /// @param fallbackOracle The address of the fallback oracle to use if the data of an
-  ///        aggregator is not consistent
   /// @param baseCurrency the base currency used for the price quotes. If USD is used, base currency is 0x0
   /// @param baseCurrencyUnit the unit of the base currency
   constructor(
-    address priceAggregatorAdapter,
-    address fallbackOracle,
     address baseCurrency,
     uint256 baseCurrencyUnit
   ) public {
-    _setFallbackOracle(fallbackOracle);
-    _setPriceAggregatorAdapter(priceAggregatorAdapter);
     BASE_CURRENCY = baseCurrency;
     BASE_CURRENCY_UNIT = baseCurrencyUnit;
     emit BaseCurrencySet(baseCurrency, baseCurrencyUnit);
+  }
+
+  function initialize(address priceAggregatorAdapter, address fallbackOracle) external initializer {
+    _setFallbackOracle(fallbackOracle);
+    _setPriceAggregatorAdapter(priceAggregatorAdapter);
   }
 
   function setPriceAggregator(address priceAggregator) external onlyOwner {

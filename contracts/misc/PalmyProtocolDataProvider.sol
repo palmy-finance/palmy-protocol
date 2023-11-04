@@ -10,8 +10,8 @@ import {IVariableDebtToken} from '../interfaces/IVariableDebtToken.sol';
 import {ReserveConfiguration} from '../protocol/libraries/configuration/ReserveConfiguration.sol';
 import {UserConfiguration} from '../protocol/libraries/configuration/UserConfiguration.sol';
 import {DataTypes} from '../protocol/libraries/types/DataTypes.sol';
-
-contract PalmyProtocolDataProvider {
+import {Initializable} from '../dependencies/openzeppelin/upgradeability/Initializable.sol';
+contract PalmyProtocolDataProvider is Initializable {
   using ReserveConfiguration for DataTypes.ReserveConfigurationMap;
   using UserConfiguration for DataTypes.UserConfigurationMap;
 
@@ -22,10 +22,10 @@ contract PalmyProtocolDataProvider {
     address tokenAddress;
   }
 
-  ILendingPoolAddressesProvider public immutable ADDRESSES_PROVIDER;
+  ILendingPoolAddressesProvider public ADDRESSES_PROVIDER;
 
-  constructor(ILendingPoolAddressesProvider addressesProvider) public {
-    ADDRESSES_PROVIDER = addressesProvider;
+  function initialize(ILendingPoolAddressesProvider provider) external initializer {
+    ADDRESSES_PROVIDER = provider;
   }
 
   function getAllReservesTokens() external view returns (TokenData[] memory) {
