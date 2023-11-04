@@ -71,18 +71,11 @@ export const deployUiIncentiveDataProviderV2 = async (verify?: boolean) =>
     verify
   );
 
-export const deployUiPoolDataProviderV2 = async (
-  aggregatorProxy: string,
-  baseTokenAddress: string,
-  verify?: boolean
-) =>
+export const deployUiPoolDataProviderV2 = async (verify?: boolean) =>
   withSaveAndVerify(
-    await new UiPoolDataProviderV2Factory(await getFirstSigner()).deploy(
-      aggregatorProxy,
-      baseTokenAddress
-    ),
+    await new UiPoolDataProviderV2Factory(await getFirstSigner()).deploy(),
     eContractid.UiPoolDataProviderV2,
-    [aggregatorProxy, baseTokenAddress],
+    [],
     verify
   );
 
@@ -93,19 +86,31 @@ const readArtifact = async (id: string) => {
   return (DRE as HardhatRuntimeEnvironment).artifacts.readArtifact(id);
 };
 
-export const deployLendingPoolAddressesProvider = async (marketId: string, verify?: boolean) =>
+export const deployLendingPoolAddressesProvider = async (
+  marketId: string,
+  initialOwner: string,
+  verify?: boolean
+) =>
   withSaveAndVerify(
-    await new LendingPoolAddressesProviderFactory(await getFirstSigner()).deploy(marketId),
+    await new LendingPoolAddressesProviderFactory(await getFirstSigner()).deploy(
+      marketId,
+      initialOwner
+    ),
     eContractid.LendingPoolAddressesProvider,
-    [marketId],
+    [marketId, initialOwner],
     verify
   );
 
-export const deployLendingPoolAddressesProviderRegistry = async (verify?: boolean) =>
+export const deployLendingPoolAddressesProviderRegistry = async (
+  initialOwner: string,
+  verify?: boolean
+) =>
   withSaveAndVerify(
-    await new LendingPoolAddressesProviderRegistryFactory(await getFirstSigner()).deploy(),
+    await new LendingPoolAddressesProviderRegistryFactory(await getFirstSigner()).deploy(
+      initialOwner
+    ),
     eContractid.LendingPoolAddressesProviderRegistry,
-    [],
+    [initialOwner],
     verify
   );
 
@@ -214,17 +219,17 @@ export const deployPriceOracle = async (verify?: boolean) =>
     verify
   );
 
-export const deployPalmyFallbackOracle = async (verify?: boolean) =>
+export const deployPalmyFallbackOracle = async (initialOwner: string, verify?: boolean) =>
   withSaveAndVerify(
-    await new PalmyFallbackOracleFactory(await getFirstSigner()).deploy(),
+    await new PalmyFallbackOracleFactory(await getFirstSigner()).deploy(initialOwner),
     eContractid.PalmyFallbackOracle,
     [],
     verify
   );
 
-export const deployLendingRateOracle = async (verify?: boolean) =>
+export const deployLendingRateOracle = async (initialOwner: string, verify?: boolean) =>
   withSaveAndVerify(
-    await new LendingRateOracleFactory(await getFirstSigner()).deploy(),
+    await new LendingRateOracleFactory(await getFirstSigner()).deploy(initialOwner),
     eContractid.LendingRateOracle,
     [],
     verify
@@ -241,9 +246,9 @@ export const deployMockAggregator = async (
     verify
   );
 
-export const deployPalmyOracle = async (args: [string, string], verify?: boolean) =>
+export const deployPalmyOracle = async (args: [string, string, string], verify?: boolean) =>
   withSaveAndVerify(
-    await new PalmyOracleFactory(await getFirstSigner()).deploy(args[0], args[1]),
+    await new PalmyOracleFactory(await getFirstSigner()).deploy(args[0], args[1], args[2]),
     eContractid.PalmyOracle,
     args,
     verify
@@ -503,23 +508,23 @@ export const deployAllMockTokens = async (verify?: boolean) => {
   return tokens;
 };
 
-export const deployStableAndVariableTokensHelper = async (verify?: boolean) =>
+export const deployStableAndVariableTokensHelper = async (initialOwner: string, verify?: boolean) =>
   withSaveAndVerify(
-    await new StableAndVariableTokensHelperFactory(await getFirstSigner()).deploy(),
+    await new StableAndVariableTokensHelperFactory(await getFirstSigner()).deploy(initialOwner),
     eContractid.StableAndVariableTokensHelper,
     [],
     verify
   );
 
-export const deployLTokensAndRatesHelper = async (verify?: boolean) =>
+export const deployLTokensAndRatesHelper = async (initialOwner: string, verify?: boolean) =>
   withSaveAndVerify(
-    await new LTokensAndRatesHelperFactory(await getFirstSigner()).deploy(),
+    await new LTokensAndRatesHelperFactory(await getFirstSigner()).deploy(initialOwner),
     eContractid.LTokensAndRatesHelper,
     [],
     verify
   );
 
-export const deployWETHGateway = async (args: [tEthereumAddress], verify?: boolean) =>
+export const deployWETHGateway = async (args: [tEthereumAddress, string], verify?: boolean) =>
   withSaveAndVerify(
     await new WETHGatewayFactory(await getFirstSigner()).deploy(...args),
     eContractid.WETHGateway,
@@ -677,33 +682,21 @@ export const deployRateStrategy = async (
   }
 };
 
-export const deployPriceAggregatorChainsightImpl = async (verify?: boolean) =>
+export const deployPriceAggregatorChainsightImpl = async (initialOwner: string, verify?: boolean) =>
   withSaveAndVerify(
-    await new PriceAggregatorAdapterChainsightImplFactory(await getFirstSigner()).deploy(),
+    await new PriceAggregatorAdapterChainsightImplFactory(await getFirstSigner()).deploy(
+      initialOwner
+    ),
     eContractid.PriceAggregatorAdapterChainsightImpl,
     [],
     verify
   );
 
-export const deployStakeUIHelper = async (
-  [priceOracle, woas, stakedOas, mockUsd]: [
-    tEthereumAddress,
-    tEthereumAddress,
-    tEthereumAddress,
-    tEthereumAddress
-  ],
-  verify?: boolean
-) => {
-  const args = [priceOracle, woas, stakedOas, mockUsd];
+export const deployStakeUIHelper = async (verify?: boolean) => {
   return withSaveAndVerify(
-    await new StakeUIHelperFactory(await getFirstSigner()).deploy(
-      priceOracle,
-      woas,
-      stakedOas,
-      mockUsd
-    ),
+    await new StakeUIHelperFactory(await getFirstSigner()).deploy(),
     eContractid.StakeUIHelper,
-    args,
+    [],
     verify
   );
 };
