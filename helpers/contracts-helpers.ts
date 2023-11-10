@@ -2,7 +2,7 @@ import { Artifact as BuidlerArtifact } from '@nomiclabs/buidler/types';
 import BigNumber from 'bignumber.js';
 import { signTypedData_v4 } from 'eth-sig-util';
 import { ECDSASignature, fromRpcSig } from 'ethereumjs-util';
-import { BigNumberish, Contract, ethers, Signer, utils } from 'ethers';
+import { BigNumberish, BytesLike, Contract, ethers, Signer, utils } from 'ethers';
 import { Artifact } from 'hardhat/types';
 import { MintableERC20 } from '../types/MintableERC20';
 import { ConfigNames, loadPoolConfig } from './configuration';
@@ -25,8 +25,56 @@ import {
   tStringTokenSmallUnits,
 } from './types';
 
+export const deployToOasysTestnet = async (id: eContractid, verify?: boolean) => {
+  const path = require('path');
+  const fs = require('fs');
+  const dir = path.join(__dirname, '..', '.deployments', 'calldata', 'testnet');
+  const file = path.join(dir, `${id}.calldata`);
+  if (!fs.existsSync(file)) {
+    throw new Error(`File ${file} not found`);
+  }
+  const calldata = fs.readFileSync(file, 'utf8');
+  const signer = (await getEthersSigners())[0];
+  const tx = await signer.sendTransaction({
+    data: calldata,
+    to: undefined,
+    type: 2,
+  });
+  const receipt = await tx.wait();
+  await registerContractAddressInJsonDb(id, receipt.contractAddress!, receipt.from);
+  console.log(
+    `\t ${id} deployed tx: ${receipt.transactionHash}, address: ${receipt.contractAddress}`
+  );
+  return receipt;
+};
+export const registerContractAddressInJsonDb = async (
+  contractId: string,
+  address: string,
+  deployer: string
+) => {
+  const currentNetwork = DRE.network.name;
+  await getDb()
+    .set(`${contractId}.${currentNetwork}`, {
+      address: address,
+      deployer: deployer,
+    })
+    .write();
+};
 export type MockTokenMap = { [symbol: string]: MintableERC20 };
+export const saveDeploymentCallData = async (contractId: string, callData: BytesLike) => {
+  const currentNetwork = DRE.network.name;
+  // save calldata into .deployments/calldata/<network>/<contractId>.calldata
+  // directory of this file
+  const path = require('path');
+  const fs = require('fs');
+  const dir = path.join(__dirname, '..', '.deployments', 'calldata', currentNetwork);
 
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const fileName = path.join(dir, `${contractId}.calldata`);
+  fs.writeFileSync(fileName, callData);
+};
 export const registerContractInJsonDb = async (contractId: string, contractInstance: Contract) => {
   const currentNetwork = DRE.network.name;
   const FORK = process.env.FORK;
@@ -104,7 +152,7 @@ export const withSaveAndVerify = async <ContractType extends Contract>(
   await waitForTx(instance.deployTransaction);
   await registerContractInJsonDb(id, instance);
   if (verify) {
-    await verifyContract(id, instance, args);
+    await verifyContract(id, instance.address, args);
   }
   return instance;
 };
@@ -302,14 +350,11 @@ export const buildRepayAdapterParams = (
 
 export const verifyContract = async (
   id: string,
-  instance: Contract,
-  args: (string | string[])[]
+  contractAddress: string,
+  args: (string | string[])[],
+  libraries?: string
 ) => {
-  if (usingTenderly()) {
-    await verifyAtTenderly(id, instance);
-  }
-  await verifyEtherscanContract(instance.address, args);
-  return instance;
+  await verifyEtherscanContract(contractAddress, args, libraries);
 };
 
 export const getContractAddressWithJsonFallback = async (

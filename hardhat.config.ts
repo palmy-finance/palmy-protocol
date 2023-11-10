@@ -7,16 +7,9 @@ import 'hardhat-typechain';
 import { HardhatUserConfig } from 'hardhat/types';
 import path from 'path';
 import 'solidity-coverage';
-import 'temp-hardhat-etherscan';
-import {
-  buildForkConfig,
-  NETWORKS_DEFAULT_GAS,
-  NETWORKS_RPC_URL,
-} from './helper-hardhat-config';
-import {
-  BUIDLEREVM_CHAINID,
-  COVERAGE_CHAINID,
-} from './helpers/buidler-constants';
+import '@nomiclabs/hardhat-etherscan';
+import { buildForkConfig, NETWORKS_DEFAULT_GAS, NETWORKS_RPC_URL } from './helper-hardhat-config';
+import { BUIDLEREVM_CHAINID, COVERAGE_CHAINID } from './helpers/buidler-constants';
 import { eOasysNetwork, eNetwork } from './helpers/types';
 // @ts-ignore
 import { accounts } from './test-wallets.js';
@@ -58,9 +51,6 @@ require(`${path.join(__dirname, 'tasks/misc')}/set-bre.ts`);
 const getCommonNetworkConfig = (networkName: eNetwork, networkId: number) => ({
   url: NETWORKS_RPC_URL[networkName],
   hardfork: HARDFORK,
-  blockGasLimit: DEFAULT_BLOCK_GAS_LIMIT,
-  gasMultiplier: DEFAULT_GAS_MUL,
-  gasPrice: NETWORKS_DEFAULT_GAS[networkName],
   chainId: networkId,
   accounts: {
     mnemonic: MNEMONIC,
@@ -84,9 +74,30 @@ const buidlerConfig: HardhatUserConfig = {
     outDir: 'types',
     target: 'ethers-v5',
   },
-  // etherscan: {
-  //   apiKey: ETHERSCAN_KEY,
-  // },
+  etherscan: {
+    apiKey: {
+      testnet: 'N/A',
+      oasys: 'N/A',
+    },
+    customChains: [
+      {
+        chainId: 9372,
+        network: 'testnet',
+        urls: {
+          apiURL: 'https://explorer.testnet.oasys.games/api',
+          browserURL: 'https://explorer.testnet.oasys.games',
+        },
+      },
+      {
+        chainId: 248,
+        network: 'oasys',
+        urls: {
+          apiURL: 'https://explorer.oasys.games/api',
+          browserURL: 'https://explorer.oasys.games',
+        },
+      },
+    ],
+  },
   mocha: {
     timeout: 0,
   },
@@ -111,12 +122,10 @@ const buidlerConfig: HardhatUserConfig = {
       chainId: BUIDLEREVM_CHAINID,
       throwOnTransactionFailures: true,
       throwOnCallFailures: true,
-      accounts: accounts.map(
-        ({ secretKey, balance }: { secretKey: string; balance: string }) => ({
-          privateKey: secretKey,
-          balance,
-        })
-      ),
+      accounts: accounts.map(({ secretKey, balance }: { secretKey: string; balance: string }) => ({
+        privateKey: secretKey,
+        balance,
+      })),
       forking: buildForkConfig(),
     },
     buidlerevm_docker: {
@@ -132,8 +141,7 @@ const buidlerConfig: HardhatUserConfig = {
     ganache: {
       url: 'http://ganache:8545',
       accounts: {
-        mnemonic:
-          'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
+        mnemonic: 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
         path: "m/44'/60'/0'/0",
         initialIndex: 0,
         count: 20,

@@ -7,9 +7,7 @@ import {ILendingPool} from '../../interfaces/ILendingPool.sol';
 import {ILToken} from '../../interfaces/ILToken.sol';
 import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
-import {
-  VersionedInitializable
-} from '../libraries/palmy-upgradeability/VersionedInitializable.sol';
+import {VersionedInitializable} from '../libraries/palmy-upgradeability/VersionedInitializable.sol';
 import {IncentivizedERC20} from './IncentivizedERC20.sol';
 import {IPalmyIncentivesController} from '../../interfaces/IPalmyIncentivesController.sol';
 
@@ -37,14 +35,12 @@ contract LToken is
   /// @dev owner => next valid nonce to submit with permit()
   mapping(address => uint256) public _nonces;
 
-  function pay() external payable{}
-
   ILendingPool internal _pool;
   address internal _treasury;
   address internal _underlyingAsset;
   IPalmyIncentivesController internal _incentivesController;
 
-  modifier onlyLendingPool {
+  modifier onlyLendingPool() {
     require(_msgSender() == address(_pool), Errors.CT_CALLER_MUST_BE_LENDING_POOL);
     _;
   }
@@ -194,12 +190,9 @@ contract LToken is
    * @param user The user whose balance is calculated
    * @return The balance of the user
    **/
-  function balanceOf(address user)
-    public
-    view
-    override(IncentivizedERC20, IERC20)
-    returns (uint256)
-  {
+  function balanceOf(
+    address user
+  ) public view override(IncentivizedERC20, IERC20) returns (uint256) {
     return super.balanceOf(user).rayMul(_pool.getReserveNormalizedIncome(_underlyingAsset));
   }
 
@@ -219,12 +212,9 @@ contract LToken is
    * @return The scaled balance of the user
    * @return The scaled balance and the scaled total supply
    **/
-  function getScaledUserBalanceAndSupply(address user)
-    external
-    view
-    override
-    returns (uint256, uint256)
-  {
+  function getScaledUserBalanceAndSupply(
+    address user
+  ) external view override returns (uint256, uint256) {
     return (super.balanceOf(user), super.totalSupply());
   }
 
@@ -276,12 +266,7 @@ contract LToken is
   /**
    * @dev For internal usage in the logic of the parent contract IncentivizedERC20
    **/
-  function _getIncentivesController()
-    internal
-    view
-    override
-    returns (IPalmyIncentivesController)
-  {
+  function _getIncentivesController() internal view override returns (IPalmyIncentivesController) {
     return _incentivesController;
   }
 
@@ -299,12 +284,10 @@ contract LToken is
    * @param amount The amount getting transferred
    * @return The amount transferred
    **/
-  function transferUnderlyingTo(address target, uint256 amount)
-    external
-    override
-    onlyLendingPool
-    returns (uint256)
-  {
+  function transferUnderlyingTo(
+    address target,
+    uint256 amount
+  ) external override onlyLendingPool returns (uint256) {
     IERC20(_underlyingAsset).safeTransfer(target, amount);
     return amount;
   }
@@ -346,24 +329,22 @@ contract LToken is
     assembly {
       chainId := chainid()
     }
-    bytes32 domainSeparator =
-      keccak256(
-        abi.encode(
-          EIP712_DOMAIN,
-          keccak256(bytes(name())),
-          keccak256(EIP712_REVISION),
-          chainId,
-          address(this)
-        )
-      );
-    bytes32 digest =
-      keccak256(
-        abi.encodePacked(
-          '\x19\x01',
-          domainSeparator,
-          keccak256(abi.encode(PERMIT_TYPEHASH, owner, spender, value, currentValidNonce, deadline))
-        )
-      );
+    bytes32 domainSeparator = keccak256(
+      abi.encode(
+        EIP712_DOMAIN,
+        keccak256(bytes(name())),
+        keccak256(EIP712_REVISION),
+        chainId,
+        address(this)
+      )
+    );
+    bytes32 digest = keccak256(
+      abi.encodePacked(
+        '\x19\x01',
+        domainSeparator,
+        keccak256(abi.encode(PERMIT_TYPEHASH, owner, spender, value, currentValidNonce, deadline))
+      )
+    );
     require(owner == ecrecover(digest, v, r, s), 'INVALID_SIGNATURE');
     _nonces[owner] = currentValidNonce.add(1);
     _approve(owner, spender, value);
@@ -377,12 +358,7 @@ contract LToken is
    * @param amount The amount getting transferred
    * @param validate `true` if the transfer needs to be validated
    **/
-  function _transfer(
-    address from,
-    address to,
-    uint256 amount,
-    bool validate
-  ) internal {
+  function _transfer(address from, address to, uint256 amount, bool validate) internal {
     address underlyingAsset = _underlyingAsset;
     ILendingPool pool = _pool;
 
@@ -406,11 +382,7 @@ contract LToken is
    * @param to The destination address
    * @param amount The amount getting transferred
    **/
-  function _transfer(
-    address from,
-    address to,
-    uint256 amount
-  ) internal override {
+  function _transfer(address from, address to, uint256 amount) internal override {
     _transfer(from, to, amount, true);
   }
 }

@@ -1,5 +1,5 @@
 import { readArtifact as buidlerReadArtifact } from '@nomiclabs/buidler/plugins';
-import { Contract, Signer } from 'ethers';
+import { BytesLike, Contract, Signer } from 'ethers';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import {
   DefaultReserveInterestRateStrategyFactory,
@@ -12,7 +12,6 @@ import {
   LendingPoolFactory,
   LendingRateOracleFactory,
   LTokenFactory,
-  LTokenRev2Factory,
   LTokensAndRatesHelperFactory,
   MintableDelegationERC20Factory,
   MintableERC20Factory,
@@ -43,9 +42,18 @@ import { MintableERC20 } from '../types/MintableERC20';
 import { StableAndVariableTokensHelperFactory } from '../types/StableAndVariableTokensHelperFactory';
 import { WETH9Mocked } from '../types/WETH9Mocked';
 import { PriceAggregatorAdapterChainsightImplFactory } from './../types/PriceAggregatorAdapterChainsightImplFactory';
-import { ConfigNames, getReservesConfigByPool, loadPoolConfig } from './configuration';
+import {
+  ConfigNames,
+  getGenesisPoolAdmin,
+  getQuoteCurrency,
+  getReservesConfigByPool,
+  getWrappedNativeTokenAddress,
+  loadPoolConfig,
+} from './configuration';
 import { getFirstSigner } from './contracts-getters';
 import {
+  getContractAddressWithJsonFallback,
+  getEthersSigners,
   getOptionalParamAddressPerNetwork,
   insertContractAddressInDb,
   linkBytecode,
@@ -62,6 +70,7 @@ import {
   tEthereumAddress,
   TokenContractId,
 } from './types';
+import PalmyConfig from '../markets/palmy';
 
 export const deployUiIncentiveDataProviderV2 = async (verify?: boolean) =>
   withSaveAndVerify(
@@ -101,6 +110,9 @@ export const deployLendingPoolAddressesProvider = async (
     verify
   );
 
+export const exportDeploymentCallData = async (id: eContractid) => {
+  return await getDeploymentCallData(id);
+};
 export const deployLendingPoolAddressesProviderRegistry = async (
   initialOwner: string,
   verify?: boolean
@@ -113,6 +125,20 @@ export const deployLendingPoolAddressesProviderRegistry = async (
     [initialOwner],
     verify
   );
+
+const _getDeploymentCallData = async (contractName: string, args: any[]): Promise<BytesLike> => {
+  const contract = (await DRE.ethers.getContractFactory(contractName)).getDeployTransaction(
+    ...args
+  );
+  return contract.data!;
+};
+
+const getDeploymentCallData = async (contractName: eContractid): Promise<BytesLike> => {
+  return await _getDeploymentCallData(
+    contractName,
+    await getDeployArgs(DRE.network.name as eNetwork, contractName)
+  );
+};
 
 export const deployLendingPoolConfigurator = async (verify?: boolean) => {
   const lendingPoolConfiguratorImpl = await new LendingPoolConfiguratorFactory(
@@ -130,6 +156,38 @@ export const deployLendingPoolConfigurator = async (verify?: boolean) => {
   );
 };
 
+export const getDeployArgs = async (network: eNetwork, id: eContractid) => {
+  switch (id) {
+    case eContractid.LendingPoolAddressesProvider:
+      return [PalmyConfig.MarketId, await (await getEthersSigners())[0].getAddress()];
+    case eContractid.LendingPoolAddressesProviderRegistry:
+      return [await (await getEthersSigners())[0].getAddress()];
+    case eContractid.StableAndVariableTokensHelper:
+      return [await (await getEthersSigners())[0].getAddress()];
+    case eContractid.LTokensAndRatesHelper:
+      return [await (await getEthersSigners())[0].getAddress()];
+    case eContractid.PriceAggregatorAdapterChainsightImpl:
+      return [await (await getEthersSigners())[0].getAddress()];
+    case eContractid.LendingRateOracle:
+      return [await (await getEthersSigners())[0].getAddress()];
+    case eContractid.PalmyFallbackOracle:
+      return [await (await getEthersSigners())[0].getAddress()];
+    case eContractid.PalmyOracle:
+      return [
+        await getQuoteCurrency(loadPoolConfig(ConfigNames.Palmy)),
+        await loadPoolConfig(ConfigNames.Palmy).OracleQuoteUnit,
+        await (await getEthersSigners())[0].getAddress(),
+      ];
+    case eContractid.WETHGateway:
+      return [
+        await getWrappedNativeTokenAddress(loadPoolConfig(ConfigNames.Palmy)),
+        await (await getEthersSigners())[0].getAddress(),
+      ];
+    default:
+      return [];
+  }
+};
+
 export const deployReserveLogicLibrary = async (verify?: boolean) =>
   withSaveAndVerify(
     await new ReserveLogicFactory(await getFirstSigner()).deploy(),
@@ -137,18 +195,22 @@ export const deployReserveLogicLibrary = async (verify?: boolean) =>
     [],
     verify
   );
-
-export const deployGenericLogic = async (reserveLogic: Contract, verify?: boolean) => {
+export const exportGenericLogicDeploymentCallData = async (reserveLogicAddress: string) => {
+  const genericLogicFactory = await getGenericLogicContractFactory(reserveLogicAddress);
+  return await genericLogicFactory.connect(await getFirstSigner()).getDeployTransaction().data!;
+};
+const getGenericLogicContractFactory = async (reserveLogicAddress: string) => {
   const genericLogicArtifact = await readArtifact(eContractid.GenericLogic);
 
   const linkedGenericLogicByteCode = linkBytecode(genericLogicArtifact, {
-    [eContractid.ReserveLogic]: reserveLogic.address,
+    [eContractid.ReserveLogic]: reserveLogicAddress,
   });
 
-  const genericLogicFactory = await DRE.ethers.getContractFactory(
-    genericLogicArtifact.abi,
-    linkedGenericLogicByteCode
-  );
+  return await DRE.ethers.getContractFactory(genericLogicArtifact.abi, linkedGenericLogicByteCode);
+};
+
+export const deployGenericLogic = async (reserveLogic: Contract, verify?: boolean) => {
+  const genericLogicFactory = await getGenericLogicContractFactory(reserveLogic.address);
 
   const genericLogic = await (
     await genericLogicFactory.connect(await getFirstSigner()).deploy()
@@ -156,21 +218,42 @@ export const deployGenericLogic = async (reserveLogic: Contract, verify?: boolea
   return withSaveAndVerify(genericLogic, eContractid.GenericLogic, [], verify);
 };
 
+export const exportValidationLogicDeploymentCallData = async (
+  reserveLogicAddress: string,
+  genericLogicAddress: string
+) => {
+  const validationLogicFactory = await getValidationLogicContractFactory(
+    reserveLogicAddress,
+    genericLogicAddress
+  );
+  return await validationLogicFactory.connect(await getFirstSigner()).getDeployTransaction().data!;
+};
+
+const getValidationLogicContractFactory = async (
+  reserveLogicAddress: string,
+  genericLogicAddress: string
+) => {
+  const validationLogicArtifact = await readArtifact(eContractid.ValidationLogic);
+
+  const linkedValidationLogicByteCode = linkBytecode(validationLogicArtifact, {
+    [eContractid.ReserveLogic]: reserveLogicAddress,
+    [eContractid.GenericLogic]: genericLogicAddress,
+  });
+
+  return await DRE.ethers.getContractFactory(
+    validationLogicArtifact.abi,
+    linkedValidationLogicByteCode
+  );
+};
+
 export const deployValidationLogic = async (
   reserveLogic: Contract,
   genericLogic: Contract,
   verify?: boolean
 ) => {
-  const validationLogicArtifact = await readArtifact(eContractid.ValidationLogic);
-
-  const linkedValidationLogicByteCode = linkBytecode(validationLogicArtifact, {
-    [eContractid.ReserveLogic]: reserveLogic.address,
-    [eContractid.GenericLogic]: genericLogic.address,
-  });
-
-  const validationLogicFactory = await DRE.ethers.getContractFactory(
-    validationLogicArtifact.abi,
-    linkedValidationLogicByteCode
+  const validationLogicFactory = await getValidationLogicContractFactory(
+    reserveLogic.address,
+    genericLogic.address
   );
 
   const validationLogic = await (
@@ -187,6 +270,13 @@ export const deployPalmyLibraries = async (
   const genericLogic = await deployGenericLogic(reserveLogic, verify);
   const validationLogic = await deployValidationLogic(reserveLogic, genericLogic, verify);
 
+  return toPalmyLibs(validationLogic.address, reserveLogic.address);
+};
+
+export const toPalmyLibs = async (
+  validationLogicAddress: string,
+  reserveLogicAddress: string
+): Promise<LendingPoolLibraryAddresses> => {
   // Hardcoded solidity placeholders, if any library changes path this will fail.
   // The '__$PLACEHOLDER$__ can be calculated via solidity keccak, but the LendingPoolLibraryAddresses Type seems to
   // require a hardcoded string.
@@ -199,9 +289,23 @@ export const deployPalmyLibraries = async (
   // libPath example: contracts/libraries/logic/GenericLogic.sol
   // libName example: GenericLogic
   return {
-    ['__$de8c0cf1a7d7c36c802af9a64fb9d86036$__']: validationLogic.address,
-    ['__$22cd43a9dda9ce44e9b92ba393b88fb9ac$__']: reserveLogic.address,
+    ['__$22cd43a9dda9ce44e9b92ba393b88fb9ac$__']: reserveLogicAddress,
+    ['__$de8c0cf1a7d7c36c802af9a64fb9d86036$__']: validationLogicAddress,
   };
+};
+
+export const exportLendingPoolCallData = async () => {
+  const reserveLogicAddress = await getContractAddressWithJsonFallback(
+    eContractid.ReserveLogic,
+    ConfigNames.Palmy
+  );
+  const validationLogicAddress = await getContractAddressWithJsonFallback(
+    eContractid.ValidationLogic,
+    ConfigNames.Palmy
+  );
+  const libs = await toPalmyLibs(validationLogicAddress, reserveLogicAddress);
+  const lendingPoolFactory = await new LendingPoolFactory(libs, await getFirstSigner());
+  return await lendingPoolFactory.getDeployTransaction().data!;
 };
 
 export const deployLendingPool = async (verify?: boolean) => {
@@ -432,17 +536,6 @@ export const deployGenericLTokenImpl = async (verify: boolean) =>
     [],
     verify
   );
-
-export const deployGenericLTokenRev2Impl = async (verify: boolean) =>
-  withSaveAndVerify(
-    await new LTokenRev2Factory(await getFirstSigner()).deploy(),
-    eContractid.LToken,
-    [],
-    verify
-  );
-
-export const deployGenericLTokenRev2ImplWithSigner = async (verify: boolean, signer: Signer) =>
-  withSaveAndVerify(await new LTokenRev2Factory(signer).deploy(), eContractid.LToken, [], verify);
 
 export const deployDelegationAwareLToken = async (
   [pool, underlyingAssetAddress, treasuryAddress, incentivesController, name, symbol]: [
