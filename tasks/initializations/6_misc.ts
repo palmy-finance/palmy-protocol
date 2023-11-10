@@ -6,26 +6,18 @@ import {
   getContractAddressWithJsonFallback,
   getParamPerNetwork,
 } from '../../helpers/contracts-helpers';
-import {
-  configureReservesByHelper,
-  getLTokenExtraParams,
-  initReservesByHelper,
-} from '../../helpers/init-helpers';
+import { configureReservesByHelper } from '../../helpers/init-helpers';
 import {
   getFirstSigner,
   getLTokensAndRatesHelper,
-  getLendingPool,
   getLendingPoolAddressesProvider,
   getLendingPoolCollateralManager,
-  getLendingPoolCollateralManagerImpl,
   getLendingPoolConfiguratorProxy,
   getPalmyProtocolDataProvider,
-  getStableAndVariableTokensHelper,
   getWETHGateway,
 } from '../../helpers/contracts-getters';
 import { BigNumberish } from 'ethers';
 import { waitForTx } from '../../helpers/misc-utils';
-import { addHexPrefix } from 'ethereumjs-util';
 import { authorizeWETHGateway } from '../../helpers/contracts-deployments';
 
 task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
