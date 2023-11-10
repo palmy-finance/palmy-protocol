@@ -301,11 +301,9 @@ export const configureReservesByHelper = async (
     const [, tokenAddress] = (Object.entries(tokenAddresses) as [string, string][])[
       assetAddressIndex
     ];
-    console.log(tokenAddress);
     const { usageAsCollateralEnabled: alreadyEnabled } = await helpers.getReserveConfigurationData(
       tokenAddress
     );
-    console.log(alreadyEnabled);
 
     if (alreadyEnabled) {
       console.log(`- Reserve ${assetSymbol} is already enabled as collateral, skipping`);
