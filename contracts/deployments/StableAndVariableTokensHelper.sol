@@ -16,7 +16,7 @@ contract StableAndVariableTokensHelper is PalmyOwnable, Initializable {
 
   constructor(address initialOwer) public PalmyOwnable(initialOwer) {}
 
-  function iniialize(
+  function initialize(
     address payable _pool,
     address _addressesProvider
   ) external onlyOwner initializer {

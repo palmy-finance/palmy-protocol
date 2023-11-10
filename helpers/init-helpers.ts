@@ -29,6 +29,42 @@ export const getLTokenExtraParams = async (lTokenName: string, tokenAddress: tEt
   }
 };
 
+export const initReservesByHelperWithLtokenAndRates = async (
+  reservesParams: iMultiPoolsAssets<IReserveParams>,
+  tokenAddresses: { [symbol: string]: tEthereumAddress },
+  lTokenNamePrefix: string,
+  stableDebtTokenNamePrefix: string,
+  variableDebtTokenNamePrefix: string,
+  symbolPrefix: string,
+  admin: tEthereumAddress,
+  treasuryAddress: tEthereumAddress,
+  incentivesController: tEthereumAddress,
+  poolName: ConfigNames,
+  verify: boolean,
+  lendingPoolAddressProviderAddress?: tEthereumAddress,
+  lendingPoolConfiguratorProxyAddress?: tEthereumAddress,
+  strategyAddresses?: Record<string, tEthereumAddress>
+) => {
+  let initInputParams: {
+    lTokenImpl: string;
+    stableDebtTokenImpl: string;
+    variableDebtTokenImpl: string;
+    underlyingAssetDecimals: BigNumberish;
+    interestRateStrategyAddress: string;
+    underlyingAsset: string;
+    treasury: string;
+    incentivesController: string;
+    underlyingAssetName: string;
+    lTokenName: string;
+    lTokenSymbol: string;
+    variableDebtTokenName: string;
+    variableDebtTokenSymbol: string;
+    stableDebtTokenName: string;
+    stableDebtTokenSymbol: string;
+    params: string;
+  }[] = [];
+};
+
 export const initReservesByHelper = async (
   reservesParams: iMultiPoolsAssets<IReserveParams>,
   tokenAddresses: { [symbol: string]: tEthereumAddress },

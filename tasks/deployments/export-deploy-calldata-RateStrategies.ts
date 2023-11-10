@@ -6,9 +6,8 @@ import {
 import { saveDeploymentCallData } from '../../helpers/contracts-helpers';
 import { eContractid } from '../../helpers/types';
 
-const target = eContractid.LendingPool;
-
-task(`export-deploy-calldata-${target}`, '').setAction(async ({}, DRE) => {
+task(`export-deploy-calldata-RateStrategies`, '').setAction(async ({}, DRE) => {
+  await DRE.run('set-DRE');
   await DRE.run('set-DRE');
   const callData = await exportLendingPoolCallData();
   await saveDeploymentCallData(eContractid.LendingPoolImpl, callData);

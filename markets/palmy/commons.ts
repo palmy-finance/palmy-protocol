@@ -78,14 +78,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.oasys]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
   },
   EmergencyAdminIndex: 1,
-  ProviderRegistry: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '0x52D306e36E3B6B02c153d0266ff0f85d18BCD413',
-    [eOasysNetwork.testnet]: '0x436f90A3bAFB5781FaC2C1e7bec46b4822a2c177',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
+
   ProviderRegistryOwner: {
     [eEthereumNetwork.buidlerevm]: '',
     [eEthereumNetwork.coverage]: '',
@@ -94,46 +87,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.testnet]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
     [eOasysNetwork.oasys]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
   },
-  LendingRateOracle: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '0x8A32f49FFbA88aba6EFF96F45D8BD1D4b3f35c7D',
-    [eOasysNetwork.testnet]: '0x1D1F1b2a4f32C7775B8f3D453d2238047688affc',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-  LendingPoolCollateralManager: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '0xbd4765210d4167CE2A5b87280D9E8Ee316D5EC7C',
-    [eOasysNetwork.testnet]: '0xAACe8Bc972534A47A590F2EDd8e312B4A675f978',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-  LendingPoolConfigurator: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '',
-    [eOasysNetwork.testnet]: '0x7081A30BBFFce995F33704875F9F3449b7dA0215', // LendingPoolConfiguratorImpl
-    [eOasysNetwork.oasys]: 'TODO', // LendingPoolConfiguratorImpl
-  },
-  LendingPool: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '',
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-  WethGateway: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '',
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
+
   TokenDistributor: {
     [eEthereumNetwork.buidlerevm]: '',
     [eEthereumNetwork.coverage]: '',
@@ -142,46 +96,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.testnet]: 'TODO',
     [eOasysNetwork.oasys]: 'TODO',
   },
-  DIAAggregatorAddress: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '',
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-  PriceAggregator: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '0xA50ba011c48153De246E5192C8f9258A2ba79Ca9',
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-  PalmyOracle: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '',
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-  FallbackOracle: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-  ChainlinkAggregator: {
-    [eEthereumNetwork.buidlerevm]: {},
-    [eEthereumNetwork.coverage]: {},
-    [eEthereumNetwork.hardhat]: {},
-    [eEthereumNetwork.tenderly]: {},
-    [eOasysNetwork.testnet]: {},
-    [eOasysNetwork.oasys]: {},
-  },
+
   DIAAggregator: {
     [eEthereumNetwork.buidlerevm]: {},
     [eEthereumNetwork.coverage]: {},
@@ -251,7 +166,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: ZERO_ADDRESS,
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
     [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
-    [eOasysNetwork.testnet]: 'TODO',
+    [eOasysNetwork.testnet]: '0xb6c8c1BD705004266d81a5F1EdaBf90eB175d953', // PullRewardsIncentivesControllerProxy
     [eOasysNetwork.oasys]: 'TODO',
   },
   StakedOas: {
