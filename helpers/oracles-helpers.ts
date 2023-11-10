@@ -36,13 +36,18 @@ export const setInitialMarketRatesInRatesOracleByHelper = async (
   const chunkedRates = chunk(borrowRates, ratesChunks);
   const chunkedSymbols = chunk(symbols, ratesChunks);
 
-  // Set helper as owner
   await waitForTx(
     await lendingRateOracleInstance.transferOwnership(stableAndVariableTokenHelper.address)
   );
 
   console.log(`- Oracle borrow initalization in ${chunkedTokens.length} txs`);
+
   for (let chunkIndex = 0; chunkIndex < chunkedTokens.length; chunkIndex++) {
+    console.log(
+      chunkedTokens[chunkIndex],
+      chunkedRates[chunkIndex],
+      lendingRateOracleInstance.address
+    );
     const tx3 = await waitForTx(
       await stableAndVariableTokenHelper.setOracleBorrowRates(
         chunkedTokens[chunkIndex],

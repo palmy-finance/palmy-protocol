@@ -42,7 +42,8 @@ export const initReservesByHelper = async (
   poolName: ConfigNames,
   verify: boolean,
   lendingPoolAddressProviderAddress?: tEthereumAddress,
-  lendingPoolConfiguratorProxyAddress?: tEthereumAddress
+  lendingPoolConfiguratorProxyAddress?: tEthereumAddress,
+  strategyAddresses?: Record<string, tEthereumAddress>
 ) => {
   const addressProvider = await getLendingPoolAddressesProvider(lendingPoolAddressProviderAddress);
 
@@ -81,8 +82,7 @@ export const initReservesByHelper = async (
     string
   ];
   let rateStrategies: Record<string, typeof strategyRates> = {};
-  let strategyAddresses: Record<string, tEthereumAddress> = {};
-
+  let strategies: Record<string, tEthereumAddress> = strategyAddresses || {};
   const reserves = Object.entries(reservesParams);
 
   for (let [symbol, params] of reserves) {
@@ -99,7 +99,7 @@ export const initReservesByHelper = async (
       stableRateSlope1,
       stableRateSlope2,
     } = strategy;
-    if (!strategyAddresses[strategy.name]) {
+    if (!strategies[strategy.name]) {
       // Strategy does not exist, create a new one
       rateStrategies[strategy.name] = [
         addressProvider.address,
@@ -110,7 +110,7 @@ export const initReservesByHelper = async (
         stableRateSlope1,
         stableRateSlope2,
       ];
-      strategyAddresses[strategy.name] = await deployRateStrategy(
+      strategies[strategy.name] = await deployRateStrategy(
         strategy.name,
         rateStrategies[strategy.name],
         verify
@@ -118,13 +118,13 @@ export const initReservesByHelper = async (
 
       // This causes the last strategy to be printed twice, once under "DefaultReserveInterestRateStrategy"
       // and once under the actual `strategyASSET` key.
-      rawInsertContractAddressInDb(strategy.name, strategyAddresses[strategy.name]);
+      rawInsertContractAddressInDb(strategy.name, strategies[strategy.name]);
     }
     if (!notFalsyOrZeroAddress(tokenAddresses[symbol])) {
       throw new Error(`token address of ${symbol} is not defined`);
     }
-    if (!notFalsyOrZeroAddress(strategyAddresses[strategy.name])) {
-      throw new Error(`strategy address of ${strategyAddresses[strategy.name]} is not defined`);
+    if (!notFalsyOrZeroAddress(strategies[strategy.name])) {
+      throw new Error(`strategy address of ${strategies[strategy.name]} is not defined`);
     }
     const lTokenImplAddress = await getContractAddressWithJsonFallback(lTokenImpl, poolName);
     if (!notFalsyOrZeroAddress(lTokenImplAddress)) {
@@ -157,7 +157,7 @@ export const initReservesByHelper = async (
       stableDebtTokenImpl: sdTokenImplAddress,
       variableDebtTokenImpl: vdTokenImplAddress,
       underlyingAssetDecimals: reserveDecimals,
-      interestRateStrategyAddress: strategyAddresses[strategy.name],
+      interestRateStrategyAddress: strategies[strategy.name],
       underlyingAsset: tokenAddresses[symbol],
       treasury: treasuryAddress,
       incentivesController: incentivesController,

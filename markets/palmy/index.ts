@@ -33,11 +33,11 @@ export const PalmyConfig: IPalmyConfiguration = {
     [eEthereumNetwork.coverage]: {},
     [eEthereumNetwork.tenderly]: {},
     [eOasysNetwork.testnet]: {
-      WOAS: 'TODO',
-      WETH: 'TODO',
-      USDC: 'TODO',
-      USDT: 'TODO',
-      WBTC: 'TODO',
+      WETH: '0x7C7dDDB4DD58300168DC652e2c2fB787B6f6aE54', // TODO
+      WOAS: '0x5200000000000000000000000000000000000001',
+      WBTC: '0xB9F1fb5c7dd67F3F249E42025E4255F402B535a0',
+      USDT: '0xCE7d7E94D5B282b7AC751b8A5d543683910EC6BD',
+      USDC: '0x7Fe705e1734Eb40484D41016190155250C2f69AA',
     },
     [eOasysNetwork.oasys]: {
       WOAS: 'TODO',

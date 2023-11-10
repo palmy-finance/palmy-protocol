@@ -67,7 +67,10 @@
     "testnet:deployment": "npm run compile && npm run hardhat:testnet -- oasys-deployment",
     "testnet:deployment-libs": "npm run compile && npm run hardhat:testnet -- oasys-deployment-libraries",
     "testnet:verification": "npm run hardhat:testnet -- verification",
-    "oasys:verification": "npm run hardhat:oasys -- verification"
+    "oasys:verification": "npm run hardhat:oasys -- verification",
+    "testnet:initialization": "npm run hardhat:testnet -- oasys-initialization",
+    "oasys:initialization": "npm run hardhat:oasys -- oasys-initialization",
+    "testnet:test": "npm run hardhat:testnet -- test-oasys-initialization:oracle"
   },
   "devDependencies": {
     "@nomiclabs/buidler": "^1.4.7",

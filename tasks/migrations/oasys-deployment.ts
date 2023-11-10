@@ -2,6 +2,7 @@ import { task } from 'hardhat/config';
 import { eContractid, eNetwork, eOasysNetwork } from '../../helpers/types';
 import { deployToOasysTestnet, insertContractAddressInDb } from '../../helpers/contracts-helpers';
 import { printContracts } from '../../helpers/misc-utils';
+import { deployAllMockTokens } from '../../helpers/contracts-deployments';
 
 export const DEPLOYMENT_CONTRACTS = [
   eContractid.LendingPoolAddressesProviderRegistry,
@@ -16,6 +17,7 @@ export const DEPLOYMENT_CONTRACTS = [
   eContractid.PriceAggregatorAdapterChainsightImpl,
   eContractid.ChainsightOracle,
   eContractid.StableAndVariableTokensHelper,
+  eContractid.LTokensAndRatesHelper,
   eContractid.StableDebtToken,
   eContractid.VariableDebtToken,
   eContractid.WETHGateway,
