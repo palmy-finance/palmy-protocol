@@ -83,7 +83,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: '',
     [eEthereumNetwork.hardhat]: '',
     [eEthereumNetwork.tenderly]: '0x52D306e36E3B6B02c153d0266ff0f85d18BCD413',
-    [eOasysNetwork.testnet]: 'TODO',
+    [eOasysNetwork.testnet]: '0x436f90A3bAFB5781FaC2C1e7bec46b4822a2c177',
     [eOasysNetwork.oasys]: 'TODO',
   },
   ProviderRegistryOwner: {
@@ -99,7 +99,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: '',
     [eEthereumNetwork.hardhat]: '',
     [eEthereumNetwork.tenderly]: '0x8A32f49FFbA88aba6EFF96F45D8BD1D4b3f35c7D',
-    [eOasysNetwork.testnet]: 'TODO',
+    [eOasysNetwork.testnet]: '0x1D1F1b2a4f32C7775B8f3D453d2238047688affc',
     [eOasysNetwork.oasys]: 'TODO',
   },
   LendingPoolCollateralManager: {
@@ -107,7 +107,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: '',
     [eEthereumNetwork.hardhat]: '',
     [eEthereumNetwork.tenderly]: '0xbd4765210d4167CE2A5b87280D9E8Ee316D5EC7C',
-    [eOasysNetwork.testnet]: 'TODO',
+    [eOasysNetwork.testnet]: '0xAACe8Bc972534A47A590F2EDd8e312B4A675f978',
     [eOasysNetwork.oasys]: 'TODO',
   },
   LendingPoolConfigurator: {
@@ -115,7 +115,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: '',
     [eEthereumNetwork.hardhat]: '',
     [eEthereumNetwork.tenderly]: '',
-    [eOasysNetwork.testnet]: 'TODO', // LendingPoolConfiguratorImpl
+    [eOasysNetwork.testnet]: '0x7081A30BBFFce995F33704875F9F3449b7dA0215', // LendingPoolConfiguratorImpl
     [eOasysNetwork.oasys]: 'TODO', // LendingPoolConfiguratorImpl
   },
   LendingPool: {
@@ -188,12 +188,18 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.hardhat]: {},
     [eEthereumNetwork.tenderly]: {},
     [eOasysNetwork.testnet]: {
-      WETH: '0x72fE832eB0452285e91CA9F46B85229A5107CeE8',
-      WOAS: '0xEdAA9f408ac11339766a4E5e0d4653BDee52fcA1',
+      WETH: '0x7C7dDDB4DD58300168DC652e2c2fB787B6f6aE54', // TODO
+      WOAS: '0x5200000000000000000000000000000000000001',
+      WBTC: '0xB9F1fb5c7dd67F3F249E42025E4255F402B535a0',
+      USDT: '0xCE7d7E94D5B282b7AC751b8A5d543683910EC6BD',
+      USDC: '0x7Fe705e1734Eb40484D41016190155250C2f69AA',
     },
     [eOasysNetwork.oasys]: {
-      WETH: '0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720',
-      WOAS: '0x81ECac0D6Be0550A00FF064a4f9dd2400585FE9c',
+      WETH: '0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720', // TODO
+      WOAS: '0x5200000000000000000000000000000000000001',
+      WBTC: 'TODO',
+      USDT: 'TODO',
+      USDC: 'TODO',
     },
   },
   ReserveAssets: {
