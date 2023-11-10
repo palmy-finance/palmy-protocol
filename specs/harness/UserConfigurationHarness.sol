@@ -1,9 +1,7 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
-import {
-  UserConfiguration
-} from '../../contracts/protocol/libraries/configuration/UserConfiguration.sol';
+import {UserConfiguration} from '../../contracts/protocol/libraries/configuration/UserConfiguration.sol';
 import {DataTypes} from '../../contracts/protocol/libraries/types/DataTypes.sol';
 
 /*

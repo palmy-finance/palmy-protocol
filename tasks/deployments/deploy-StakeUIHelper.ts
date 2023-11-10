@@ -18,7 +18,7 @@ task(`deploy-${eContractid.StakeUIHelper}`, `Deploys the StakeUIHelper contract`
     const poolConfig = loadPoolConfig(pool);
     const {
       ReserveAssets,
-      StakedOal: StakedOas,
+      StakedOas: StakedOas,
       ProtocolGlobalParams: { UsdAddress },
     } = poolConfig as ICommonConfiguration;
     const oracle = await getPalmyOracle();
