@@ -1,9 +1,32 @@
 import { task } from 'hardhat/config';
-import { ICommonConfiguration, eNetwork } from '../../helpers/types';
+import { ICommonConfiguration, eContractid, eNetwork } from '../../helpers/types';
 
 import { ConfigNames, getTreasuryAddress, loadPoolConfig } from '../../helpers/configuration';
-import { getParamPerNetwork } from '../../helpers/contracts-helpers';
-import { initReservesByHelper } from '../../helpers/init-helpers';
+import {
+  getContractAddressWithJsonFallback,
+  getParamPerNetwork,
+} from '../../helpers/contracts-helpers';
+import {
+  configureReservesByHelper,
+  getLTokenExtraParams,
+  initReservesByHelper,
+} from '../../helpers/init-helpers';
+import {
+  getFirstSigner,
+  getLTokensAndRatesHelper,
+  getLendingPool,
+  getLendingPoolAddressesProvider,
+  getLendingPoolCollateralManager,
+  getLendingPoolCollateralManagerImpl,
+  getLendingPoolConfiguratorProxy,
+  getPalmyProtocolDataProvider,
+  getStableAndVariableTokensHelper,
+  getWETHGateway,
+} from '../../helpers/contracts-getters';
+import { BigNumberish } from 'ethers';
+import { waitForTx } from '../../helpers/misc-utils';
+import { addHexPrefix } from 'ethereumjs-util';
+import { authorizeWETHGateway } from '../../helpers/contracts-deployments';
 
 task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
   await DRE.run('set-DRE');
@@ -16,26 +39,133 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
     SymbolPrefix,
     ReserveAssets,
     ReservesConfig,
-    LendingPoolCollateralManager,
-    WethGateway,
     IncentivesController,
   } = poolConfig as ICommonConfiguration;
   const reserveAssets = await getParamPerNetwork(ReserveAssets, network);
   if (!reserveAssets) {
     throw 'Reserve assets is undefined. Check ReserveAssets configuration at config directory';
   }
+  const lTokensAndRatesHelper = await getLTokensAndRatesHelper();
+
+  // initialize lTokens and strategies
+  const initRateDeploymentParam: {
+    asset: string;
+    rates: [BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish];
+  }[] = Object.entries(ReservesConfig).map(([symbol, config]) => {
+    const address = reserveAssets[symbol];
+    if (!address) {
+      throw `Address of ${symbol} is undefined. Check ReserveAssets configuration at config directory`;
+    }
+    const {
+      optimalUtilizationRate,
+      baseVariableBorrowRate,
+      variableRateSlope1,
+      variableRateSlope2,
+      stableRateSlope1,
+      stableRateSlope2,
+    } = config.strategy;
+    return {
+      asset: address,
+      rates: [
+        optimalUtilizationRate,
+        baseVariableBorrowRate,
+        variableRateSlope1,
+        variableRateSlope2,
+        stableRateSlope1,
+        stableRateSlope2,
+      ],
+    };
+  });
+  const tx = await lTokensAndRatesHelper.initDeployment(initRateDeploymentParam);
+  const receipt = await tx.wait();
+  const lTokensAndStrategies: { symbol: string; lToken: string; strategy: string }[] =
+    receipt.events!.map((event, i) => {
+      const eventArgs = event.args!;
+      const lToken = eventArgs[0];
+      const strategy = eventArgs[1];
+      const symbol = Object.keys(ReservesConfig)[i];
+      return { symbol, lToken, strategy };
+    });
+  let initInputParams: {
+    lTokenImpl: string;
+    stableDebtTokenImpl: string;
+    variableDebtTokenImpl: string;
+    underlyingAssetDecimals: BigNumberish;
+    interestRateStrategyAddress: string;
+    underlyingAsset: string;
+    treasury: string;
+    incentivesController: string;
+    underlyingAssetName: string;
+    lTokenName: string;
+    lTokenSymbol: string;
+    variableDebtTokenName: string;
+    variableDebtTokenSymbol: string;
+    stableDebtTokenName: string;
+    stableDebtTokenSymbol: string;
+    params: string;
+  }[] = [];
+  const ltokenImplAddress = await getContractAddressWithJsonFallback(
+    eContractid.LToken,
+    ConfigNames.Palmy
+  );
+  const stableDebtTokenImplAddress = await getContractAddressWithJsonFallback(
+    eContractid.StableDebtToken,
+    ConfigNames.Palmy
+  );
+  const variableDebtTokenImplAddress = await getContractAddressWithJsonFallback(
+    eContractid.VariableDebtToken,
+    ConfigNames.Palmy
+  );
   const treasuryAddress = await getTreasuryAddress(poolConfig);
-  await initReservesByHelper(
+  const incentivesController = await getParamPerNetwork(IncentivesController, network);
+  const reservesConfig = Object.entries(ReservesConfig);
+  for (const { symbol, strategy } of lTokensAndStrategies) {
+    const [, params] = reservesConfig.find(([symbol]) => symbol === symbol)!;
+    const underlyingAssetDecimals = params.reserveDecimals;
+    const underlyingAsset = reserveAssets[symbol];
+    const underlyingAssetName = symbol;
+    initInputParams.push({
+      lTokenImpl: ltokenImplAddress,
+      stableDebtTokenImpl: stableDebtTokenImplAddress,
+      variableDebtTokenImpl: variableDebtTokenImplAddress,
+      underlyingAssetDecimals,
+      interestRateStrategyAddress: strategy,
+      underlyingAsset,
+      treasury: treasuryAddress,
+      incentivesController,
+      underlyingAssetName,
+      lTokenName: `${LTokenNamePrefix} ${symbol}`,
+      lTokenSymbol: `l${SymbolPrefix}${symbol}`,
+      variableDebtTokenName: `${VariableDebtTokenNamePrefix} ${symbol}`,
+      variableDebtTokenSymbol: `vd${SymbolPrefix}${symbol}`,
+      stableDebtTokenName: `${StableDebtTokenNamePrefix} ${symbol}`,
+      stableDebtTokenSymbol: `$vd${SymbolPrefix}${symbol}`,
+      params: '0x10',
+    });
+  }
+  const configurator = await getLendingPoolConfiguratorProxy();
+  console.log(initInputParams);
+  await configurator.batchInitReserve(initInputParams);
+  await configureReservesByHelper(
     ReservesConfig,
     reserveAssets,
-    LTokenNamePrefix,
-    StableDebtTokenNamePrefix,
-    VariableDebtTokenNamePrefix,
-    SymbolPrefix,
-    admin,
-    treasuryAddress,
-    incentivesController,
-    pool,
-    verify
+    await getPalmyProtocolDataProvider(),
+    await (await getFirstSigner()).getAddress()
+  );
+  const collateralManager = await getLendingPoolCollateralManager();
+  const addressProvider = await getLendingPoolAddressesProvider();
+  await waitForTx(await addressProvider.setLendingPoolCollateralManager(collateralManager.address));
+  const dataProvider = await getPalmyProtocolDataProvider();
+  await waitForTx(
+    await addressProvider.setAddress(
+      '0x0100000000000000000000000000000000000000000000000000000000000000',
+      dataProvider.address
+    )
+  );
+  await authorizeWETHGateway(
+    (
+      await getWETHGateway()
+    ).address,
+    await addressProvider.getLendingPool()
   );
 });

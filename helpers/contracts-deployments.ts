@@ -743,23 +743,9 @@ export const deployLTokenImplementations = async (
       await deployImplementationMethod(verify);
     }
   }
+  await deployGenericStableDebtToken(verify);
 
-  // Debt tokens, for now all Market configs follows same implementations
-  const genericStableDebtTokenAddress = getOptionalParamAddressPerNetwork(
-    poolConfig.StableDebtTokenImplementation,
-    network
-  );
-  const geneticVariableDebtTokenAddress = getOptionalParamAddressPerNetwork(
-    poolConfig.VariableDebtTokenImplementation,
-    network
-  );
-
-  if (!notFalsyOrZeroAddress(genericStableDebtTokenAddress)) {
-    await deployGenericStableDebtToken(verify);
-  }
-  if (!notFalsyOrZeroAddress(geneticVariableDebtTokenAddress)) {
-    await deployGenericVariableDebtToken(verify);
-  }
+  await deployGenericVariableDebtToken(verify);
 };
 
 export const deployRateStrategy = async (

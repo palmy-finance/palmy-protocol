@@ -28,7 +28,7 @@ task('oasys-initialization:lending-pool', '').setAction(async ({}, DRE) => {
     throw new Error('missing stableAndVariableTokensHelper');
   }
   await waitForTx(
-    await stableAndVariableTokensHelper.iniialize(lendingPoolAddress, addressProvider.address)
+    await stableAndVariableTokensHelper.initialize(lendingPoolAddress, addressProvider.address)
   );
   const ltokenAndRatesHelper = await getLTokensAndRatesHelper();
   if (!notFalsyOrZeroAddress(ltokenAndRatesHelper.address)) {
