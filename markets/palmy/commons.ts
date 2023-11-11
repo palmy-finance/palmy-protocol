@@ -166,7 +166,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: ZERO_ADDRESS,
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
     [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
-    [eOasysNetwork.testnet]: '0xb6c8c1BD705004266d81a5F1EdaBf90eB175d953', // PullRewardsIncentivesControllerProxy
+    [eOasysNetwork.testnet]: '0x1FBa952cBCb0056c91309196e5B66Ac101aB89Df', // PullRewardsIncentivesControllerProxy
     [eOasysNetwork.oasys]: 'TODO',
   },
   StakedOas: {
@@ -174,7 +174,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: ZERO_ADDRESS,
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
     [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
-    [eOasysNetwork.testnet]: 'TODO',
+    [eOasysNetwork.testnet]: '0x478b489b06Ab94C13dFF78Ad3f9150cA590a4f58',
     [eOasysNetwork.oasys]: 'TODO',
   },
 };

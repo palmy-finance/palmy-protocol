@@ -17,4 +17,6 @@ task(`export-deploy-calldata-UIHelpers`, '').setAction(async ({}, DRE) => {
     eContractid.UiIncentiveDataProviderV2
   );
   await saveDeploymentCallData(eContractid.UiIncentiveDataProviderV2, incentiveDataProvider);
+  const stakeUIHelper = await exportDeploymentCallData(eContractid.StakeUIHelper);
+  await saveDeploymentCallData(eContractid.StakeUIHelper, stakeUIHelper);
 });

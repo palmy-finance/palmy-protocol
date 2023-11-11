@@ -30,6 +30,7 @@ import {
   WETHGatewayFactory,
   ChainsightOracle,
   ChainsightOracleFactory,
+  StakeUIHelperFactory,
 } from '../types';
 import { IERC20DetailedFactory } from '../types/IERC20DetailedFactory';
 import { getEthersSigners, MockTokenMap } from './contracts-helpers';
@@ -387,6 +388,15 @@ export const getLendingPoolCollateralManager = async (address?: tEthereumAddress
     address ||
       (
         await getDb().get(`${eContractid.LendingPoolCollateralManager}.${DRE.network.name}`).value()
+      ).address,
+    await getFirstSigner()
+  );
+
+export const getStakeUIHelper = async (address?: tEthereumAddress) =>
+  await StakeUIHelperFactory.connect(
+    address ||
+      (
+        await getDb().get(`${eContractid.StakeUIHelper}.${DRE.network.name}`).value()
       ).address,
     await getFirstSigner()
   );

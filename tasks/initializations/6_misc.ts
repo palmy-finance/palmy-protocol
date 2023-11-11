@@ -1,7 +1,12 @@
 import { task } from 'hardhat/config';
 import { ICommonConfiguration, eContractid, eNetwork } from '../../helpers/types';
 
-import { ConfigNames, getTreasuryAddress, loadPoolConfig } from '../../helpers/configuration';
+import {
+  ConfigNames,
+  getTreasuryAddress,
+  getWrappedNativeTokenAddress,
+  loadPoolConfig,
+} from '../../helpers/configuration';
 import {
   getContractAddressWithJsonFallback,
   getParamPerNetwork,
@@ -13,7 +18,9 @@ import {
   getLendingPoolAddressesProvider,
   getLendingPoolCollateralManager,
   getLendingPoolConfiguratorProxy,
+  getPalmyOracle,
   getPalmyProtocolDataProvider,
+  getStakeUIHelper,
   getWETHGateway,
 } from '../../helpers/contracts-getters';
 import { BigNumberish } from 'ethers';
@@ -32,6 +39,8 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
     ReserveAssets,
     ReservesConfig,
     IncentivesController,
+    StakedOas,
+    ProtocolGlobalParams: { UsdAddress },
   } = poolConfig as ICommonConfiguration;
   const reserveAssets = await getParamPerNetwork(ReserveAssets, network);
   if (!reserveAssets) {
@@ -159,5 +168,17 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
       await getWETHGateway()
     ).address,
     await addressProvider.getLendingPool()
+  );
+  const stakeUIHelper = await getStakeUIHelper();
+
+  const palmyOracle = await getPalmyOracle();
+  const wOAS = await getWrappedNativeTokenAddress(poolConfig);
+  await waitForTx(
+    await stakeUIHelper.initialize(
+      palmyOracle.address,
+      wOAS,
+      await getParamPerNetwork(StakedOas, network),
+      UsdAddress
+    )
   );
 });
