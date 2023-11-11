@@ -471,14 +471,13 @@ export const deployVariableDebtToken = async (
 
   return instance;
 };
-export const deployChainsightOracle = async (symbol: string, verify: boolean) => {
+export const deployChainsightOracle = async (symbol: string, verify: boolean) =>
   withSaveAndVerify(
     await new ChainsightOracleFactory(await getFirstSigner()).deploy(),
     `${eContractid.ChainsightOracle}${symbol}`,
     [],
     verify
   );
-};
 
 export const deployGenericStableDebtToken = async (verify?: boolean) =>
   withSaveAndVerify(

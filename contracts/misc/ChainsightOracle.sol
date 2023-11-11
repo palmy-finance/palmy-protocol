@@ -11,18 +11,34 @@ contract ChainsightOracle is IChainsightOracle {
   }
 
   function readAsString(address sender) external view override returns (string memory) {
-    return abi.decode(data[sender], (string));
+    bytes memory d = data[sender];
+    if (d.length == 0) {
+      return '';
+    }
+    return abi.decode(d, (string));
   }
 
   function readAsUint256(address sender) external view override returns (uint256) {
-    return abi.decode(data[sender], (uint256));
+    bytes memory d = data[sender];
+    if (d.length == 0) {
+      return 0;
+    }
+    return abi.decode(d, (uint256));
   }
 
   function readAsUint128(address sender) external view override returns (uint128) {
-    return abi.decode(data[sender], (uint128));
+    bytes memory d = data[sender];
+    if (d.length == 0) {
+      return 0;
+    }
+    return abi.decode(d, (uint128));
   }
 
   function readAsUint64(address sender) external view override returns (uint64) {
-    return abi.decode(data[sender], (uint64));
+    bytes memory d = data[sender];
+    if (d.length == 0) {
+      return 0;
+    }
+    return abi.decode(d, (uint64));
   }
 }

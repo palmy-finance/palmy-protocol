@@ -145,7 +145,6 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
     });
   }
   const configurator = await getLendingPoolConfiguratorProxy();
-  console.log(initInputParams);
   await configurator.batchInitReserve(initInputParams);
   await configureReservesByHelper(
     ReservesConfig,
