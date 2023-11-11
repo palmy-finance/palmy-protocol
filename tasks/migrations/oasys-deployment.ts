@@ -17,6 +17,7 @@ export const DEPLOYMENT_CONTRACTS = [
   eContractid.PriceAggregatorAdapterChainsightImpl,
   eContractid.ChainsightOracle,
   eContractid.StableAndVariableTokensHelper,
+  eContractid.StakeUIHelper,
   eContractid.LTokensAndRatesHelper,
   eContractid.StableDebtToken,
   eContractid.VariableDebtToken,

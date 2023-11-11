@@ -157,32 +157,31 @@ export const deployLendingPoolConfigurator = async (verify?: boolean) => {
 };
 
 export const getDeployArgs = async (network: eNetwork, id: eContractid) => {
+  const config = loadPoolConfig(ConfigNames.Palmy);
+  const genesisAdmin = await getGenesisPoolAdmin(config);
   switch (id) {
     case eContractid.LendingPoolAddressesProvider:
-      return [PalmyConfig.MarketId, await (await getEthersSigners())[0].getAddress()];
+      return [PalmyConfig.MarketId, genesisAdmin];
     case eContractid.LendingPoolAddressesProviderRegistry:
-      return [await (await getEthersSigners())[0].getAddress()];
+      return [genesisAdmin];
     case eContractid.StableAndVariableTokensHelper:
-      return [await (await getEthersSigners())[0].getAddress()];
+      return [genesisAdmin];
     case eContractid.LTokensAndRatesHelper:
-      return [await (await getEthersSigners())[0].getAddress()];
+      return [genesisAdmin];
     case eContractid.PriceAggregatorAdapterChainsightImpl:
-      return [await (await getEthersSigners())[0].getAddress()];
+      return [genesisAdmin];
     case eContractid.LendingRateOracle:
-      return [await (await getEthersSigners())[0].getAddress()];
+      return [genesisAdmin];
     case eContractid.PalmyFallbackOracle:
-      return [await (await getEthersSigners())[0].getAddress()];
+      return [genesisAdmin];
     case eContractid.PalmyOracle:
       return [
         await getQuoteCurrency(loadPoolConfig(ConfigNames.Palmy)),
         await loadPoolConfig(ConfigNames.Palmy).OracleQuoteUnit,
-        await (await getEthersSigners())[0].getAddress(),
+        genesisAdmin,
       ];
     case eContractid.WETHGateway:
-      return [
-        await getWrappedNativeTokenAddress(loadPoolConfig(ConfigNames.Palmy)),
-        await (await getEthersSigners())[0].getAddress(),
-      ];
+      return [await getWrappedNativeTokenAddress(loadPoolConfig(ConfigNames.Palmy)), genesisAdmin];
     default:
       return [];
   }

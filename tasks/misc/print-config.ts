@@ -9,9 +9,8 @@ import { getParamPerNetwork } from '../../helpers/contracts-helpers';
 import { eNetwork } from '../../helpers/types';
 
 task('print-config', 'Inits the DRE, to have access to all the plugins')
-  .addParam('dataProvider', 'Address of PalmyProtocolDataProvider')
   .addParam('pool', `Pool name to retrieve configuration, supported: ${Object.values(ConfigNames)}`)
-  .setAction(async ({ pool, dataProvider }, localBRE) => {
+  .setAction(async ({ pool }, localBRE) => {
     await localBRE.run('set-DRE');
     const network = process.env.FORK
       ? (process.env.FORK as eNetwork)
@@ -19,10 +18,8 @@ task('print-config', 'Inits the DRE, to have access to all the plugins')
     console.log(network);
     const poolConfig = loadPoolConfig(pool);
 
-    const providerRegistryAddress = getParamPerNetwork(poolConfig.ProviderRegistry, network);
-
-    const providerRegistry = await getLendingPoolAddressesProviderRegistry(providerRegistryAddress);
-
+    const providerRegistry = await getLendingPoolAddressesProviderRegistry();
+    const protocolDataProvider = await getPalmyProtocolDataProvider();
     const providers = await providerRegistry.getAddressesProvidersList();
 
     const addressesProvider = await getLendingPoolAddressesProvider(providers[0]); // Checks first provider
@@ -42,8 +39,6 @@ task('print-config', 'Inits the DRE, to have access to all the plugins')
     console.log('Emergency admin', await addressesProvider.getEmergencyAdmin());
     console.log('Price Oracle', await addressesProvider.getPriceOracle());
     console.log('Lending Rate Oracle', await addressesProvider.getLendingRateOracle());
-    console.log('Lending Pool Data Provider', dataProvider);
-    const protocolDataProvider = await getPalmyProtocolDataProvider(dataProvider);
 
     const fields = [
       'decimals',
