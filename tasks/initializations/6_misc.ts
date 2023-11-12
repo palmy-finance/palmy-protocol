@@ -20,12 +20,14 @@ import {
   getLendingPoolConfiguratorProxy,
   getPalmyOracle,
   getPalmyProtocolDataProvider,
+  getPriceAggregator,
   getStakeUIHelper,
   getWETHGateway,
 } from '../../helpers/contracts-getters';
 import { BigNumberish } from 'ethers';
 import { waitForTx } from '../../helpers/misc-utils';
 import { authorizeWETHGateway } from '../../helpers/contracts-deployments';
+import { UiPoolDataProviderV2Factory } from '../../types';
 
 task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
   await DRE.run('set-DRE');
@@ -180,4 +182,10 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
       UsdAddress
     )
   );
+  const uiPoolDataProvider = UiPoolDataProviderV2Factory.connect(
+    await getContractAddressWithJsonFallback(eContractid.UiPoolDataProviderV2, ConfigNames.Palmy),
+    await getFirstSigner()
+  );
+  const aggregatorAddress = (await getPriceAggregator()).address;
+  await waitForTx(await uiPoolDataProvider.initialize(aggregatorAddress, UsdAddress));
 });
