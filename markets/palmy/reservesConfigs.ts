@@ -68,10 +68,10 @@ export const strategyWETH: IReserveParams = {
 
 export const strategyWOAS: IReserveParams = {
   strategy: rateStrategyWOAS,
-  baseLTVAsCollateral: '4000',
+  baseLTVAsCollateral: '0',
   liquidationThreshold: '5500',
   liquidationBonus: '11500',
-  borrowingEnabled: true,
+  borrowingEnabled: false,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
   lTokenImpl: eContractid.LToken,
