@@ -108,6 +108,12 @@ export const saveDeploymentCallData = async (contractId: string, callData: Bytes
   }
   const fileName = path.join(dir, `${contractId}.calldata`);
   fs.writeFileSync(fileName, callData);
+  if (currentNetwork == eOasysNetwork.oasys) {
+    await rawInsertContractAddressInDb(
+      contractId,
+      (await getOasysDeploymentAddress(callData)).toString()
+    );
+  }
 };
 export const registerContractInJsonDb = async (contractId: string, contractInstance: Contract) => {
   const currentNetwork = DRE.network.name;
