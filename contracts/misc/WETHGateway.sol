@@ -62,9 +62,21 @@ contract WETHGateway is IWETHGateway, PalmyOwnable {
     if (amount == type(uint256).max) {
       amountToWithdraw = userBalance;
     }
-    lWETH.transferFrom(msg.sender, address(this), amountToWithdraw);
+    require(
+      lWETH.transferFrom(msg.sender, address(this), amountToWithdraw),
+      'LWETH_TRANSFER_FAILED'
+    );
+
     ILendingPool(lendingPool).withdraw(address(WETH), amountToWithdraw, address(this));
+    uint256 ethBalanceBeforeWithdraw = address(this).balance;
     WETH.withdraw(amountToWithdraw);
+    uint256 ethBalanceAfterWithdraw = address(this).balance;
+
+    // WETH#withdraw returns nothing, so use address(this).balance instead for checking
+    require(
+      ethBalanceAfterWithdraw - ethBalanceBeforeWithdraw >= amountToWithdraw,
+      'WITHDRAW_ETH_BALANCE_INCONSISTENT'
+    );
     _safeTransferETH(to, amountToWithdraw);
   }
 
