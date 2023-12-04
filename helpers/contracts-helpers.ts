@@ -1,7 +1,7 @@
 import { Artifact as BuidlerArtifact } from '@nomiclabs/buidler/types';
 import BigNumber from 'bignumber.js';
 import { signTypedData_v4 } from 'eth-sig-util';
-import { ECDSASignature, fromRpcSig } from 'ethereumjs-util';
+import { Address, ECDSASignature, fromRpcSig } from 'ethereumjs-util';
 import { BigNumberish, BytesLike, Contract, ethers, Signer, utils } from 'ethers';
 import { Artifact } from 'hardhat/types';
 import { MintableERC20 } from '../types/MintableERC20';
@@ -24,6 +24,40 @@ import {
   tEthereumAddress,
   tStringTokenSmallUnits,
 } from './types';
+
+export const getOasysDeploymentAddress = async (callData: BytesLike) => {
+  // Remove "0x" prefix if present in calldata
+  const calldataString = callData.toString().replace(/^0x/, '');
+  // Calculate the length of calldata in hex, padding to 64 characters
+  const calldataLength = (calldataString.length / 2).toString(16).padStart(64, '0');
+  // Make the request to the Oasys RPC endpoint
+  const endpoint = 'https://rpc.mainnet.oasys.games';
+  const request = {
+    method: 'eth_call',
+    params: [
+      {
+        from: null,
+        to: '0x123e3ae459a8D049F27Ba62B8a5D48c68A100EBC',
+        data: `0x44f6fec700000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000${calldataLength}${calldataString}`,
+      },
+      'latest',
+    ],
+    id: 1,
+    jsonrpc: '2.0',
+  };
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(request),
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  const responseJson = JSON.parse(
+    new TextDecoder().decode(await (await response.body!.getReader().read()).value!)
+  );
+  const responseString = responseJson.result;
+  const responseAddress = '0x' + responseString.slice(-40);
+  return Address.fromString(responseAddress);
+};
 
 export const deployToOasysTestnet = async (id: eContractid, verify?: boolean) => {
   const path = require('path');

@@ -2,6 +2,7 @@ import { task } from 'hardhat/config';
 import { exportGenericLogicDeploymentCallData } from '../../helpers/contracts-deployments';
 import {
   getContractAddressWithJsonFallback,
+  getOasysDeploymentAddress,
   saveDeploymentCallData,
 } from '../../helpers/contracts-helpers';
 import { eContractid, eNetwork } from '../../helpers/types';
@@ -17,5 +18,6 @@ task(`export-deploy-calldata-${target}`, '').setAction(async ({}, DRE) => {
     ConfigNames.Palmy
   );
   const callData = await exportGenericLogicDeploymentCallData(reserveLogicAddress);
+
   await saveDeploymentCallData(target, callData);
 });
