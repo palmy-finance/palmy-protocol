@@ -74,7 +74,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.hardhat]: undefined,
     [eEthereumNetwork.tenderly]: undefined,
     [eOasysNetwork.testnet]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
-    [eOasysNetwork.oasys]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
+    [eOasysNetwork.oasys]: '0x8c44Be9aA5da85A6d0FC57afF12CE33CA2f01C6c',
   },
   EmergencyAdminIndex: 1,
 
@@ -129,7 +129,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.hardhat]: '0x464c71f6c2f760dda6093dcb91c24c39e5d6e18c',
     [eEthereumNetwork.tenderly]: '0x464c71f6c2f760dda6093dcb91c24c39e5d6e18c',
     [eOasysNetwork.testnet]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
-    [eOasysNetwork.oasys]: 'TODO',
+    [eOasysNetwork.oasys]: '0x922E396E1bFD3FD9B3171324cEfD8bC82A5e6271',
   },
   IncentivesController: {
     [eEthereumNetwork.buidlerevm]: ZERO_ADDRESS,
