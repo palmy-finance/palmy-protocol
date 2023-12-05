@@ -6,11 +6,10 @@ import { BigNumberish, BytesLike, Contract, ethers, Signer, utils } from 'ethers
 import { Artifact } from 'hardhat/types';
 import { MintableERC20 } from '../types/MintableERC20';
 import { ConfigNames, loadPoolConfig } from './configuration';
-import { ZERO_ADDRESS } from './constants';
+import { PERMISSIONED_CONTRACT_FACTORY_ADDRESS, ZERO_ADDRESS } from './constants';
 import { getFirstSigner, getIErc20Detailed } from './contracts-getters';
 import { verifyEtherscanContract } from './etherscan-verification';
 import { DRE, getDb, notFalsyOrZeroAddress, waitForTx } from './misc-utils';
-import { usingTenderly, verifyAtTenderly } from './tenderly-utils';
 import {
   eOasysNetwork,
   eContractid,
@@ -24,6 +23,20 @@ import {
   tEthereumAddress,
   tStringTokenSmallUnits,
 } from './types';
+import { IPermissionedContractFactoryFactory } from '../types/IPermissionedContractFactoryFactory';
+
+export const getOasysDeploymentAddress = async (contractId: string, callData: BytesLike) => {
+  // Calculate the length of calldata in hex, padding to 64 characters
+  const instance = IPermissionedContractFactoryFactory.connect(
+    PERMISSIONED_CONTRACT_FACTORY_ADDRESS,
+    DRE.ethers.provider
+  );
+  return await instance.getDeploymentAddress(callData, toSalt(contractId));
+};
+
+const toSalt = (contractId: string) => {
+  return utils.hexlify(utils.sha256(utils.toUtf8Bytes(contractId)));
+};
 
 export const deployToOasysTestnet = async (id: eContractid, verify?: boolean) => {
   const path = require('path');
@@ -74,6 +87,30 @@ export const saveDeploymentCallData = async (contractId: string, callData: Bytes
   }
   const fileName = path.join(dir, `${contractId}.calldata`);
   fs.writeFileSync(fileName, callData);
+  if ((currentNetwork as eNetwork) == eOasysNetwork.oasys) {
+    await registerContractAddressAndSaltInJsonDb(
+      contractId,
+      await getOasysDeploymentAddress(contractId, callData),
+      '',
+      toSalt(contractId)
+    );
+  }
+};
+
+const registerContractAddressAndSaltInJsonDb = async (
+  contractId: string,
+  address: string,
+  deployer: string,
+  salt: string
+) => {
+  const currentNetwork = DRE.network.name;
+  await getDb()
+    .set(`${contractId}.${currentNetwork}`, {
+      address: address,
+      deployer: deployer,
+      salt: salt,
+    })
+    .write();
 };
 export const registerContractInJsonDb = async (contractId: string, contractInstance: Contract) => {
   const currentNetwork = DRE.network.name;

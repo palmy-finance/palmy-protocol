@@ -21,7 +21,6 @@ export const CommonsConfig: ICommonConfiguration = {
   OracleQuoteCurrency: 'USD',
   OracleQuoteUnit: oneUsd.toString(),
   ProtocolGlobalParams: {
-    TokenDistributorPercentageBase: '10000',
     MockUsdPriceInWei: '5848466240000000',
     UsdAddress: '0x10F7Fc1F91Ba351f9C629c5947AD69bD03C05b96',
     NilAddress: '0x0000000000000000000000000000000000000000',
@@ -88,35 +87,6 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.oasys]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
   },
 
-  TokenDistributor: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '0xe3d9988f676457123c5fd01297605efdd0cba1ae',
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
-  },
-
-  DIAAggregator: {
-    [eEthereumNetwork.buidlerevm]: {},
-    [eEthereumNetwork.coverage]: {},
-    [eEthereumNetwork.hardhat]: {},
-    [eEthereumNetwork.tenderly]: {},
-    [eOasysNetwork.testnet]: {
-      WETH: '0x7C7dDDB4DD58300168DC652e2c2fB787B6f6aE54', // TODO
-      WOAS: '0x5200000000000000000000000000000000000001',
-      WBTC: '0xB9F1fb5c7dd67F3F249E42025E4255F402B535a0',
-      USDT: '0xCE7d7E94D5B282b7AC751b8A5d543683910EC6BD',
-      USDC: '0x7Fe705e1734Eb40484D41016190155250C2f69AA',
-    },
-    [eOasysNetwork.oasys]: {
-      WETH: '0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720', // TODO
-      WOAS: '0x5200000000000000000000000000000000000001',
-      WBTC: 'TODO',
-      USDT: 'TODO',
-      USDC: 'TODO',
-    },
-  },
   ReserveAssets: {
     [eEthereumNetwork.buidlerevm]: {},
     [eEthereumNetwork.coverage]: {},

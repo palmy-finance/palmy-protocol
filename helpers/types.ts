@@ -55,7 +55,6 @@ export enum eContractid {
   StableDebtToken = 'StableDebtToken',
   VariableDebtToken = 'VariableDebtToken',
   FeeProvider = 'FeeProvider',
-  TokenDistributor = 'TokenDistributor',
   StableAndVariableTokensHelper = 'StableAndVariableTokensHelper',
   LTokensAndRatesHelper = 'LTokensAndRatesHelper',
   UiPoolDataProviderV2 = 'UiPoolDataProviderV2',
@@ -277,7 +276,6 @@ export interface ObjectString {
 }
 
 export interface IProtocolGlobalConfig {
-  TokenDistributorPercentageBase: string;
   MockUsdPriceInWei: string;
   UsdAddress: tEthereumAddress;
   NilAddress: tEthereumAddress;
@@ -307,8 +305,6 @@ export interface IBaseConfiguration {
   ProtocolGlobalParams: IProtocolGlobalConfig;
   ProviderRegistryOwner: iParamsPerNetwork<tEthereumAddress | undefined>;
   LendingRateOracleRatesCommon: iMultiPoolsAssets<IMarketRates>;
-  TokenDistributor: iParamsPerNetwork<tEthereumAddress>;
-  DIAAggregator: iParamsPerNetwork<SymbolMap<tEthereumAddress>>;
   PoolAdmin: iParamsPerNetwork<tEthereumAddress | undefined>;
   PoolAdminIndex: number;
   EmergencyAdmin: iParamsPerNetwork<tEthereumAddress | undefined>;
