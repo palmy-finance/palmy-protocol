@@ -21,7 +21,6 @@ export const CommonsConfig: ICommonConfiguration = {
   OracleQuoteCurrency: 'USD',
   OracleQuoteUnit: oneUsd.toString(),
   ProtocolGlobalParams: {
-    TokenDistributorPercentageBase: '10000',
     MockUsdPriceInWei: '5848466240000000',
     UsdAddress: '0x10F7Fc1F91Ba351f9C629c5947AD69bD03C05b96',
     NilAddress: '0x0000000000000000000000000000000000000000',
@@ -86,15 +85,6 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.tenderly]: '0xB9062896ec3A615a4e4444DF183F0531a77218AE',
     [eOasysNetwork.testnet]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
     [eOasysNetwork.oasys]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
-  },
-
-  TokenDistributor: {
-    [eEthereumNetwork.buidlerevm]: '',
-    [eEthereumNetwork.coverage]: '',
-    [eEthereumNetwork.hardhat]: '',
-    [eEthereumNetwork.tenderly]: '0xe3d9988f676457123c5fd01297605efdd0cba1ae',
-    [eOasysNetwork.testnet]: 'TODO',
-    [eOasysNetwork.oasys]: 'TODO',
   },
 
   DIAAggregator: {
