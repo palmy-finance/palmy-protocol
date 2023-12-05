@@ -305,7 +305,6 @@ export interface IBaseConfiguration {
   ProtocolGlobalParams: IProtocolGlobalConfig;
   ProviderRegistryOwner: iParamsPerNetwork<tEthereumAddress | undefined>;
   LendingRateOracleRatesCommon: iMultiPoolsAssets<IMarketRates>;
-  DIAAggregator: iParamsPerNetwork<SymbolMap<tEthereumAddress>>;
   PoolAdmin: iParamsPerNetwork<tEthereumAddress | undefined>;
   PoolAdminIndex: number;
   EmergencyAdmin: iParamsPerNetwork<tEthereumAddress | undefined>;
