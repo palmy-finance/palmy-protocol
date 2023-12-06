@@ -40,11 +40,9 @@ export const PalmyConfig: IPalmyConfiguration = {
       USDC: '0x7Fe705e1734Eb40484D41016190155250C2f69AA',
     },
     [eOasysNetwork.oasys]: {
-      WOAS: 'TODO',
-      WETH: 'TODO',
-      USDC: 'TODO',
-      USDT: 'TODO',
-      WBTC: 'TODO',
+      WOAS: '0x5200000000000000000000000000000000000001',
+      WETH: '0x5801E5a61164024Be2554248E33127c6ebC8C113',
+      WBTC: '0xdd30c42D57a0f14DD44c809F59836D57392FDbC9',
     },
   },
 };
