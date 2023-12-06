@@ -145,6 +145,6 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
     [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
     [eOasysNetwork.testnet]: '0x5ed8FA955719c6f75e11742E60b03DAF4Fe5d698',
-    [eOasysNetwork.oasys]: 'TODO',
+    [eOasysNetwork.oasys]: '0xA1C7de66b1eF4Da8dA3542D9Cb9C750107Dea479',
   },
 };
