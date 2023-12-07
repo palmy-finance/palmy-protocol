@@ -87,6 +87,23 @@ export const CommonsConfig: ICommonConfiguration = {
     [eOasysNetwork.oasys]: '0x21AFfDf04c787EB34f6Eda911d67CbA5D75d7773',
   },
 
+  DIAAggregator: {
+    [eEthereumNetwork.buidlerevm]: {},
+    [eEthereumNetwork.coverage]: {},
+    [eEthereumNetwork.hardhat]: {},
+    [eEthereumNetwork.tenderly]: {},
+    [eOasysNetwork.testnet]: {
+      WETH: '0x7C7dDDB4DD58300168DC652e2c2fB787B6f6aE54', // TODO
+      WOAS: '0x5200000000000000000000000000000000000001',
+      WBTC: '0xB9F1fb5c7dd67F3F249E42025E4255F402B535a0',
+    },
+    [eOasysNetwork.oasys]: {
+      WETH: '0x5801E5a61164024Be2554248E33127c6ebC8C113', // TODO
+      WOAS: '0x5200000000000000000000000000000000000001',
+      WBTC: '0xdd30c42D57a0f14DD44c809F59836D57392FDbC9',
+    },
+  },
+
   ReserveAssets: {
     [eEthereumNetwork.buidlerevm]: {},
     [eEthereumNetwork.coverage]: {},
@@ -136,7 +153,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: ZERO_ADDRESS,
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
     [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
-    [eOasysNetwork.testnet]: '0xF9989396817007b7Bb9290f0885821D8798c79e1', // PullRewardsIncentivesControllerProxy
+    [eOasysNetwork.testnet]: '0x00B0Bb2936aE698C2580f7044C4d8b49ac21DA62', // PullRewardsIncentivesControllerProxy
     [eOasysNetwork.oasys]: '0x00B0Bb2936aE698C2580f7044C4d8b49ac21DA62',
   },
   StakedOas: {
@@ -144,7 +161,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.coverage]: ZERO_ADDRESS,
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
     [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
-    [eOasysNetwork.testnet]: '0x5ed8FA955719c6f75e11742E60b03DAF4Fe5d698',
+    [eOasysNetwork.testnet]: '0xA1C7de66b1eF4Da8dA3542D9Cb9C750107Dea479',
     [eOasysNetwork.oasys]: '0xA1C7de66b1eF4Da8dA3542D9Cb9C750107Dea479',
   },
 };

@@ -25,7 +25,7 @@ import {
   getWETHGateway,
 } from '../../helpers/contracts-getters';
 import { BigNumberish } from 'ethers';
-import { waitForTx } from '../../helpers/misc-utils';
+import { omit, waitForTx } from '../../helpers/misc-utils';
 import { authorizeWETHGateway } from '../../helpers/contracts-deployments';
 import { UiPoolDataProviderV2Factory } from '../../types';
 
@@ -48,13 +48,14 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
   if (!reserveAssets) {
     throw 'Reserve assets is undefined. Check ReserveAssets configuration at config directory';
   }
+  const reservesConfigAtLaunch = omit(ReservesConfig, ['USDC', 'USDT']);
   const lTokensAndRatesHelper = await getLTokensAndRatesHelper();
 
   // initialize lTokens and strategies
   const initRateDeploymentParam: {
     asset: string;
     rates: [BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish];
-  }[] = Object.entries(ReservesConfig).map(([symbol, config]) => {
+  }[] = Object.entries(reservesConfigAtLaunch).map(([symbol, config]) => {
     const address = reserveAssets[symbol];
     if (!address) {
       throw `Address of ${symbol} is undefined. Check ReserveAssets configuration at config directory`;
@@ -86,7 +87,7 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
       const eventArgs = event.args!;
       const lToken = eventArgs[0];
       const strategy = eventArgs[1];
-      const symbol = Object.keys(ReservesConfig)[i];
+      const symbol = Object.keys(reservesConfigAtLaunch)[i];
       return { symbol, lToken, strategy };
     });
   let initInputParams: {
@@ -121,7 +122,7 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
   );
   const treasuryAddress = await getTreasuryAddress(poolConfig);
   const incentivesController = await getParamPerNetwork(IncentivesController, network);
-  const reservesConfig = Object.entries(ReservesConfig);
+  const reservesConfig = Object.entries(reservesConfigAtLaunch);
   for (const { symbol, strategy } of lTokensAndStrategies) {
     const [, params] = reservesConfig.find(([symbol]) => symbol === symbol)!;
     const underlyingAssetDecimals = params.reserveDecimals;
@@ -149,7 +150,7 @@ task('oasys-initialization:misc', '').setAction(async ({}, DRE) => {
   const configurator = await getLendingPoolConfiguratorProxy();
   await configurator.batchInitReserve(initInputParams);
   await configureReservesByHelper(
-    ReservesConfig,
+    reservesConfigAtLaunch,
     reserveAssets,
     await getPalmyProtocolDataProvider(),
     await (await getFirstSigner()).getAddress()
