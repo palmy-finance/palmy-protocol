@@ -3,42 +3,46 @@ pragma solidity 0.6.12;
 import '../interfaces/IChainsightOracle.sol';
 
 contract ChainsightOracle is IChainsightOracle {
-  mapping(address => bytes) public data;
+  struct Data {
+    bytes data;
+    uint256 timestamp;
+  }
+  mapping(address => Data) public data;
 
   function updateState(bytes calldata _data) external override {
-    data[msg.sender] = _data;
-    emit StateUpdated(msg.sender, _data);
+    data[msg.sender] = Data(_data, block.timestamp);
+    emit StateUpdated(msg.sender, _data, block.timestamp);
   }
 
-  function readAsString(address sender) external view override returns (string memory) {
-    bytes memory d = data[sender];
-    if (d.length == 0) {
-      return '';
+  function readAsString(address sender) external view override returns (string memory, uint256) {
+    Data memory d = data[sender];
+    if (d.data.length == 0) {
+      return ('', 0);
     }
-    return abi.decode(d, (string));
+    return (string(d.data), d.timestamp);
   }
 
-  function readAsUint256(address sender) external view override returns (uint256) {
-    bytes memory d = data[sender];
+  function readAsUint256(address sender) external view override returns (uint256, uint256) {
+    bytes memory d = data[sender].data;
     if (d.length == 0) {
-      return 0;
+      return (0, 0);
     }
-    return abi.decode(d, (uint256));
+    return (abi.decode(d, (uint256)), data[sender].timestamp);
   }
 
-  function readAsUint128(address sender) external view override returns (uint128) {
-    bytes memory d = data[sender];
+  function readAsUint128(address sender) external view override returns (uint128, uint256) {
+    bytes memory d = data[sender].data;
     if (d.length == 0) {
-      return 0;
+      return (0, 0);
     }
-    return abi.decode(d, (uint128));
+    return (abi.decode(d, (uint128)), data[sender].timestamp);
   }
 
-  function readAsUint64(address sender) external view override returns (uint64) {
-    bytes memory d = data[sender];
+  function readAsUint64(address sender) external view override returns (uint64, uint256) {
+    bytes memory d = data[sender].data;
     if (d.length == 0) {
-      return 0;
+      return (0, 0);
     }
-    return abi.decode(d, (uint64));
+    return (abi.decode(d, (uint64)), data[sender].timestamp);
   }
 }
