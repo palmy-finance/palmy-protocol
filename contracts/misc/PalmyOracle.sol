@@ -72,14 +72,17 @@ contract PalmyOracle is IPriceOracleGetter, PalmyOwnable, Initializable {
   function getAssetPrice(address asset) public view override returns (uint256) {
     if (asset == BASE_CURRENCY) {
       return BASE_CURRENCY_UNIT;
-    } else {
-      int256 price = _adapter.currentPrice(asset);
-      if (price > 0) {
-        return uint256(price);
-      } else {
-        return _fallbackOracle.getAssetPrice(asset);
-      }
     }
+    int256 price = _adapter.currentPrice(asset);
+    if (price > 0) {
+      return uint256(price);
+    }
+    uint256 fallbackPrice = _fallbackOracle.getAssetPrice(asset);
+    if (fallbackPrice > 0) {
+      return fallbackPrice;
+    }
+
+    revert('PalmyOracle: price not available');
   }
 
   /// @notice Gets a list of prices from a list of assets addresses
