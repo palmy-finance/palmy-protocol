@@ -14,6 +14,7 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, PalmyO
   using SafeMath for uint256;
   mapping(address => Oracle) public oracles;
   event AssetSourcesUpdated(address[] assets, address[] oracleAddresses, address[] senders);
+  uint256 constant PRICE_DATA_FRESHNESS_THRESHOLD = 1 hours;
 
   struct Oracle {
     IChainsightOracle oracle;
@@ -59,7 +60,11 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, PalmyO
     if (oracle.oracle == IChainsightOracle(address(0))) {
       return 0;
     }
-    uint256 price = oracle.oracle.readAsUint256(oracle.sender);
+    (uint256 price, uint256 timestamp) = oracle.oracle.readAsUint256(oracle.sender);
+    uint256 currentTime = block.timestamp;
+    if (currentTime.sub(timestamp) > PRICE_DATA_FRESHNESS_THRESHOLD) {
+      revert('STALE_DATA');
+    }
     return int256(price);
   }
 }

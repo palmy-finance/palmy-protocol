@@ -64,6 +64,7 @@ contract PalmyFallbackOracle is PalmyOwnable, IPriceOracleGetter {
   function getPricesData(address[] calldata assets) external view returns (Price[] memory) {
     Price[] memory result = new Price[](assets.length);
     for (uint256 i = 0; i < assets.length; i++) {
+      _requirePriceIsFresh(_prices[assets[i]]);
       result[i] = _prices[assets[i]];
     }
     return result;
@@ -99,6 +100,11 @@ contract PalmyFallbackOracle is PalmyOwnable, IPriceOracleGetter {
     }
 
     return (resultAssets, resultPrices);
+  }
+
+  function _requirePriceIsFresh(Price memory price) internal view {
+    uint256 timestamp = uint256(price.blockTimestamp);
+    require(timestamp > block.timestamp - 1 hours, 'STALE_PRICE');
   }
 
   function _requireWhitelistedSybil(address sybil) internal view {

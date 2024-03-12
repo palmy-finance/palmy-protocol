@@ -1,13 +1,12 @@
 import BigNumber from 'bignumber.js';
 import { evmSnapshot } from '../../helpers/misc-utils';
-import { PriceAggregatorAdapterChainsightImpl } from '../../types';
+import { ChainsightOracleMockFactory, PriceAggregatorAdapterChainsightImpl } from '../../types';
 import {
   deployChainsightOracle,
   deployPriceAggregatorChainsightImpl,
 } from '../../helpers/contracts-deployments';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 import { getChainsightOracle, getFirstSigner } from '../../helpers/contracts-getters';
-import { ethers } from 'ethers';
 import { AbiCoder } from 'ethers/lib/utils';
 
 const { expect } = require('chai');
@@ -63,6 +62,25 @@ makeSuite('Price Aggregator Implementation for Chainsight', (testEnv: TestEnv) =
           const price = await aggregator.currentPrice(p.tokenAddress);
           expect(price.toString()).to.be.equal(p.price);
         }
+      });
+      it('revert if the data is not fresh', async () => {
+        const chainsightOracleMock = await new ChainsightOracleMockFactory(
+          await getFirstSigner()
+        ).deploy();
+        await aggregator.setAssetSources(
+          [prices[0].tokenAddress],
+          [chainsightOracleMock.address],
+          [await (await getFirstSigner()).getAddress()]
+        );
+        const threshold = 60 * 60;
+        const currentTimestamp = Math.floor(new Date().getTime() / 1000);
+        await chainsightOracleMock.updateStateMock(
+          new AbiCoder().encode(['uint256'], [1]),
+          currentTimestamp - threshold
+        );
+        await expect(aggregator.currentPrice(prices[0].tokenAddress)).to.be.revertedWith(
+          'STALE_DATA'
+        );
       });
     });
   });
