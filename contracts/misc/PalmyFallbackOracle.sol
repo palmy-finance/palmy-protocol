@@ -54,7 +54,7 @@ contract PalmyFallbackOracle is PalmyOwnable, IPriceOracleGetter {
   }
 
   function getAssetPrice(address asset) external view override returns (uint256) {
-    return uint256(_prices[asset].price);
+    return _getAssetPrice(asset).price;
   }
 
   function isSybilWhitelisted(address sybil) public view returns (bool) {
@@ -64,10 +64,14 @@ contract PalmyFallbackOracle is PalmyOwnable, IPriceOracleGetter {
   function getPricesData(address[] calldata assets) external view returns (Price[] memory) {
     Price[] memory result = new Price[](assets.length);
     for (uint256 i = 0; i < assets.length; i++) {
-      _requirePriceIsFresh(_prices[assets[i]]);
-      result[i] = _prices[assets[i]];
+      result[i] = _getAssetPrice(assets[i]);
     }
     return result;
+  }
+
+  function _getAssetPrice(address asset) internal view returns (Price memory) {
+    _requirePriceIsFresh(_prices[asset]);
+    return _prices[asset];
   }
 
   function filterCandidatePricesByDeviation(
