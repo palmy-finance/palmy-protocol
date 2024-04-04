@@ -51,12 +51,16 @@ makeSuite('Price Aggregator Implementation for Chainsight', (testEnv: TestEnv) =
       it('asset source update', async () => {
         for (const p of prices) {
           const oracle = await getChainsightOracle(p.symbol);
-          await oracle.updateState(new AbiCoder().encode(['uint256'], [p.price]));
+          await oracle.updateStateBulk(
+            [new AbiCoder().encode(['uint256'], [p.price])],
+            ['0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef']
+          );
 
           await aggregator.setAssetSources(
             [p.tokenAddress],
             [oracle.address],
-            [await (await getFirstSigner()).getAddress()]
+            [await (await getFirstSigner()).getAddress()],
+            ['0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef']
           );
           console.log('set asset source');
           const price = await aggregator.currentPrice(p.tokenAddress);
@@ -70,7 +74,8 @@ makeSuite('Price Aggregator Implementation for Chainsight', (testEnv: TestEnv) =
         await aggregator.setAssetSources(
           [prices[0].tokenAddress],
           [chainsightOracleMock.address],
-          [await (await getFirstSigner()).getAddress()]
+          [await (await getFirstSigner()).getAddress()],
+          ['0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef']
         );
         const threshold = 60 * 60;
         const currentTimestamp = Math.floor(new Date().getTime() / 1000);
