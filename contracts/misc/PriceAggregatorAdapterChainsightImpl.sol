@@ -13,12 +13,18 @@ import {SafeMath} from '../dependencies/openzeppelin/contracts/SafeMath.sol';
 contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, PalmyOwnable {
   using SafeMath for uint256;
   mapping(address => Oracle) public oracles;
-  event AssetSourcesUpdated(address[] assets, address[] oracleAddresses, address[] senders);
+  event AssetSourcesUpdated(
+    address[] assets,
+    address[] oracleAddresses,
+    address[] senders,
+    bytes32[] keys
+  );
   uint256 constant PRICE_DATA_FRESHNESS_THRESHOLD = 1 hours;
 
   struct Oracle {
     IChainsightOracle oracle;
     address sender;
+    bytes32 key;
   }
 
   constructor(address initialOwner) public PalmyOwnable(initialOwner) {}
@@ -30,10 +36,11 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, PalmyO
   function setAssetSources(
     address[] calldata assets,
     address[] calldata oracleAddresses,
-    address[] calldata senders
+    address[] calldata senders,
+    bytes32[] calldata keys
   ) external onlyOwner {
-    _setAssetsSources(assets, oracleAddresses, senders);
-    emit AssetSourcesUpdated(assets, oracleAddresses, senders);
+    _setAssetsSources(assets, oracleAddresses, senders, keys);
+    emit AssetSourcesUpdated(assets, oracleAddresses, senders, keys);
   }
 
   /// @notice Internal function to set the sources for each asset
@@ -43,12 +50,14 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, PalmyO
   function _setAssetsSources(
     address[] calldata assets,
     address[] calldata oracleAddresses,
-    address[] calldata senders
+    address[] calldata senders,
+    bytes32[] calldata keys
   ) internal {
     require(assets.length == oracleAddresses.length, 'INCONSISTENT_PARAMS_LENGTH');
     require(assets.length == senders.length, 'INCONSISTENT_PARAMS_LENGTH');
+    require(assets.length == keys.length, 'INCONSISTENT_PARAMS_LENGTH');
     for (uint256 i = 0; i < assets.length; i++) {
-      oracles[assets[i]] = Oracle(IChainsightOracle(oracleAddresses[i]), senders[i]);
+      oracles[assets[i]] = Oracle(IChainsightOracle(oracleAddresses[i]), senders[i], keys[i]);
     }
   }
 
@@ -60,7 +69,10 @@ contract PriceAggregatorAdapterChainsightImpl is IPriceAggregatorAdapter, PalmyO
     if (oracle.oracle == IChainsightOracle(address(0))) {
       return 0;
     }
-    (uint256 price, uint256 timestamp) = oracle.oracle.readAsUint256(oracle.sender);
+    (uint256 price, uint64 timestamp) = oracle.oracle.readAsUint256WithTimestamp(
+      oracle.sender,
+      oracle.key
+    );
     uint256 currentTime = block.timestamp;
     if (currentTime.sub(timestamp) > PRICE_DATA_FRESHNESS_THRESHOLD) {
       revert('STALE_DATA');
