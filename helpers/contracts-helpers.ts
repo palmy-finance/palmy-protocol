@@ -35,7 +35,7 @@ export const getOasysDeploymentAddress = async (contractId: string, callData: By
 };
 
 const toSalt = (contractId: string) => {
-  return utils.hexlify(utils.sha256(utils.toUtf8Bytes(contractId + 'palmy-finance')));
+  return utils.hexlify(utils.sha256(utils.toUtf8Bytes(contractId + 'palmy-fi')));
 };
 
 export const deployToOasysTestnet = async (id: eContractid, verify?: boolean) => {
