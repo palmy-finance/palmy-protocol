@@ -59,6 +59,7 @@ const getCommonNetworkConfig = (networkName: eNetwork, networkId: number) => ({
     initialIndex: 0,
     count: 20,
   },
+  gas: NETWORKS_DEFAULT_GAS[networkName],
 });
 
 let forkMode;
