@@ -14,7 +14,7 @@ export const strategyUSDC: IReserveParams = {
   liquidationBonus: '10500',
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
-  reserveDecimals: '6',
+  reserveDecimals: '18',
   lTokenImpl: eContractid.LToken,
   reserveFactor: '1000',
 };
@@ -26,7 +26,7 @@ export const strategyUSDT: IReserveParams = {
   liquidationBonus: '10500',
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
-  reserveDecimals: '6',
+  reserveDecimals: '18',
   lTokenImpl: eContractid.LToken,
   reserveFactor: '1000',
 };
@@ -38,7 +38,7 @@ export const strategyWBTC: IReserveParams = {
   liquidationBonus: '11000',
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
-  reserveDecimals: '8',
+  reserveDecimals: '18',
   lTokenImpl: eContractid.LToken,
   reserveFactor: '2000',
 };
