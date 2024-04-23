@@ -24,15 +24,20 @@ task('oasys-initialization:oracle', '').setAction(async ({}, DRE) => {
     ProtocolGlobalParams: { UsdAddress },
     ReserveAssets,
     DIAAggregator,
+    OraclePriceKey,
+    OracleSenderAddress,
   } = poolConfig as ICommonConfiguration;
   const feedTokens = getParamPerNetwork(DIAAggregator, network);
   const chainsightOracle = await getChainsightOracle('');
+  const oracleSenderAddress = await getParamPerNetwork(OracleSenderAddress, network);
+  const oraclePriceKey = await getParamPerNetwork(OraclePriceKey, network);
   const aggregator = await getPriceAggregator();
   await waitForTx(
     await aggregator.setAssetSources(
       Object.values(feedTokens),
       Object.values(feedTokens).map((_) => chainsightOracle.address),
-      Object.values(feedTokens).map((_) => ZERO_ADDRESS) // TODO
+      Object.values(feedTokens).map((_) => oracleSenderAddress),
+      Object.values(feedTokens).map((t) => oraclePriceKey[t])
     )
   );
   const fallbackOracle = await getPalmyFallbackOracle();

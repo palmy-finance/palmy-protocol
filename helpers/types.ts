@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { BytesLike } from 'ethers';
 
 export interface SymbolMap<T> {
   [symbol: string]: T;
@@ -319,6 +320,8 @@ export interface IBaseConfiguration {
   OracleQuoteCurrency: string;
   OracleQuoteUnit: string;
   StakedOas: iParamsPerNetwork<tEthereumAddress>;
+  OracleSenderAddress: iParamsPerNetwork<tEthereumAddress>;
+  OraclePriceKey: iParamsPerNetwork<SymbolMap<BytesLike>>;
 }
 
 export interface ICommonConfiguration extends IBaseConfiguration {
