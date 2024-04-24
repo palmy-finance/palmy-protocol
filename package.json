@@ -63,6 +63,7 @@
     "palmy:oasys:start-lending-pool": "hardhat --network oasys pause-lending-pool --pool Palmy",
     "prepublishOnly": "npm run compile",
     "oasys:deployment": "npm run compile && npm run hardhat:oasys -- oasys-deployment",
+    "oasys:update-oracle": "npm run compile && npm run hardhat:oasys -- update-oracle",
     "oasys:deployment-libs": "npm run compile && npm run hardhat:oasys -- oasys-deployment-libraries",
     "testnet:deployment": "npm run compile && npm run hardhat:testnet -- oasys-deployment",
     "testnet:deployment-libs": "npm run compile && npm run hardhat:testnet -- oasys-deployment-libraries",
