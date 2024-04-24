@@ -15,6 +15,7 @@ import { waitForTx } from '../../helpers/misc-utils';
 import { getParamPerNetwork } from '../../helpers/contracts-helpers';
 import { ZERO_ADDRESS } from '../../helpers/constants';
 import { setInitialMarketRatesInRatesOracleByHelper } from '../../helpers/oracles-helpers';
+import { BytesLike } from 'ethers';
 
 task('oasys-initialization:oracle', '').setAction(async ({}, DRE) => {
   await DRE.run('set-DRE');
@@ -30,16 +31,20 @@ task('oasys-initialization:oracle', '').setAction(async ({}, DRE) => {
   const feedTokens = getParamPerNetwork(DIAAggregator, network);
   const chainsightOracle = await getChainsightOracle('');
   const oracleSenderAddress = await getParamPerNetwork(OracleSenderAddress, network);
-  const oraclePriceKey = await getParamPerNetwork(OraclePriceKey, network);
+  const oraclePriceKey = (await getParamPerNetwork(
+    OraclePriceKey,
+    network
+  )) as SymbolMap<BytesLike>;
   const aggregator = await getPriceAggregator();
   await waitForTx(
     await aggregator.setAssetSources(
       Object.values(feedTokens),
       Object.values(feedTokens).map((_) => chainsightOracle.address),
       Object.values(feedTokens).map((_) => oracleSenderAddress),
-      Object.values(feedTokens).map((t) => oraclePriceKey[t])
+      Object.keys(feedTokens).map((key) => oraclePriceKey[key])
     )
   );
+
   const fallbackOracle = await getPalmyFallbackOracle();
   await waitForTx(await fallbackOracle.authorizeSybil(await (await getFirstSigner()).getAddress()));
   const reserveAssets = getParamPerNetwork(ReserveAssets, network);
