@@ -170,7 +170,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
     [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
     [eOasysNetwork.testnet]: ZERO_ADDRESS,
-    [eOasysNetwork.oasys]: '0x36b75470cb7d02fd90389c026c02ff12ffd1568c',
+    [eOasysNetwork.oasys]: '0x9256248cb58bb8924d57921b06366526a52fbdc0',
   },
   OraclePriceKey: {
     [eEthereumNetwork.buidlerevm]: {},
@@ -179,9 +179,9 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.tenderly]: {},
     [eOasysNetwork.testnet]: {},
     [eOasysNetwork.oasys]: {
-      WETH: '0x3D616F29DAF3AE550BC99C1BB8195241F042CD96A22C168CACB9F23960614CEA',
-      WOAS: '0x055F74503E382E72188A4C08F745326976B06B8216169B4201ED5F603F89B40E',
-      WBTC: '0x4E11E7EE6EFA3F52C17DBC9785BFAC686BCC542933E1522C8CD96AD907E151B5',
+      WETH: '0x99A83050EB1524BA248EB1628A73C9975F009B69E3B5EA4530D98E58002592BC',
+      WOAS: '0x3C4167264C0E6477E2A6DF2CDA556E95BCA3FF78751C5DD9571C333D4553747E',
+      WBTC: '0x023E8172B3BAD42BC7C49EC640843301D1F40FBF67BD16AB6970FEDC3094A926',
     },
   },
 };
