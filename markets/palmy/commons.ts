@@ -184,4 +184,12 @@ export const CommonsConfig: ICommonConfiguration = {
       WBTC: '0xE2A4C31B30702064870ADD67F3EA411A954E5FC007F696BC9778B8B767A54836',
     },
   },
+  LendingPoolConfigurator: {
+    [eEthereumNetwork.buidlerevm]: ZERO_ADDRESS,
+    [eEthereumNetwork.coverage]: ZERO_ADDRESS,
+    [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
+    [eEthereumNetwork.tenderly]: ZERO_ADDRESS,
+    [eOasysNetwork.testnet]: ZERO_ADDRESS,
+    [eOasysNetwork.oasys]: '0xBA55b646837190e293989643197D3ce3dDFe1Ab4',
+  },
 };
