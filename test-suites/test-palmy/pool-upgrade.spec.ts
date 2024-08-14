@@ -8,14 +8,14 @@ import {
 import { ERC20Factory } from '../../types';
 import { ethers } from 'ethers';
 import { configureReservesByHelper, initReservesByHelper } from '../../helpers/init-helpers';
-import { ConfigNames, loadPoolConfig } from '../../helpers/configuration';
+import { ConfigNames } from '../../helpers/configuration';
 import { strategyDAIForTest } from '../../markets/palmy/reservesConfigs';
 const chai = require('chai');
 const { expect } = chai;
 
 makeSuite('LendingPool upgrade - upgrade lending pool', (testEnv) => {
   it('Deposits WETH, borrows DAI/Check liquidation fails because health factor is above 1', async () => {
-    const { dai, pool, deployer, addressesProvider, configurator, helpersContract } = testEnv;
+    const { dai, pool, deployer, addressesProvider, helpersContract } = testEnv;
     const [, user] = testEnv.users;
     await dai.connect(user.signer).mint(ethers.utils.parseEther('100'));
     await dai.connect(user.signer).approve(pool.address, ethers.utils.parseEther('100'));
