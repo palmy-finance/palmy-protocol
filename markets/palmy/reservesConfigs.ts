@@ -14,7 +14,7 @@ export const strategyUSDC: IReserveParams = {
   liquidationBonus: '10500',
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
-  reserveDecimals: '18',
+  reserveDecimals: '6',
   lTokenImpl: eContractid.LToken,
   reserveFactor: '1000',
 };
