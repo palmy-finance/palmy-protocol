@@ -3,8 +3,8 @@ import { ICommonConfiguration, eContractid, eNetwork } from '../../helpers/types
 
 import {
   ConfigNames,
+  getLendingRateOracles,
   getTreasuryAddress,
-  getWrappedNativeTokenAddress,
   loadPoolConfig,
 } from '../../helpers/configuration';
 import {
@@ -15,21 +15,13 @@ import { configureReservesByHelper } from '../../helpers/init-helpers';
 import {
   getFirstSigner,
   getLTokensAndRatesHelper,
-  getLendingPoolAddressesProvider,
-  getLendingPoolCollateralManager,
   getLendingPoolConfiguratorProxy,
-  getPalmyOracle,
   getPalmyProtocolDataProvider,
-  getPriceAggregator,
-  getStakeUIHelper,
-  getWETHGateway,
 } from '../../helpers/contracts-getters';
 import { BigNumberish } from 'ethers';
-import { omit, waitForTx } from '../../helpers/misc-utils';
-import { authorizeWETHGateway } from '../../helpers/contracts-deployments';
-import { UiPoolDataProviderV2Factory } from '../../types';
+import { setInitialMarketRatesInRatesOracleByHelper } from '../../helpers/oracles-helpers';
 
-task('add-usdc', '').setAction(async ({}, DRE) => {
+task('list-token', '').setAction(async ({}, DRE) => {
   await DRE.run('set-DRE');
   const network = DRE.network.name as eNetwork;
   const poolConfig = loadPoolConfig(ConfigNames.Palmy);
@@ -41,21 +33,19 @@ task('add-usdc', '').setAction(async ({}, DRE) => {
     ReserveAssets,
     ReservesConfig,
     IncentivesController,
-    StakedOas,
-    ProtocolGlobalParams: { UsdAddress },
   } = poolConfig as ICommonConfiguration;
   const reserveAssets = await getParamPerNetwork(ReserveAssets, network);
   if (!reserveAssets) {
     throw 'Reserve assets is undefined. Check ReserveAssets configuration at config directory';
   }
-  const reservesConfigUSDC = { USDC: ReservesConfig.USDC };
+  const reservesConfigToBeDeployed = { USDC: ReservesConfig.USDC };
   const lTokensAndRatesHelper = await getLTokensAndRatesHelper();
 
   // initialize lTokens and strategies
   const initRateDeploymentParam: {
     asset: string;
     rates: [BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish];
-  }[] = Object.entries(reservesConfigUSDC).map(([symbol, config]) => {
+  }[] = Object.entries(reservesConfigToBeDeployed).map(([symbol, config]) => {
     const address = reserveAssets[symbol];
     if (!address) {
       throw `Address of ${symbol} is undefined. Check ReserveAssets configuration at config directory`;
@@ -87,7 +77,7 @@ task('add-usdc', '').setAction(async ({}, DRE) => {
       const eventArgs = event.args!;
       const lToken = eventArgs[0];
       const strategy = eventArgs[1];
-      const symbol = Object.keys(reservesConfigUSDC)[i];
+      const symbol = Object.keys(reservesConfigToBeDeployed)[i];
       return { symbol, lToken, strategy };
     });
   let initInputParams: {
@@ -122,7 +112,7 @@ task('add-usdc', '').setAction(async ({}, DRE) => {
   );
   const treasuryAddress = await getTreasuryAddress(poolConfig);
   const incentivesController = await getParamPerNetwork(IncentivesController, network);
-  const reservesConfig = Object.entries(reservesConfigUSDC);
+  const reservesConfig = Object.entries(reservesConfigToBeDeployed);
   for (const { symbol, strategy } of lTokensAndStrategies) {
     const [, params] = reservesConfig.find(([symbol]) => symbol === symbol)!;
     const underlyingAssetDecimals = params.reserveDecimals;
@@ -150,43 +140,9 @@ task('add-usdc', '').setAction(async ({}, DRE) => {
   const configurator = await getLendingPoolConfiguratorProxy();
   await configurator.batchInitReserve(initInputParams);
   await configureReservesByHelper(
-    reservesConfigUSDC,
+    reservesConfigToBeDeployed,
     reserveAssets,
     await getPalmyProtocolDataProvider(),
     await (await getFirstSigner()).getAddress()
   );
-  const collateralManager = await getLendingPoolCollateralManager();
-  const addressProvider = await getLendingPoolAddressesProvider();
-  await waitForTx(await addressProvider.setLendingPoolCollateralManager(collateralManager.address));
-  const dataProvider = await getPalmyProtocolDataProvider();
-  await waitForTx(
-    await addressProvider.setAddress(
-      '0x0100000000000000000000000000000000000000000000000000000000000000',
-      dataProvider.address
-    )
-  );
-  await authorizeWETHGateway(
-    (
-      await getWETHGateway()
-    ).address,
-    await addressProvider.getLendingPool()
-  );
-  const stakeUIHelper = await getStakeUIHelper();
-
-  const palmyOracle = await getPalmyOracle();
-  const wOAS = await getWrappedNativeTokenAddress(poolConfig);
-  await waitForTx(
-    await stakeUIHelper.initialize(
-      palmyOracle.address,
-      wOAS,
-      await getParamPerNetwork(StakedOas, network),
-      UsdAddress
-    )
-  );
-  const uiPoolDataProvider = UiPoolDataProviderV2Factory.connect(
-    await getContractAddressWithJsonFallback(eContractid.UiPoolDataProviderV2, ConfigNames.Palmy),
-    await getFirstSigner()
-  );
-  const aggregatorAddress = (await getPriceAggregator()).address;
-  await waitForTx(await uiPoolDataProvider.initialize(aggregatorAddress, UsdAddress));
 });
