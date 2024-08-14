@@ -35,6 +35,8 @@ import {
   WETH9MockedFactory,
   WETHGatewayFactory,
   ChainsightOracleFactory,
+  LendingPoolTmpFactory,
+  LendingPoolV4Factory,
 } from '../types';
 import { LendingPoolLibraryAddresses } from '../types/LendingPoolFactory';
 import { MintableDelegationERC20 } from '../types/MintableDelegationERC20';
@@ -312,6 +314,23 @@ export const deployLendingPool = async (verify?: boolean) => {
   const lendingPoolImpl = await new LendingPoolFactory(libraries, await getFirstSigner()).deploy();
   await insertContractAddressInDb(eContractid.LendingPoolImpl, lendingPoolImpl.address);
   return withSaveAndVerify(lendingPoolImpl, eContractid.LendingPool, [], verify);
+};
+
+export const deployLendingPoolTmp = async (verify?: boolean) => {
+  const lendingPoolImpl = await new LendingPoolTmpFactory(
+    await deployPalmyLibraries(verify),
+    await getFirstSigner()
+  ).deploy();
+  await insertContractAddressInDb(eContractid.LendingPoomTmpImpl, lendingPoolImpl.address);
+  return withSaveAndVerify(lendingPoolImpl, eContractid.LendingPoomTmpImpl, [], verify);
+};
+export const deployLendingPoolV4 = async (verify?: boolean) => {
+  const lendingPoolImpl = await new LendingPoolV4Factory(
+    await deployPalmyLibraries(verify),
+    await getFirstSigner()
+  ).deploy();
+  await insertContractAddressInDb(eContractid.LendingPoolV4Impl, lendingPoolImpl.address);
+  return withSaveAndVerify(lendingPoolImpl, eContractid.LendingPoolV4Impl, [], verify);
 };
 
 export const deployPriceOracle = async (verify?: boolean) =>
