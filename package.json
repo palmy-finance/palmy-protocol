@@ -63,6 +63,7 @@
     "palmy:oasys:start-lending-pool": "hardhat --network oasys pause-lending-pool --pool Palmy",
     "prepublishOnly": "npm run compile",
     "oasys:deployment": "npm run compile && npm run hardhat:oasys -- oasys-deployment",
+    "oasys:list-token": "npm run compile && npm run hardhat:oasys -- list-token",
     "oasys:update-oracle": "npm run compile && npm run hardhat:oasys -- update-oracle",
     "oasys:update-oas-reserve-param": "npm run compile && npm run hardhat:oasys -- update-oas-reserve-param --pool Palmy",
     "oasys:deployment-libs": "npm run compile && npm run hardhat:oasys -- oasys-deployment-libraries",

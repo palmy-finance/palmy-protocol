@@ -13,7 +13,6 @@ task('update-oracle', '').setAction(async ({}, DRE) => {
   const poolConfig = loadPoolConfig(ConfigNames.Palmy);
   const {
     ProtocolGlobalParams: { UsdAddress },
-    ReserveAssets,
     DIAAggregator,
     OraclePriceKey,
     OracleSenderAddress,
