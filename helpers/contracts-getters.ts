@@ -353,6 +353,22 @@ export const getLendingPoolImpl = async (address?: tEthereumAddress) =>
       ).address,
     await getFirstSigner()
   );
+export const getLendingPoolTmpImpl = async (address?: tEthereumAddress) =>
+  await LendingPoolFactory.connect(
+    address ||
+      (
+        await getDb().get(`${eContractid.LendingPoolTmpImpl}.${DRE.network.name}`).value()
+      ).address,
+    await getFirstSigner()
+  );
+export const getLendingPoolV4Impl = async (address?: tEthereumAddress) =>
+  await LendingPoolFactory.connect(
+    address ||
+      (
+        await getDb().get(`${eContractid.LendingPoolV4Impl}.${DRE.network.name}`).value()
+      ).address,
+    await getFirstSigner()
+  );
 
 export const getLendingPoolConfiguratorImpl = async (address?: tEthereumAddress) =>
   await LendingPoolConfiguratorFactory.connect(

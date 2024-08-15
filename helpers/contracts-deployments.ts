@@ -309,6 +309,24 @@ export const exportLendingPoolCallData = async () => {
   return await lendingPoolFactory.getDeployTransaction().data!;
 };
 
+export const exportLendingPoolTmpAndV4CallData = async () => {
+  const reserveLogicAddress = await getContractAddressWithJsonFallback(
+    eContractid.ReserveLogic,
+    ConfigNames.Palmy
+  );
+  const validationLogicAddress = await getContractAddressWithJsonFallback(
+    eContractid.ValidationLogic,
+    ConfigNames.Palmy
+  );
+  const libs = await toPalmyLibs(validationLogicAddress, reserveLogicAddress);
+  const lendingPoolTmpFactory = await new LendingPoolTmpFactory(libs, await getFirstSigner());
+  const lendingPoolV4Factory = await new LendingPoolV4Factory(libs, await getFirstSigner());
+  return {
+    lendingPoolTmpData: await lendingPoolTmpFactory.getDeployTransaction().data!,
+    lendingPoolV4Data: await lendingPoolV4Factory.getDeployTransaction().data!,
+  };
+};
+
 export const deployLendingPool = async (verify?: boolean) => {
   const libraries = await deployPalmyLibraries(verify);
   const lendingPoolImpl = await new LendingPoolFactory(libraries, await getFirstSigner()).deploy();
@@ -321,8 +339,8 @@ export const deployLendingPoolTmp = async (verify?: boolean) => {
     await deployPalmyLibraries(verify),
     await getFirstSigner()
   ).deploy();
-  await insertContractAddressInDb(eContractid.LendingPoomTmpImpl, lendingPoolImpl.address);
-  return withSaveAndVerify(lendingPoolImpl, eContractid.LendingPoomTmpImpl, [], verify);
+  await insertContractAddressInDb(eContractid.LendingPoolTmpImpl, lendingPoolImpl.address);
+  return withSaveAndVerify(lendingPoolImpl, eContractid.LendingPoolTmpImpl, [], verify);
 };
 export const deployLendingPoolV4 = async (verify?: boolean) => {
   const lendingPoolImpl = await new LendingPoolV4Factory(
