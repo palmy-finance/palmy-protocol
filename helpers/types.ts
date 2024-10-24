@@ -64,6 +64,8 @@ export enum eContractid {
   WOASMocked = 'WOASMocked',
   SelfdestructTransferMock = 'SelfdestructTransferMock',
   LendingPoolImpl = 'LendingPoolImpl',
+  LendingPoolTmpImpl = 'LendingPoolTmpImpl',
+  LendingPoolV4Impl = 'LendingPoolV4Impl',
   LendingPoolConfiguratorImpl = 'LendingPoolConfiguratorImpl',
   LendingPoolCollateralManagerImpl = 'LendingPoolCollateralManagerImpl',
   PriceAggregatorAdapterChainsightImpl = 'PriceAggregatorAdapterChainsightImpl',
