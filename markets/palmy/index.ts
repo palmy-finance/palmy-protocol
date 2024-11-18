@@ -11,7 +11,7 @@ import {
   strategyUSDC,
   strategyUSDT,
   strategyWBTC,
-  strategyMCH,
+  strategyMCHC,
 } from './reservesConfigs';
 
 // ----------------
@@ -28,7 +28,7 @@ export const PalmyConfig: IPalmyConfiguration = {
     USDC: strategyUSDC,
     USDT: strategyUSDT,
     WBTC: strategyWBTC,
-    MCH: strategyMCH,
+    MCHC: strategyMCHC,
   },
   ReserveAssets: {
     [eEthereumNetwork.buidlerevm]: {},
