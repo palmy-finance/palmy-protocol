@@ -50,7 +50,7 @@ export const MOCK_PRICE_AGGREGATORS_PRICES = {
   USDC: oneEther.multipliedBy('0.00367714136416').toFixed(),
   USDT: oneEther.multipliedBy('0.00369068412860').toFixed(),
   WBTC: oneEther.multipliedBy('47.332685').toFixed(),
-  MCHC: oneEther.multipliedBy('0.00369068412860').toFixed(), // TODO
+  MCHC: oneEther.multipliedBy('0.00369068412860').toFixed(),
 };
 
 export const ALL_ASSETS_PRICES_FOR_TESTING = {
