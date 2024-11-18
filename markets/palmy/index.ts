@@ -1,3 +1,4 @@
+import { ZERO_ADDRESS } from '../../helpers/constants';
 import {
   eOasysNetwork,
   eEthereumNetwork,
@@ -10,6 +11,7 @@ import {
   strategyUSDC,
   strategyUSDT,
   strategyWBTC,
+  strategyMCH,
 } from './reservesConfigs';
 
 // ----------------
@@ -26,6 +28,7 @@ export const PalmyConfig: IPalmyConfiguration = {
     USDC: strategyUSDC,
     USDT: strategyUSDT,
     WBTC: strategyWBTC,
+    MCH: strategyMCH,
   },
   ReserveAssets: {
     [eEthereumNetwork.buidlerevm]: {},
@@ -43,6 +46,7 @@ export const PalmyConfig: IPalmyConfiguration = {
       WETH: '0x5801E5a61164024Be2554248E33127c6ebC8C113',
       WBTC: '0xdd30c42D57a0f14DD44c809F59836D57392FDbC9',
       USDC: '0x4D17C0609B77e456Fb98Ea99a62bCeF09adae32D',
+      MCH: ZERO_ADDRESS, //TODO
     },
   },
 };
