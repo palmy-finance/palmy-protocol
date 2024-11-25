@@ -57,7 +57,6 @@ export const rateStrategyStableTwo: IInterestRateStrategyParams = {
 // MCHC
 export const rateStrategyMCHC: IInterestRateStrategyParams = {
   name: 'rateStrategyMCHC',
-  // TODO: update strategies
   optimalUtilizationRate: new BigNumber(0.45).multipliedBy(oneRay).toFixed(),
   baseVariableBorrowRate: new BigNumber(0).multipliedBy(oneRay).toFixed(),
   variableRateSlope1: new BigNumber(0.07).multipliedBy(oneRay).toFixed(),

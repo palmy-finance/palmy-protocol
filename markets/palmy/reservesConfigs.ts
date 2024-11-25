@@ -81,7 +81,6 @@ export const strategyWOAS: IReserveParams = {
 
 export const strategyMCHC: IReserveParams = {
   strategy: rateStrategyMCHC,
-  // TODO: update config
   baseLTVAsCollateral: '0',
   liquidationThreshold: '5500',
   liquidationBonus: '11500',
