@@ -83,7 +83,7 @@ export const strategyMCHC: IReserveParams = {
   strategy: rateStrategyMCHC,
   baseLTVAsCollateral: '0',
   liquidationThreshold: '0',
-  liquidationBonus: '11500',
+  liquidationBonus: '0',
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
