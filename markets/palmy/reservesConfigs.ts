@@ -6,6 +6,8 @@ import {
   rateStrategyStable,
   rateStrategyWBTC,
   rateStrategyMCHC,
+  rateStrategyTCGC,
+  rateStrategyStOAS,
 } from './rateStrategies';
 
 export const strategyUSDC: IReserveParams = {
@@ -80,6 +82,30 @@ export const strategyWOAS: IReserveParams = {
 };
 
 export const strategyMCHC: IReserveParams = {
+  strategy: rateStrategyMCHC,
+  baseLTVAsCollateral: '0',
+  liquidationThreshold: '0',
+  liquidationBonus: '0',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '18',
+  lTokenImpl: eContractid.LToken,
+  reserveFactor: '2000',
+};
+
+export const strategyTCGC: IReserveParams = {
+  strategy: rateStrategyMCHC,
+  baseLTVAsCollateral: '0',
+  liquidationThreshold: '0',
+  liquidationBonus: '0',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '18',
+  lTokenImpl: eContractid.LToken,
+  reserveFactor: '2000',
+};
+
+export const strategyStOAS: IReserveParams = {
   strategy: rateStrategyMCHC,
   baseLTVAsCollateral: '0',
   liquidationThreshold: '0',

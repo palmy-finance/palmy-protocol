@@ -191,6 +191,8 @@ export interface iAssetBase<T> {
   USD: T;
   WOAS: T;
   MCHC: T;
+  TCGC: T;
+  stOAS: T;
 }
 
 export type iAssetsWithoutETH<T> = Omit<iAssetBase<T>, 'ETH'>;
@@ -199,7 +201,7 @@ export type iAssetsWithoutUSD<T> = Omit<iAssetBase<T>, 'USD'>;
 
 export type iPalmyPoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'WETH' | 'WOAS' | 'USDC' | 'USDT' | 'WBTC' | 'MCHC'
+  'WETH' | 'WOAS' | 'USDC' | 'USDT' | 'WBTC' | 'MCHC' | 'TCGC' | 'stOAS'
 >;
 
 export type iMultiPoolsAssets<T> = iAssetCommon<T> | iPalmyPoolAssets<T>;

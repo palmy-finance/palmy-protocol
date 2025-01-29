@@ -12,6 +12,8 @@ import {
   strategyUSDT,
   strategyWBTC,
   strategyMCHC,
+  strategyTCGC,
+  strategyStOAS,
 } from './reservesConfigs';
 
 // ----------------
@@ -29,6 +31,8 @@ export const PalmyConfig: IPalmyConfiguration = {
     USDT: strategyUSDT,
     WBTC: strategyWBTC,
     MCHC: strategyMCHC,
+    TCGC: strategyTCGC,
+    stOAS: straregyStOAS,
   },
   ReserveAssets: {
     [eEthereumNetwork.buidlerevm]: {},
@@ -47,6 +51,8 @@ export const PalmyConfig: IPalmyConfiguration = {
       WBTC: '0xdd30c42D57a0f14DD44c809F59836D57392FDbC9',
       USDC: '0x4D17C0609B77e456Fb98Ea99a62bCeF09adae32D',
       MCHC: '0x5B1CC635E524cAbb63a581c050C895534755F297',
+      TCGC: '0xdDB07cc0f2F9fB7899DbA5a21964f3C6D2740e44',
+      stOAS: '0xC5e5A76e2A3Fee67F1d17D1248dF5eE4E69937f5',
     },
   },
 };

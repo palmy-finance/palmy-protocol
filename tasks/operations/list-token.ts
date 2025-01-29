@@ -38,7 +38,7 @@ task('list-token', '').setAction(async ({}, DRE) => {
   if (!reserveAssets) {
     throw 'Reserve assets is undefined. Check ReserveAssets configuration at config directory';
   }
-  const reservesConfigToBeDeployed = { MCHC: ReservesConfig.MCHC };
+  const reservesConfigToBeDeployed = { TCGC: ReservesConfig.TCGC };
   const lTokensAndRatesHelper = await getLTokensAndRatesHelper();
 
   // initialize lTokens and strategies
